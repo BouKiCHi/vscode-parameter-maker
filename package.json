@@ -7,6 +7,7 @@
     "engines": {
         "vscode": "^1.18.0"
     },
+    "license": "MIT",
     "categories": [
         "Formatters"
     ],
@@ -26,12 +27,12 @@
                 "properties": {
                     "parameter-maker.defaultSeperator": {
                         "type": "string",
-                        "default":"\n",
+                        "default": "\n",
                         "title": "default seperator"
                     },
                     "parameter-maker.defaultEnclose": {
                         "type": "string",
-                        "default":"\"",
+                        "default": "\"",
                         "title": "default enclose"
                     }
                 }
@@ -110,9 +111,9 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
-        "typescript": "^2.6.1",
+        "@types/mocha": "^5.2.5",
+        "@types/node": "^10.12.2",
+        "typescript": "^3.1.6",
         "vscode": "^1.1.21"
     }
 }
