@@ -11,21 +11,88 @@
         "Formatters"
     ],
     "activationEvents": [
-        "onCommand:extension.convertParameter"
+        "onCommand:parameter-maker.convertParameter",
+        "onCommand:parameter-maker.convertParameterWithInput",
+        "onCommand:parameter-maker.selectedMultilineToParameter",
+        "onCommand:parameter-maker.selectedTabToParameter",
+        "onCommand:parameter-maker.selectedMultilineToParameterEnclose",
+        "onCommand:parameter-maker.selectedTabToParameterEnclose"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": [
+            {
+                "title": "parameter-maker configuration",
+                "properties": {
+                    "parameter-maker.defaultSeperator": {
+                        "type": "string",
+                        "default":"\n",
+                        "title": "default seperator"
+                    },
+                    "parameter-maker.defaultEnclose": {
+                        "type": "string",
+                        "default":"\"",
+                        "title": "default enclose"
+                    }
+                }
+            }
+        ],
         "commands": [
             {
-                "command": "extension.convertParameter",
+                "command": "parameter-maker.convertParameter",
                 "title": "Parameter: Convert Selected Text to Parameters",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.convertParameterWithInput",
+                "title": "Parameter: Convert Selected Text to Parameters With Input",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.selectedMultilineToParameter",
+                "title": "Parameter: Convert Selected Multiline Text to Parameters",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.selectedTabToParameter",
+                "title": "Parameter: Convert Selected Tab Text to Parameters",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.selectedMultilineToParameterEnclose",
+                "title": "Parameter: Convert Selected Multiline Text to Parameters With Input",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.selectedTabToParameterEnclose",
+                "title": "Parameter: Convert Selected Tab Text to Parameters With Input",
                 "category": "Parameter"
             }
         ],
         "menus": {
             "commandPalette": [
                 {
-                    "command": "extension.convertParameter",
+                    "command": "parameter-maker.convertParameter",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.convertParameterWithInput",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.selectedMultilineToParameter",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.selectedTabToParameter",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.selectedMultilineToParameterEnclose",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.selectedTabToParameterEnclose",
                     "when": "editorHasSelection"
                 }
             ]

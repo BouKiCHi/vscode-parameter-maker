@@ -2,19 +2,31 @@
 
 ## Features
 
-the Extension has following function.
+The Extension has the following function.
 
-- Convert selected text to be able to use parameters for array initialization. 
+- Convert Selected Text to Parameters
+- Convert Selected Text to Parameters With Input
+- Convert Selected Multiline Text to Parameters
+- Convert Selected Tab Text to Parameters
+- Convert Selected Multiline Text to Parameters With Input
+- Convert Selected Tab Text to Parameters With Input
 
-### before
+## Configuration
+ - parameter-maker.*
 
-![fig2](images/fig1.png)
+### Selected Multiline Text to Parameters
 
-### after
+![multi](images/multi.gif)
 
-![fig2](images/fig2.png)
+### Selected Tab Text to Parameters
+
+![tab](images/tab.gif)
 
 ## Release Notes
+
+### 0.0.2
+- Added MultiLine commands.
+- Added fixed seperator commands.
 
 ### 0.0.1
 
