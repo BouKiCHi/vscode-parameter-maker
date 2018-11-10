@@ -13,11 +13,13 @@
     ],
     "activationEvents": [
         "onCommand:parameter-maker.convertParameter",
-        "onCommand:parameter-maker.convertParameterWithInput",
-        "onCommand:parameter-maker.selectedMultilineToParameter",
+        "onCommand:parameter-maker.convertParameterSepEnc",
         "onCommand:parameter-maker.selectedTabToParameter",
-        "onCommand:parameter-maker.selectedMultilineToParameterEnclose",
-        "onCommand:parameter-maker.selectedTabToParameterEnclose"
+        "onCommand:parameter-maker.selectedTabToParameterEnc",
+        "onCommand:parameter-maker.selectedMultilineToParameter",
+        "onCommand:parameter-maker.selectedMultilineToParameterEnc",
+        "onCommand:parameter-maker.joinNLinesAtALine",
+        "onCommand:parameter-maker.AddCommaToEnd"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -45,13 +47,8 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.convertParameterWithInput",
-                "title": "Parameter: Convert Selected Text to Parameters With Input",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.selectedMultilineToParameter",
-                "title": "Parameter: Convert Selected Multiline Text to Parameters",
+                "command": "parameter-maker.convertParameterSepEnc",
+                "title": "Parameter: Convert Selected Text to Parameters By Input Seperator and Enclose",
                 "category": "Parameter"
             },
             {
@@ -60,13 +57,28 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.selectedMultilineToParameterEnclose",
-                "title": "Parameter: Convert Selected Multiline Text to Parameters With Input",
+                "command": "parameter-maker.selectedTabToParameterEnc",
+                "title": "Parameter: Convert Selected Tab Text to Parameters By Input Enclose",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.selectedTabToParameterEnclose",
-                "title": "Parameter: Convert Selected Tab Text to Parameters With Input",
+                "command": "parameter-maker.selectedMultilineToParameter",
+                "title": "Parameter: Convert Selected Multiline Text to Parameters",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.selectedMultilineToParameterEnc",
+                "title": "Parameter: Convert Selected Multiline Text to Parameters by Input Enclose",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.joinNLinesAtALine",
+                "title": "Parameter: Join N Lines at a Line",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.AddCommaToEnd",
+                "title": "Parameter: Add Comma to End of Selected Lines",
                 "category": "Parameter"
             }
         ],
@@ -77,11 +89,7 @@
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "parameter-maker.convertParameterWithInput",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.selectedMultilineToParameter",
+                    "command": "parameter-maker.convertParameterSepEnc",
                     "when": "editorHasSelection"
                 },
                 {
@@ -89,11 +97,24 @@
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "parameter-maker.selectedMultilineToParameterEnclose",
+                    "command": "parameter-maker.selectedTabToParameterEnc",
+                    "when": "editorHasSelection"
+                },
+
+                {
+                    "command": "parameter-maker.selectedMultilineToParameter",
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "parameter-maker.selectedTabToParameterEnclose",
+                    "command": "parameter-maker.selectedMultilineToParameterEnc",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.joinNLinesAtALine",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.AddCommaToEnd",
                     "when": "editorHasSelection"
                 }
             ]
