@@ -8,12 +8,14 @@ export function activate(context: vscode.ExtensionContext) {
     let defSep = '\n';
     let defEnc = '\'';
     let joinNumber = 8;
+    let copyNumber = 10;
 
     if (config != null) {
         defLineEnd = config['defaultLineEnd'] || defLineEnd;
         defSep = config['defaultSeperator'] || defSep;
         defEnc = config['defaultEnclose'] || defEnc;
         joinNumber = config['joinNumber'] || joinNumber;
+        copyNumber = config['copyNumber'] || copyNumber;
     }
 
     function ConvertToParameter(editor: vscode.TextEditor, sep: string, enc: string = null) {
@@ -90,6 +92,39 @@ export function activate(context: vscode.ExtensionContext) {
         });
     }
 
+    
+    function CopyNTimes(editor: vscode.TextEditor, num: number) {
+        const selections: vscode.Selection[] = editor.selections;
+        editor.edit(builder => {
+            for(const selection of selections) {
+                let text = editor.document.getText(selection);
+                let result = "";
+                
+                for(let i = 0; i < num; i++) {
+                    result += text;
+                }
+                builder.replace(selection, result);
+            }
+        });
+    }
+
+
+    function MultilineToSelections(editor: vscode.TextEditor) {
+        const selections: vscode.Selection[] = editor.selections;
+        let newSelections: vscode.Selection[] = [];
+        editor.edit(builder => {
+            for(const selection of selections) {
+                let startLine = selection.start.line;
+                let endLine = selection.end.line;
+                for(let i=startLine; i <= endLine; i++) {
+                    let line = editor.document.lineAt(i);
+                    newSelections.push(new vscode.Selection(line.range.start,line.range.end));
+                }
+            }
+        });
+        editor.selections = newSelections;
+    }
+
 
     // パラメータにする(区切り文字と囲う文字は設定した値を使用する)
     let disposable = vscode.commands.registerCommand('parameter-maker.convertParameter', () => {
@@ -151,6 +186,22 @@ export function activate(context: vscode.ExtensionContext) {
     disposable = vscode.commands.registerCommand('parameter-maker.AddCommaToEnd', () => {
         AddCommaToEnd(vscode.window.activeTextEditor);
     });
+
+    // 複数行を個別選択にする
+    disposable = vscode.commands.registerCommand('parameter-maker.MultilineToSelections', () => {
+        MultilineToSelections(vscode.window.activeTextEditor);
+    });
+
+    // 選択テキストを複数回コピーする
+    disposable = vscode.commands.registerCommand('parameter-maker.CopyNTimes', () => {
+        vscode.window.showInputBox({prompt:'N times (Default: configurated value)'}).then((n) => {
+            if (n === undefined) return;
+            let num = copyNumber;
+            if (n != '') num = parseInt(n);
+            CopyNTimes(vscode.window.activeTextEditor, num);
+        });
+    });
+    
 
     context.subscriptions.push(disposable);
 }

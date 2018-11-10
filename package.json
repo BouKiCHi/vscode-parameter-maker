@@ -19,7 +19,9 @@
         "onCommand:parameter-maker.selectedMultilineToParameter",
         "onCommand:parameter-maker.selectedMultilineToParameterEnc",
         "onCommand:parameter-maker.joinNLinesAtALine",
-        "onCommand:parameter-maker.AddCommaToEnd"
+        "onCommand:parameter-maker.AddCommaToEnd",
+        "onCommand:parameter-maker.MultilineToSelections",
+        "onCommand:parameter-maker.CopyNTimes"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -36,6 +38,21 @@
                         "type": "string",
                         "default": "\"",
                         "title": "default enclose"
+                    },
+                    "parameter-maker.defaultLineEnd": {
+                        "type": "string",
+                        "default": "\n",
+                        "title": "default line end"
+                    },
+                    "parameter-maker.joinNumber": {
+                        "type": "number",
+                        "default": "8",
+                        "title": "default join number"
+                    },
+                    "parameter-maker.copyNumber": {
+                        "type": "number",
+                        "default": "10",
+                        "title": "default copy number"
                     }
                 }
             }
@@ -80,6 +97,16 @@
                 "command": "parameter-maker.AddCommaToEnd",
                 "title": "Parameter: Add Comma to End of Selected Lines",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.MultilineToSelections",
+                "title": "Parameter: Selected Multiline Text to Selections",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.CopyNTimes",
+                "title": "Parameter: Copy Selected Text N Times",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -114,6 +141,14 @@
                 },
                 {
                     "command": "parameter-maker.AddCommaToEnd",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.MultilineToSelections",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "parameter-maker.CopyNTimes",
                     "when": "editorHasSelection"
                 }
             ]
