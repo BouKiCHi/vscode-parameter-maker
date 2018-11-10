@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Selected Text to Parameters",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "boukichi",
     "engines": {
         "vscode": "^1.18.0"
@@ -100,7 +100,6 @@
                     "command": "parameter-maker.selectedTabToParameterEnc",
                     "when": "editorHasSelection"
                 },
-
                 {
                     "command": "parameter-maker.selectedMultilineToParameter",
                     "when": "editorHasSelection"
