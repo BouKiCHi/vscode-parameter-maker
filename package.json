@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Selected Text to Parameters",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "boukichi",
     "engines": {
         "vscode": "^1.18.0"
