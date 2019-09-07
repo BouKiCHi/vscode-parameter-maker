@@ -1,7 +1,7 @@
 {
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
-    "description": "Convert Selected Text to Parameters",
+    "description": "Convert Text to Parameters",
     "version": "0.0.9",
     "publisher": "boukichi",
     "engines": {
@@ -156,7 +156,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/BouKiCHi/parameter-maker.git"
+        "url": "https://github.com/BouKiCHi/vscode-parameter-maker.git"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
