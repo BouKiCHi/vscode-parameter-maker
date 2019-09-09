@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Text to Parameters",
-    "version": "0.0.10",
+    "version": "0.1.0",
     "publisher": "boukichi",
     "engines": {
         "vscode": "^1.18.0"
@@ -12,141 +12,43 @@
         "Formatters"
     ],
     "activationEvents": [
-        "onCommand:parameter-maker.convertParameter",
-        "onCommand:parameter-maker.convertParameterSepEnc",
-        "onCommand:parameter-maker.selectedTabToParameter",
-        "onCommand:parameter-maker.selectedTabToParameterEnc",
-        "onCommand:parameter-maker.selectedMultilineToParameter",
-        "onCommand:parameter-maker.selectedMultilineToParameterEnc",
-        "onCommand:parameter-maker.joinNLinesAtALine",
-        "onCommand:parameter-maker.AddCommaToEnd",
-        "onCommand:parameter-maker.MultilineToSelections",
+        "onCommand:parameter-maker.AddTextToEnd",
+        "onCommand:parameter-maker.SurroundSelectionWithText",
+        "onCommand:parameter-maker.AddSelectionsFromText",
+        "onCommand:parameter-maker.JoinNLinesAtALine",
         "onCommand:parameter-maker.CopyNTimes"
     ],
     "main": "./out/extension",
     "contributes": {
-        "configuration": [
-            {
-                "title": "parameter-maker configuration",
-                "properties": {
-                    "parameter-maker.defaultSeperator": {
-                        "type": "string",
-                        "default": "\n",
-                        "title": "default seperator"
-                    },
-                    "parameter-maker.defaultEnclose": {
-                        "type": "string",
-                        "default": "\"",
-                        "title": "default enclose"
-                    },
-                    "parameter-maker.defaultLineEnd": {
-                        "type": "string",
-                        "default": "\n",
-                        "title": "default line end"
-                    },
-                    "parameter-maker.joinNumber": {
-                        "type": "number",
-                        "default": "8",
-                        "title": "default join number"
-                    },
-                    "parameter-maker.copyNumber": {
-                        "type": "number",
-                        "default": "10",
-                        "title": "default copy number"
-                    }
-                }
-            }
-        ],
         "commands": [
             {
-                "command": "parameter-maker.convertParameter",
-                "title": "Parameter: Convert Selected Text to Parameters",
+                "command": "parameter-maker.AddTextToEnd",
+                "title": "%parameter-maker.AddTextToEnd.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.convertParameterSepEnc",
-                "title": "Parameter: Convert Selected Text to Parameters By Input Seperator and Enclose",
+                "command": "parameter-maker.SurroundSelectionWithText",
+                "title": "%parameter-maker.SurroundSelectionWithText.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.selectedTabToParameter",
-                "title": "Parameter: Convert Selected Tab Text to Parameters",
+                "command": "parameter-maker.AddSelectionsFromText",
+                "title": "%parameter-maker.AddSelectionsFromText.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.selectedTabToParameterEnc",
-                "title": "Parameter: Convert Selected Tab Text to Parameters By Input Enclose",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.selectedMultilineToParameter",
-                "title": "Parameter: Convert Selected Multiline Text to Parameters",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.selectedMultilineToParameterEnc",
-                "title": "Parameter: Convert Selected Multiline Text to Parameters by Input Enclose",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.joinNLinesAtALine",
-                "title": "Parameter: Join N Lines at a Line",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.AddCommaToEnd",
-                "title": "Parameter: Add Comma to End of Selected Lines",
-                "category": "Parameter"
-            },
-            {
-                "command": "parameter-maker.MultilineToSelections",
-                "title": "Parameter: Selected Multiline Text to Selections",
+                "command": "parameter-maker.JoinNLinesAtALine",
+                "title": "%parameter-maker.JoinNLinesAtALine.title%",
                 "category": "Parameter"
             },
             {
                 "command": "parameter-maker.CopyNTimes",
-                "title": "Parameter: Copy Selected Text N Times",
+                "title": "%parameter-maker.CopyNTimes.title%",
                 "category": "Parameter"
             }
         ],
         "menus": {
             "commandPalette": [
-                {
-                    "command": "parameter-maker.convertParameter",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.convertParameterSepEnc",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.selectedTabToParameter",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.selectedTabToParameterEnc",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.selectedMultilineToParameter",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.selectedMultilineToParameterEnc",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.joinNLinesAtALine",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.AddCommaToEnd",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "parameter-maker.MultilineToSelections",
-                    "when": "editorHasSelection"
-                },
                 {
                     "command": "parameter-maker.CopyNTimes",
                     "when": "editorHasSelection"
