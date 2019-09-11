@@ -1,7 +1,8 @@
 {
-    "parameter-maker.AddTextToEnd.title": "文字列を選択の最後に追加する",
-    "parameter-maker.SurroundSelectionWithText.title": "選択を文字で囲む",
-    "parameter-maker.AddSelectionsFromText.title": "空白を区切りとして選択に追加",
+    "parameter-maker.AppendTextToEndOfSelections.title": "選択の末尾に文字列を追加する",
+    "parameter-maker.SurroundSelectionWithText.title": "選択を入力文字で囲む",
+    "parameter-maker.MakeSelectionsFromText.title": "テキストを選択する",
+    "parameter-maker.MakeSelectionsWithRegexp.title": "テキストを正規表現セパレータで選択する",
     "parameter-maker.JoinNLinesAtALine.title": "N行を一行に結合する",
     "parameter-maker.CopyNTimes.title": "選択をN回コピーする"
 }

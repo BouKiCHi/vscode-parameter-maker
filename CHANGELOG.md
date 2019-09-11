@@ -1,4 +1,8 @@
 # Change Log
+### 0.1.1
+- Added command "Make Selections with RegExp separator"
+- Adjusted some messages.
+
 
 ### 0.1.0
 - Rebuilded all commands to use easy

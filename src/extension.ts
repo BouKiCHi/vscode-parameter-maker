@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
     
-    // 選択に追加する
-    function AddTextToSelection(editor: vscode.TextEditor, surround: string, separator: string) {
+    // 選択する
+    function EditSelections(editor: vscode.TextEditor, surround: string, separator: string) {
         const selections: vscode.Selection[] = editor.selections;
         editor.edit(builder => {
             for(const selection of selections) {
@@ -63,29 +63,27 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     // テキストから範囲を得る
-    function getRangeInfoFromText(text) {
-        var seperator = '\\s';
+    function getRangeInfoFromText(text, seperator) {
+        // var seperator = '\\s';
     
-        var regex = new RegExp("[^" + seperator + "]*","g");
-        var regexSpace = new RegExp("[" + seperator + "]*","g");
+        var re = new RegExp(seperator,"g");
         var start = 0;
         var coordinates = [];
         
+        if (text.length == 0) return coordinates;
         while(true) {
-            var match = regex.exec(text);
-            if (match[0].length == 0) break;
-            var end = regex.lastIndex;
+            var match = re.exec(text);
+            if (match == null || match[0].length == 0) break;
+            var end = match.index;
             coordinates.push([start,end]);
-            regexSpace.lastIndex = end;
-            regexSpace.exec(text);
-            start = regexSpace.lastIndex;
-            regex.lastIndex = start;
+            start = re.lastIndex;
         }
+        coordinates.push([start,text.length]);
         return coordinates;
     }
 
     // テキストを選択する
-    function AddSelectionsFromText(editor: vscode.TextEditor, sep: string) {
+    function MakeSelections(editor: vscode.TextEditor, separator: string) {
         const selections: vscode.Selection[] = editor.selections;
         let newSelections: vscode.Selection[] = [];
         editor.edit(builder => {
@@ -101,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                     var anchorLine = startPos.line;
                     var activeLine = endPos.line;
-                    var cord = getRangeInfoFromText(lineText);
+                    var cord = getRangeInfoFromText(lineText, separator);
                     for(var ci=0; ci < cord.length; ci++) {
                         var co = cord[ci];
                         var col = startPos.character;
@@ -118,28 +116,38 @@ export function activate(context: vscode.ExtensionContext) {
 
     // 選択を囲む
     disposable = vscode.commands.registerCommand('parameter-maker.SurroundSelectionWithText', () => {
-        vscode.window.showInputBox({prompt:'the Text to surround'}).then((intext) => {
+        vscode.window.showInputBox({prompt:'Text to surround'}).then((intext) => {
             if (intext === undefined || intext.length == 0) return;
-            AddTextToSelection(vscode.window.activeTextEditor, intext, null);
+            EditSelections(vscode.window.activeTextEditor, intext, null);
         });
     });
     context.subscriptions.push(disposable);
     
 
     // 選択の最後に追加する
-    disposable = vscode.commands.registerCommand('parameter-maker.AddTextToEnd', () => {
-        vscode.window.showInputBox({prompt:'the Text to add'}).then((intext) => {
+    disposable = vscode.commands.registerCommand('parameter-maker.AppendTextToEndOfSelections', () => {
+        vscode.window.showInputBox({prompt:'Text to append'}).then((intext) => {
             if (intext === undefined || intext.length == 0) return;
-            AddTextToSelection(vscode.window.activeTextEditor, null, intext);
+            EditSelections(vscode.window.activeTextEditor, null, intext);
         });
     });
     context.subscriptions.push(disposable);
 
     // 複数行を個別選択にする
-    disposable = vscode.commands.registerCommand('parameter-maker.AddSelectionsFromText', () => {
-        AddSelectionsFromText(vscode.window.activeTextEditor, "\n");
+    disposable = vscode.commands.registerCommand('parameter-maker.MakeSelectionsFromText', () => {
+        MakeSelections(vscode.window.activeTextEditor, "\\s+");
     });
     context.subscriptions.push(disposable);
+
+    // 複数行を個別選択にする
+    disposable = vscode.commands.registerCommand('parameter-maker.MakeSelectionsWithRegexp', () => {
+        vscode.window.showInputBox({prompt:'Text to separate(RegExp)'}).then((intext) => {
+            if (intext === undefined || intext.length == 0) return;
+            MakeSelections(vscode.window.activeTextEditor, intext);
+        });
+    });
+    context.subscriptions.push(disposable);
+    
 
     // 複数行を結合する
     disposable = vscode.commands.registerCommand('parameter-maker.JoinNLinesAtALine', () => {
