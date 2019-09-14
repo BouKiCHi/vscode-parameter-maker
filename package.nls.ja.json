@@ -4,5 +4,6 @@
     "parameter-maker.MakeSelectionsFromText.title": "テキストを選択する",
     "parameter-maker.MakeSelectionsWithRegexp.title": "テキストを正規表現セパレータで選択する",
     "parameter-maker.JoinNLinesAtALine.title": "N行を一行に結合する",
-    "parameter-maker.CopyNTimes.title": "選択をN回コピーする"
+    "parameter-maker.CopyNTimes.title": "選択をN回コピーする",
+    "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタする"
 }

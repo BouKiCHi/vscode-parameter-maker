@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Text to Parameters",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "boukichi",
     "engines": {
         "vscode": "^1.18.0"
@@ -11,13 +11,18 @@
     "categories": [
         "Formatters"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BouKiCHi/vscode-parameter-maker.git"
+    },
     "activationEvents": [
         "onCommand:parameter-maker.AppendTextToEndOfSelections",
         "onCommand:parameter-maker.SurroundSelectionWithText",
         "onCommand:parameter-maker.MakeSelectionsFromText",
         "onCommand:parameter-maker.MakeSelectionsWithRegexp",
         "onCommand:parameter-maker.JoinNLinesAtALine",
-        "onCommand:parameter-maker.CopyNTimes"
+        "onCommand:parameter-maker.CopyNTimes",
+        "onCommand:parameter-maker.FilterSelectionByIndexInLine"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -51,6 +56,11 @@
                 "command": "parameter-maker.CopyNTimes",
                 "title": "%parameter-maker.CopyNTimes.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.FilterSelectionByIndexInLine",
+                "title": "%parameter-maker.FilterSelectionByIndexInLine.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -61,10 +71,6 @@
                 }
             ]
         }
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/BouKiCHi/vscode-parameter-maker.git"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

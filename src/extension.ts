@@ -112,7 +112,78 @@ export function activate(context: vscode.ExtensionContext) {
         if (newSelections.length > 0) editor.selections = newSelections;
     }
 
+    // インデックスリストをテキストより作成
+    function IndexFromText(text: string, headNumber : number, tailNumber: number) {
+        var indexData = text.split(",");
+        var map = {};
+        headNumber = headNumber || 0;
+         
+        for(var i = 0; i < indexData.length; i++) {
+            var v = indexData[i];
+            if (v.indexOf("-") >= 0) {
+                var values = v.split("-");
+                var start = parseInt(values[0]);
+                if (isNaN(start)) start = headNumber;
+                var end = values.length > 0 ? parseInt(values[1]) : -1;
+                if (isNaN(end) || end < start || end > tailNumber) end = tailNumber;
+                for(var j=start; j <= end; j++) {
+                    if (j < headNumber || j > tailNumber) continue;
+                    if (j in map) continue;
+                    map[j] = true;
+                }
+            } else {
+                var j = parseInt(v);
+                if (j < headNumber || j > tailNumber) continue;
+                if (j in map) continue;
+                map[j] = true;
+            }
+        }
+    
+        var keys = [];
+        for(var k in map) keys.push(parseInt(k));
+        keys.sort((a,b) => { return a-b;});
+        return keys;
+    }
+
+    function Filtering(output : vscode.Selection[], source : vscode.Selection[], text : string) {
+        var indexMap = IndexFromText(text, 1, source.length);
+        for(var i = 0; i < indexMap.length; i++) {
+            var k = indexMap[i] -1;
+            output.push(source[k]);
+        }
+    }
+
+    // フィルタをインデックスで選択する
+    function FilterSelections(editor: vscode.TextEditor, indexText: string) {
+        const selections: vscode.Selection[] = editor.selections;
+        let newSelections: vscode.Selection[] = [];
+        let tempSelections: vscode.Selection[] = [];
+        let lastStartLine = -1;
+        editor.edit(builder => {
+            for(const selection of selections) {
+                let startLine = selection.start.line;
+                if (startLine != lastStartLine) {
+                    Filtering(newSelections, tempSelections, indexText);
+                    lastStartLine = startLine;
+                    tempSelections = [];
+                }
+                tempSelections.push(selection);
+            }
+            Filtering(newSelections, tempSelections, indexText);
+        });
+        if (newSelections.length > 0) editor.selections = newSelections;
+    }
+
     let disposable : vscode.Disposable = null;
+
+    // テキストフィルタ
+    disposable = vscode.commands.registerCommand('parameter-maker.FilterSelectionByIndexInLine', () => {
+        vscode.window.showInputBox({prompt:'Index Text(ex: "1-2,4,7"'}).then((intext) => {
+            if (intext === undefined || intext.length == 0) return;
+            FilterSelections(vscode.window.activeTextEditor, intext);
+        });
+    });
+    context.subscriptions.push(disposable);
 
     // 選択を囲む
     disposable = vscode.commands.registerCommand('parameter-maker.SurroundSelectionWithText', () => {

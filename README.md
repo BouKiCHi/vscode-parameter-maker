@@ -4,27 +4,33 @@
 
 The Extension has the following function.
 
-- Add Text to the end of Selection
-- Surround the Selections with Text
-- Add Selections from Text
-- Join N lines at a line
-- Copy Selections N times
+- Append Text to end of Selections
+- Surround the Selections with Text
+- Make Selections from Text
+- Make Selections with RegExp separator
+- Join N lines at a line
+- Copy Selections N times
+- Filter Selection by Index In Line
 
 ## Gif
-* Add Selections from Text
-![AddSelection](images/AddSelection.gif)
 
-* Add Text to the end of Selection
-![AddEndSelection](images/AddEndSelection.gif)
+* Make Selections with RegExp separator
+![MakeSelectionsWithRegexp](images/MakeSelectionsWithRegexp.gif)
 
 * Surround the Selections with Text
-![SurroundText](images/SurroundText.gif)
+![MakeSelectionsFromText](images/MakeSelectionsFromText.gif)
 
 * Copy Selections N times
 ![CopyNTimes](images/CopyNTimes.gif)
 
 * Join N lines at a line
-![JoinNLines](images/JoinNLines.gif)
+![JoinNLines](images/JoinNLinesAtALine.gif)
+
+* Filter Selection by Index In Line
+![FilterSelectionByIndexInLine](images/FilterSelectionByIndexInLine.gif)
+
+* Surround the Selections with Text
+![SurroundSelectionWithText](images/SurroundSelectionWithText.gif)
 
 
 

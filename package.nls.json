@@ -4,5 +4,6 @@
     "parameter-maker.MakeSelectionsFromText.title": "Make Selections from Text",
     "parameter-maker.MakeSelectionsWithRegexp.title": "Make Selections with RegExp separator",
     "parameter-maker.JoinNLinesAtALine.title": "Join N lines at a line",
-    "parameter-maker.CopyNTimes.title": "Copy Selections N times"
+    "parameter-maker.CopyNTimes.title": "Copy Selections N times",
+    "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line"
 }
