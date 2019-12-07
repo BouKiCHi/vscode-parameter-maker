@@ -1,6 +1,6 @@
 # Change Log
 
-### 0.1.3
+### 0.1.4
 - Added command "Select Text By Line"
 
 ### 0.1.2
