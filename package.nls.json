@@ -1,6 +1,7 @@
 {
     "parameter-maker.AppendTextToEndOfSelections.title": "Append Text to end of Selections",
     "parameter-maker.SurroundSelectionWithText.title": "Surround the Selections with Text",
+    "parameter-maker.SelectTextByLine.title": "Select Text By Line",
     "parameter-maker.MakeSelectionsFromText.title": "Make Selections from Text",
     "parameter-maker.MakeSelectionsWithRegexp.title": "Make Selections with RegExp separator",
     "parameter-maker.JoinNLinesAtALine.title": "Join N lines at a line",

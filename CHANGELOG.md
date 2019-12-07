@@ -1,5 +1,8 @@
 # Change Log
 
+### 0.1.3
+- Added command "Select Text By Line"
+
 ### 0.1.2
 - Added command "Filter Selection by Index In Line"
 

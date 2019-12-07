@@ -18,6 +18,7 @@
     "activationEvents": [
         "onCommand:parameter-maker.AppendTextToEndOfSelections",
         "onCommand:parameter-maker.SurroundSelectionWithText",
+        "onCommand:parameter-maker.SelectTextByLine",
         "onCommand:parameter-maker.MakeSelectionsFromText",
         "onCommand:parameter-maker.MakeSelectionsWithRegexp",
         "onCommand:parameter-maker.JoinNLinesAtALine",
@@ -35,6 +36,11 @@
             {
                 "command": "parameter-maker.SurroundSelectionWithText",
                 "title": "%parameter-maker.SurroundSelectionWithText.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.SelectTextByLine",
+                "title": "%parameter-maker.SelectTextByLine.title%",
                 "category": "Parameter"
             },
             {

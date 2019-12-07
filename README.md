@@ -11,6 +11,7 @@ The Extension has the following function.
 - Join N lines at a line
 - Copy Selections N times
 - Filter Selection by Index In Line
+- Select Text By Line
 
 ## Gif
 
