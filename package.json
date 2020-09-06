@@ -2,10 +2,10 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Text to Parameters",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "publisher": "boukichi",
     "engines": {
-        "vscode": "^1.18.0"
+        "vscode": "^1.48.0"
     },
     "license": "MIT",
     "categories": [
@@ -86,9 +86,9 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^13.13.2",
-        "typescript": "^3.8.3",
+        "@types/mocha": "^8.0.3",
+        "@types/node": "^14.6.4",
+        "typescript": "^4.0.2",
         "vscode": "^1.1.37"
     }
 }

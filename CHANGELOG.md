@@ -1,5 +1,8 @@
 # Change Log
 
+### 0.1.6
+- Improved "Copy Selection N times" to use the number of lines in the clipboard as the default.
+
 ### 0.1.4
 - Added command "Select Text By Line"
 

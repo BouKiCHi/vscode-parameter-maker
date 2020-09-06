@@ -258,11 +258,23 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
     // 選択テキストを複数回コピーする
-    disposable = vscode.commands.registerCommand('parameter-maker.CopyNTimes', () => {
-        vscode.window.showInputBox({ prompt: 'N times' }).then((n) => {
-            if (n === undefined || n.length == 0) return;
-            var num = parseInt(n);
-            CopyNTimes(vscode.window.activeTextEditor, num);
+    disposable = vscode.commands.registerCommand('parameter-maker.CopyNTimes', () => {        
+        vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then((n) => {
+
+            let num = (n === undefined || n.length == 0) ? 0 : parseInt(n);
+
+            if (num != 0) {
+                CopyNTimes(vscode.window.activeTextEditor, num);
+                return;
+            }
+
+            let cl = vscode.env.clipboard.readText();
+            cl.then(value => {
+                let value2 = value.replace(/[\r\n]+/g,"\n");
+                let data = value2.split("\n");
+                CopyNTimes(vscode.window.activeTextEditor, data.length);
+            });
+
         });
     });
     context.subscriptions.push(disposable);
