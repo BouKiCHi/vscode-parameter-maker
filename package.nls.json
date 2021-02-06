@@ -1,10 +1,13 @@
 {
-    "parameter-maker.AppendTextToEndOfSelections.title": "Append Text to end of Selections",
-    "parameter-maker.SurroundSelectionWithText.title": "Surround the Selections with Text",
-    "parameter-maker.SelectTextByLine.title": "Select Text By Line",
-    "parameter-maker.MakeSelectionsFromText.title": "Make Selections from Text",
-    "parameter-maker.MakeSelectionsWithRegexp.title": "Make Selections with RegExp separator",
-    "parameter-maker.JoinNLinesAtALine.title": "Join N lines at a line",
-    "parameter-maker.CopyNTimes.title": "Copy Selections N times",
-    "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line"
+    "parameter-maker.AddTextToSelections.title": "Add text to selections.",
+    "parameter-maker.EncloseAllSectionsWithInputChars.title": "Enclose all selections with input characters",
+    "parameter-maker.ReselectLineFromText.title": "Split a line of selected text and Reselect it",
+    "parameter-maker.ReselectWordsFromText.title": "Split and Reselect words in the selected text",
+    "parameter-maker.PerformRangeSelectionsWithRegExp.title": "Perform range selection with regular expression delimitation",
+    "parameter-maker.MergeNLines.title": "Merge N lines of selected text into one line",
+    "parameter-maker.CopySelectedTextNTimes.title": "Copy the selected text N times",
+    "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line",
+    "parameter-maker.ParameterizeSelectionBySettings.title": "Parameterize the selection by settings",
+    "parameter-maker.ReselectTextWithRegExp.title": "Reselect selected text with regular expression",
+    "parameter-maker.ParameterizeSelectionWithInput.title": "Parameterize the selection with the input string"
 }

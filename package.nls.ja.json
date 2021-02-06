@@ -1,10 +1,13 @@
 {
-    "parameter-maker.AppendTextToEndOfSelections.title": "選択の末尾に文字列を追加する",
-    "parameter-maker.SurroundSelectionWithText.title": "選択を入力文字で囲む",
-    "parameter-maker.SelectTextByLine.title": "テキストを行ごとに選択する",
-    "parameter-maker.MakeSelectionsFromText.title": "テキストを選択する",
-    "parameter-maker.MakeSelectionsWithRegexp.title": "テキストを正規表現セパレータで選択する",
-    "parameter-maker.JoinNLinesAtALine.title": "N行を一行に結合する",
-    "parameter-maker.CopyNTimes.title": "選択をN回コピーする",
-    "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタする"
+    "parameter-maker.AddTextToSelections.title": "選択範囲にテキストを追加",
+    "parameter-maker.EncloseAllSectionsWithInputChars.title": "すべての選択を入力文字で囲む",
+    "parameter-maker.ReselectLineFromText.title": "選択されているテキストの１行を分割して再選択する",
+    "parameter-maker.ReselectWordsFromText.title": "選択されているテキストの単語を分割して再選択する",
+    "parameter-maker.PerformRangeSelectionsWithRegExp.title": "正規表現による区切りで範囲選択を行う",
+    "parameter-maker.MergeNLines.title": "選択したテキストのN行を1行に結合する",
+    "parameter-maker.CopySelectedTextNTimes.title": "選択したテキストをN回コピーする",
+    "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタする",
+    "parameter-maker.ParameterizeSelectionBySettings.title": "選択範囲を設定でパラメータ化する",
+    "parameter-maker.ReselectTextWithRegExp.title": "選択されているテキストを正規表現で再選択する",
+    "parameter-maker.ParameterizeSelectionWithInput.title": "選択範囲を入力文字列でパラメータ化する"
 }

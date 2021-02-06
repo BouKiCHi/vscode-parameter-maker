@@ -1,22 +1,28 @@
 'use strict';
+import { promises } from 'fs';
 import * as vscode from 'vscode';
+
+import * as nls from 'vscode-nls';
+
+let localize = nls.loadMessageBundle();
 
 export function activate(context: vscode.ExtensionContext) {
 
-    // 選択する
-    function EditSelections(editor: vscode.TextEditor, surround: string, separator: string) {
+    /** 選択部分を編集する */
+    function EditSelections(editor: vscode.TextEditor, openEnclose: string, closeEnclose: string, delimiter: string) {
         const selections: vscode.Selection[] = editor.selections;
         editor.edit(builder => {
             for (const selection of selections) {
                 let text = editor.document.getText(selection);
-                if (surround) text = surround + text + surround;
-                if (separator) text = text + separator;
+                if (openEnclose) text = openEnclose + text;
+                if (closeEnclose) text = text + closeEnclose;
+                if (delimiter) text = text + delimiter;
                 builder.replace(selection, text);
             }
         });
     }
 
-    // N行を一行に結合する
+    /** N行を一行に結合する */
     function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
         const selections: vscode.Selection[] = editor.selections;
         editor.edit(builder => {
@@ -49,8 +55,8 @@ export function activate(context: vscode.ExtensionContext) {
         });
     }
 
-    // N回コピーする
-    function CopyNTimes(editor: vscode.TextEditor, num: number) {
+    /** N回コピーする */
+    function CopySelectedTextNTimes(editor: vscode.TextEditor, num: number) {
         const selections: vscode.Selection[] = editor.selections;
         editor.edit(builder => {
             for (const selection of selections) {
@@ -62,10 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
         });
     }
 
-    // テキストから範囲を得る
-    function getRangeInfoFromText(text, seperator) {
-        // var seperator = '\\s';
-
+    /** 正規表現を区切りとした範囲を得る */
+    function GetRangeFromSeperator(text: string, seperator: string) {
         var re = new RegExp(seperator, "g");
         var start = 0;
         var coordinates = [];
@@ -82,8 +86,8 @@ export function activate(context: vscode.ExtensionContext) {
         return coordinates;
     }
 
-    // テキストを選択する
-    function MakeSelections(editor: vscode.TextEditor, separator: string) {
+    /** テキストをセパレータを使用して再選択する */ 
+    function ReselectTextWithSeparator(editor: vscode.TextEditor, separator: string) {
         const selections: vscode.Selection[] = editor.selections;
         let newSelections: vscode.Selection[] = [];
         editor.edit(builder => {
@@ -102,7 +106,9 @@ export function activate(context: vscode.ExtensionContext) {
 
                     var anchorLine = startPos.line;
                     var activeLine = endPos.line;
-                    var cord = getRangeInfoFromText(lineText, separator);
+
+                    // 範囲の取得
+                    var cord = GetRangeFromSeperator(lineText, separator);
                     for (var ci = 0; ci < cord.length; ci++) {
                         var co = cord[ci];
                         var col = startPos.character;
@@ -115,7 +121,59 @@ export function activate(context: vscode.ExtensionContext) {
         if (newSelections.length > 0) editor.selections = newSelections;
     }
 
-    // テキストを行ごとに選択する
+    /** 入力文字の範囲を得る */
+    function GetRangeFromIntext(text: string, seperator: string) {
+        var re = new RegExp(seperator, "g");
+        var coordinates = [];
+
+        if (text.length == 0) return coordinates;
+        while (true) {
+            var match = re.exec(text);
+            if (match == null || match[0].length == 0) break;
+            var start = match.index;
+            var length = match[0].length;
+            coordinates.push([start, start + length]);
+            start = re.lastIndex;
+        }
+        return coordinates;
+    }
+
+        /** テキストを入力テキストによって再選択する */ 
+        function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string) {
+            const selections: vscode.Selection[] = editor.selections;
+            let newSelections: vscode.Selection[] = [];
+            editor.edit(builder => {
+                for (const selection of selections) {
+                    let startLine = selection.start.line;
+                    let endLine = selection.end.line;
+    
+                    for (let lno = startLine; lno <= endLine; lno++) {
+                        // 行を得る
+                        let line = editor.document.lineAt(lno);
+    
+                        // 開始と終了
+                        let startPos = (startLine == lno) ? selection.start : line.range.start;
+                        let endPos = (endLine == lno) ? selection.end : line.range.end;
+                        var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
+    
+                        var anchorLine = startPos.line;
+                        var activeLine = endPos.line;
+    
+                        // 範囲の取得
+                        var cord = GetRangeFromIntext(lineText, intext);
+                        for (var ci = 0; ci < cord.length; ci++) {
+                            var co = cord[ci];
+                            var col = startPos.character;
+                            let sel = new vscode.Selection(anchorLine, col + co[0], activeLine, col + co[1]);
+                            newSelections.push(sel);
+                        }
+                    }
+                }
+            });
+            if (newSelections.length > 0) editor.selections = newSelections;
+        }
+
+    /** テキストを1行ごとに選択する */
     function MakeLineSelections(editor: vscode.TextEditor) {
         const selections: vscode.Selection[] = editor.selections;
         let newSelections: vscode.Selection[] = [];
@@ -134,7 +192,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (newSelections.length > 0) editor.selections = newSelections;
     }
 
-    // インデックスリストをテキストより作成
+    /** インデックスリストをテキストより作成 */
     function IndexFromText(text: string, headNumber: number, tailNumber: number) {
         var indexData = text.split(",");
         var map = {};
@@ -175,7 +233,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }
 
-    // フィルタをインデックスで選択する
+    /** フィルタをインデックスで選択する */
     function FilterSelections(editor: vscode.TextEditor, indexText: string) {
         const selections: vscode.Selection[] = editor.selections;
         let newSelections: vscode.Selection[] = [];
@@ -208,47 +266,47 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
     // 選択を囲む
-    disposable = vscode.commands.registerCommand('parameter-maker.SurroundSelectionWithText', () => {
+    disposable = vscode.commands.registerCommand('parameter-maker.EncloseAllSectionsWithInputChars', () => {
         vscode.window.showInputBox({ prompt: 'Text to surround' }).then((intext) => {
             if (intext === undefined || intext.length == 0) return;
-            EditSelections(vscode.window.activeTextEditor, intext, null);
+            EditSelections(vscode.window.activeTextEditor, intext, intext, null);
         });
     });
     context.subscriptions.push(disposable);
 
     // 選択の最後に追加する
-    disposable = vscode.commands.registerCommand('parameter-maker.AppendTextToEndOfSelections', () => {
+    disposable = vscode.commands.registerCommand('parameter-maker.AddTextToSelections', () => {
         vscode.window.showInputBox({ prompt: 'Text to append' }).then((intext) => {
             if (intext === undefined || intext.length == 0) return;
-            EditSelections(vscode.window.activeTextEditor, null, intext);
+            EditSelections(vscode.window.activeTextEditor, null, null, intext);
         });
     });
     context.subscriptions.push(disposable);
 
     // 1行ごとに選択する
-    disposable = vscode.commands.registerCommand('parameter-maker.SelectTextByLine', () => {
+    disposable = vscode.commands.registerCommand('parameter-maker.ReselectLineFromText', () => {
         MakeLineSelections(vscode.window.activeTextEditor);
     });
     context.subscriptions.push(disposable);
 
-    // 複数行を個別選択にする
-    disposable = vscode.commands.registerCommand('parameter-maker.MakeSelectionsFromText', () => {
-        MakeSelections(vscode.window.activeTextEditor, "\\s+");
+    // 選択されているテキストの単語を分割して再選択する
+    disposable = vscode.commands.registerCommand('parameter-maker.ReselectWordsFromText', () => {
+        ReselectTextWithSeparator(vscode.window.activeTextEditor, "\\s+");
     });
     context.subscriptions.push(disposable);
 
-    // 複数行を個別選択にする
-    disposable = vscode.commands.registerCommand('parameter-maker.MakeSelectionsWithRegexp', () => {
+    // 正規表現による区切りで範囲選択を行う
+    disposable = vscode.commands.registerCommand('parameter-maker.PerformRangeSelectionsWithRegExp', () => {
         vscode.window.showInputBox({ prompt: 'Text to separate(RegExp)' }).then((intext) => {
             if (intext === undefined || intext.length == 0) return;
-            MakeSelections(vscode.window.activeTextEditor, intext);
+            ReselectTextWithSeparator(vscode.window.activeTextEditor, intext);
         });
     });
     context.subscriptions.push(disposable);
 
 
     // 複数行を結合する
-    disposable = vscode.commands.registerCommand('parameter-maker.JoinNLinesAtALine', () => {
+    disposable = vscode.commands.registerCommand('parameter-maker.MergeNLines', () => {
         vscode.window.showInputBox({ prompt: 'N lines' }).then((n) => {
             if (n === undefined || n.length == 0) return;
             var num = parseInt(n);
@@ -258,13 +316,14 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
     // 選択テキストを複数回コピーする
-    disposable = vscode.commands.registerCommand('parameter-maker.CopyNTimes', () => {        
+    disposable = vscode.commands.registerCommand('parameter-maker.CopySelectedTextNTimes', () => {        
+        
         vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then((n) => {
 
             let num = (n === undefined || n.length == 0) ? 0 : parseInt(n);
 
             if (num != 0) {
-                CopyNTimes(vscode.window.activeTextEditor, num);
+                CopySelectedTextNTimes(vscode.window.activeTextEditor, num);
                 return;
             }
 
@@ -272,12 +331,55 @@ export function activate(context: vscode.ExtensionContext) {
             cl.then(value => {
                 let value2 = value.replace(/[\r\n]+/g,"\n");
                 let data = value2.split("\n");
-                CopyNTimes(vscode.window.activeTextEditor, data.length);
+                CopySelectedTextNTimes(vscode.window.activeTextEditor, data.length);
             });
 
         });
     });
     context.subscriptions.push(disposable);
+
+    // 選択範囲を入力文字列でパラメータ化する
+    disposable = vscode.commands.registerCommand('parameter-maker.ParameterizeSelectionWithInput', async () => {
+        let config = vscode.workspace.getConfiguration('parameter-maker');
+        let openEncloseConfig = config.get<string>('OpeningEnclosureCharacter') || null;
+        let closeEncloseConfig = config.get<string>('ClosingEnclosureCharacter') || null;
+        let DelimiterConfig = config.get<string>('Delimiter') || null;
+
+        let openEnclose = await vscode.window.showInputBox({ prompt: 'Opening Enclosure(Empty: Follow the setting)' });
+        let closeEnclose = await vscode.window.showInputBox({ prompt: 'Closing Enclosure(Empty: Follow the setting)' });
+        let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' });
+
+        openEnclose = openEnclose || openEncloseConfig;
+        closeEnclose = closeEnclose || closeEncloseConfig;
+        Delimiter = Delimiter || DelimiterConfig;
+
+        EditSelections(vscode.window.activeTextEditor, openEnclose, closeEnclose, Delimiter);
+    });
+    context.subscriptions.push(disposable);
+    
+    // 選択範囲を設定でパラメータ化する
+    disposable = vscode.commands.registerCommand('parameter-maker.ParameterizeSelectionBySettings', () => {
+        let config = vscode.workspace.getConfiguration('parameter-maker');
+        let openEnclose = config.get<string>('OpeningEnclosureCharacter') || null;
+        let closeEnclose = config.get<string>('ClosingEnclosureCharacter') || null;
+        let Delimiter = config.get<string>('Delimiter') || null;
+
+        EditSelections(vscode.window.activeTextEditor, openEnclose, closeEnclose, Delimiter);
+
+    });
+    context.subscriptions.push(disposable);
+
+    // 選択されているテキストを正規表現で再選択する
+    disposable = vscode.commands.registerCommand('parameter-maker.ReselectTextWithRegExp', () => {
+        vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
+            if (intext === undefined || intext.length == 0) return Promise.reject();
+            MakeSelectionsFromText(vscode.window.activeTextEditor, intext);
+        });
+    });
+    context.subscriptions.push(disposable);
+
+
+    
 }
 
 export function deactivate() {

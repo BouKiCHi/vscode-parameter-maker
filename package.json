@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Convert Text to Parameters",
-    "version": "0.1.6",
+    "version": "0.2.0",
     "publisher": "boukichi",
     "engines": {
         "vscode": "^1.48.0"
@@ -16,63 +16,104 @@
         "url": "https://github.com/BouKiCHi/vscode-parameter-maker.git"
     },
     "activationEvents": [
-        "onCommand:parameter-maker.AppendTextToEndOfSelections",
-        "onCommand:parameter-maker.SurroundSelectionWithText",
-        "onCommand:parameter-maker.SelectTextByLine",
-        "onCommand:parameter-maker.MakeSelectionsFromText",
-        "onCommand:parameter-maker.MakeSelectionsWithRegexp",
-        "onCommand:parameter-maker.JoinNLinesAtALine",
-        "onCommand:parameter-maker.CopyNTimes",
-        "onCommand:parameter-maker.FilterSelectionByIndexInLine"
+        "onCommand:parameter-maker.AddTextToSelections",
+        "onCommand:parameter-maker.EncloseAllSectionsWithInputChars",
+        "onCommand:parameter-maker.ReselectLineFromText",
+        "onCommand:parameter-maker.ReselectWordsFromText",
+        "onCommand:parameter-maker.PerformRangeSelectionsWithRegExp",
+        "onCommand:parameter-maker.MergeNLines",
+        "onCommand:parameter-maker.CopySelectedTextNTimes",
+        "onCommand:parameter-maker.FilterSelectionByIndexInLine",
+        "onCommand:parameter-maker.ParameterizeSelectionBySettings",
+        "onCommand:parameter-maker.ParameterizeSelectionWithInput",
+        "onCommand:parameter-maker.ReselectTextWithRegExp"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration":[
+            {
+                "title": "Parameter Maker",
+                "properties": {
+                    "parameter-maker.OpeningEnclosureCharacter": {
+                        "type":"string",
+                        "description": "Opening enclosure character",
+                        "default": "'"
+                    },
+                    "parameter-maker.ClosingEnclosureCharacter": {
+                        "type":"string",
+                        "description": "Closing enclosure character",
+                        "default": "'"
+                    },
+                    "parameter-maker.Delimiter": {
+                        "type":"string",
+                        "description": "Delimiter",
+                        "default": ","
+                    }
+                }
+            }
+        ],
         "commands": [
             {
-                "command": "parameter-maker.AppendTextToEndOfSelections",
-                "title": "%parameter-maker.AppendTextToEndOfSelections.title%",
+                "command": "parameter-maker.AddTextToSelections",
+                "title": "%parameter-maker.AddTextToSelections.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.SurroundSelectionWithText",
-                "title": "%parameter-maker.SurroundSelectionWithText.title%",
+                "command": "parameter-maker.EncloseAllSectionsWithInputChars",
+                "title": "%parameter-maker.EncloseAllSectionsWithInputChars.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.SelectTextByLine",
-                "title": "%parameter-maker.SelectTextByLine.title%",
+                "command": "parameter-maker.ReselectLineFromText",
+                "title": "%parameter-maker.ReselectLineFromText.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.MakeSelectionsFromText",
-                "title": "%parameter-maker.MakeSelectionsFromText.title%",
+                "command": "parameter-maker.ReselectWordsFromText",
+                "title": "%parameter-maker.ReselectWordsFromText.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.MakeSelectionsWithRegexp",
-                "title": "%parameter-maker.MakeSelectionsWithRegexp.title%",
+                "command": "parameter-maker.PerformRangeSelectionsWithRegExp",
+                "title": "%parameter-maker.PerformRangeSelectionsWithRegExp.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.JoinNLinesAtALine",
-                "title": "%parameter-maker.JoinNLinesAtALine.title%",
+                "command": "parameter-maker.MergeNLines",
+                "title": "%parameter-maker.MergeNLines.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.CopyNTimes",
-                "title": "%parameter-maker.CopyNTimes.title%",
+                "command": "parameter-maker.CopySelectedTextNTimes",
+                "title": "%parameter-maker.CopySelectedTextNTimes.title%",
                 "category": "Parameter"
             },
             {
                 "command": "parameter-maker.FilterSelectionByIndexInLine",
                 "title": "%parameter-maker.FilterSelectionByIndexInLine.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ParameterizeSelectionBySettings",
+                "title": "%parameter-maker.ParameterizeSelectionBySettings.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ParameterizeSelectionWithInput",
+                "title": "%parameter-maker.ParameterizeSelectionWithInput.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ReselectTextWithRegExp",
+                "title": "%parameter-maker.ReselectTextWithRegExp.title%",
+                "category": "Parameter"
             }
+
         ],
         "menus": {
             "commandPalette": [
                 {
-                    "command": "parameter-maker.CopyNTimes",
+                    "command": "parameter-maker.CopySelectedTextNTimes",
                     "when": "editorHasSelection"
                 }
             ]
@@ -86,9 +127,11 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "@types/mocha": "^8.0.3",
-        "@types/node": "^14.6.4",
-        "typescript": "^4.0.2",
-        "vscode": "^1.1.37"
-    }
+        "@types/mocha": "^8.2.0",
+        "@types/node": "^14.14.25",
+        "typescript": "^4.1.3",
+        "vscode": "^1.1.37",
+        "vscode-nls": "^5.0.0"
+    },
+    "dependencies": {}
 }

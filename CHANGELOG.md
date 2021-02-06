@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.2.0
+- Changed the text of some menu items.
+- Added the following functions.
+ "Parameterize selection by settings", "Reselect selected text by regular expression", "Parameterize selection by input string".
+
 ### 0.1.6
 - Improved "Copy Selection N times" to use the number of lines in the clipboard as the default.
 
