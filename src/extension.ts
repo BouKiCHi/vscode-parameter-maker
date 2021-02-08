@@ -320,7 +320,11 @@ export function activate(context: vscode.ExtensionContext) {
         
         vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then((n) => {
 
-            let num = (n === undefined || n.length == 0) ? 0 : parseInt(n);
+            if (n === undefined) {
+                return;
+            }
+
+            let num = n.length == 0 ? 0 : parseInt(n);
 
             if (num != 0) {
                 CopySelectedTextNTimes(vscode.window.activeTextEditor, num);
@@ -377,9 +381,6 @@ export function activate(context: vscode.ExtensionContext) {
         });
     });
     context.subscriptions.push(disposable);
-
-
-    
 }
 
 export function deactivate() {

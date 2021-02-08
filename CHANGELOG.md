@@ -1,5 +1,7 @@
 # Change Log
 
+### 0.2.1
+- Fixed a bug that prevented launching from the menu.
 ### 0.2.0
 - Changed the text of some menu items.
 - Added the following functions.
