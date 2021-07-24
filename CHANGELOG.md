@@ -1,5 +1,9 @@
 # Change Log
 
+### 0.2.2
+- Added the function "Copy selected text as many lines as there are lines in the clipboard."
+- Fixed a bug in "Split and Reselect words in the selected text".
+- Implemented to select if text has {} in copy functions('Copy the selected text N times' or 'Copy selected text as many lines as there are lines in the clipboard.')
 ### 0.2.1
 - Fixed a bug that prevented launching from the menu.
 ### 0.2.0

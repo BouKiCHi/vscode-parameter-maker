@@ -9,5 +9,6 @@
     "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line",
     "parameter-maker.ParameterizeSelectionBySettings.title": "Parameterize the selection by settings",
     "parameter-maker.ReselectTextWithRegExp.title": "Reselect selected text with regular expression",
-    "parameter-maker.ParameterizeSelectionWithInput.title": "Parameterize the selection with the input string"
+    "parameter-maker.ParameterizeSelectionWithInput.title": "Parameterize the selection with the input string",
+    "parameter-maker.CopySelectedText.title": "Copy selected text as many lines as there are lines in the clipboard."
 }

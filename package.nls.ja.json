@@ -9,5 +9,6 @@
     "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタする",
     "parameter-maker.ParameterizeSelectionBySettings.title": "選択範囲を設定でパラメータ化する",
     "parameter-maker.ReselectTextWithRegExp.title": "選択されているテキストを正規表現で再選択する",
-    "parameter-maker.ParameterizeSelectionWithInput.title": "選択範囲を入力文字列でパラメータ化する"
+    "parameter-maker.ParameterizeSelectionWithInput.title": "選択範囲を入力文字列でパラメータ化する",
+    "parameter-maker.CopySelectedText.title": "選択したテキストをクリップボードの行数分コピーする"
 }

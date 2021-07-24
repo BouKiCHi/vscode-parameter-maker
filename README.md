@@ -19,6 +19,8 @@ The Extension has the following function.
 - Filter Selection by Index In Line
 - Select Text By Line
 
+- Copy selected text as many lines as there are lines in the clipboard.
+
 ## 機能
 
 この拡張は次の機能が追加されます。
@@ -37,6 +39,8 @@ The Extension has the following function.
 
 - 行内の選択をインデックスでフィルタする 
 - 選択したテキストをN回コピーする
+
+- 選択したテキストをクリップボードの行数分コピーする
 
 ## Release Notes
 
