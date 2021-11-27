@@ -1,8 +1,8 @@
 {
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
-    "description": "Convert Text to Parameters",
-    "version": "0.2.2",
+    "description": "Assists in creating text parameters.",
+    "version": "0.3.0",
     "publisher": "boukichi",
     "license": "MIT",
     "categories": [
@@ -21,10 +21,12 @@
         "onCommand:parameter-maker.MergeNLines",
         "onCommand:parameter-maker.CopySelectedTextNTimes",
         "onCommand:parameter-maker.FilterSelectionByIndexInLine",
-        "onCommand:parameter-maker.ParameterizeSelectionBySettings",
+        "onCommand:parameter-maker.ParameterizeSelection",
         "onCommand:parameter-maker.ParameterizeSelectionWithInput",
         "onCommand:parameter-maker.ReselectTextWithRegExp",
-        "onCommand:parameter-maker.CopySelectedText"
+        "onCommand:parameter-maker.CopySelectedText",
+        "onCommand:parameter-maker.QuoteSelect",
+        "onCommand:parameter-maker.ParameterizeClipboard"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -32,19 +34,24 @@
             {
                 "title": "Parameter Maker",
                 "properties": {
+                    "parameter-maker.Quote": {
+                        "type": "string",
+                        "description": "%parameter-maker.QuoteCharactersWhenCreatingParameters%",
+                        "default": "'"
+                    },
                     "parameter-maker.OpeningEnclosureCharacter": {
                         "type": "string",
-                        "description": "Opening enclosure character",
+                        "description": "%parameter-maker.OpeningEnclosureCharacter%",
                         "default": "'"
                     },
                     "parameter-maker.ClosingEnclosureCharacter": {
                         "type": "string",
-                        "description": "Closing enclosure character",
+                        "description": "%parameter-maker.ClosingEnclosureCharacter%",
                         "default": "'"
                     },
                     "parameter-maker.Delimiter": {
                         "type": "string",
-                        "description": "Delimiter",
+                        "description": "%parameter-maker.Delimiter%",
                         "default": ","
                     }
                 }
@@ -92,8 +99,8 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.ParameterizeSelectionBySettings",
-                "title": "%parameter-maker.ParameterizeSelectionBySettings.title%",
+                "command": "parameter-maker.ParameterizeSelection",
+                "title": "%parameter-maker.ParameterizeSelection.title%",
                 "category": "Parameter"
             },
             {
@@ -110,9 +117,56 @@
                 "command": "parameter-maker.CopySelectedText",
                 "title": "%parameter-maker.CopySelectedText.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.QuoteSelect",
+                "title": "%parameter-maker.QuoteSelect.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ParameterizeClipboard",
+                "title": "%parameter-maker.ParameterizeClipboard.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
+            "editor/context": [
+                {
+                    "submenu": "parameter-maker.ContextMenu",
+                    "group": "7_modification"
+                }
+            ],
+            "parameter-maker.ContextMenu" :[
+                {
+                    "command": "parameter-maker.ReselectLineFromText",
+                    "when": "editorHasSelection",
+                    "group": "1_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectWordsFromText",
+                    "when": "editorHasSelection",
+                    "group": "1_reselect"
+                },
+                {
+                    "command": "parameter-maker.CopySelectedText",
+                    "when": "editorHasSelection",
+                    "group": "2_copy"
+                },
+                {
+                    "command": "parameter-maker.QuoteSelect",
+                    "when": "editorHasSelection",
+                    "group": "3_quote"
+                },
+                {
+                    "command": "parameter-maker.ParameterizeSelection",
+                    "when": "editorHasSelection",
+                    "group": "4_parameter"
+                },
+                {
+                    "command": "parameter-maker.ParameterizeClipboard",
+                    "group": "4_parameter"
+                }
+            ],
             "commandPalette": [
                 {
                     "command": "parameter-maker.CopySelectedTextNTimes",
@@ -123,13 +177,19 @@
                     "when": "editorHasSelection"
                 }
             ]
-        }
+        },
+        "submenus": [
+            {
+                "id": "parameter-maker.ContextMenu",
+                "label": "%parameter-maker.Parameter%"
+              }
+        ]
     },
     "dependencies": {
         "vscode-nls": "^5.0.0"
     },
     "engines": {
-        "vscode": "^1.32.0"
+		"vscode": "^1.62.0"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -137,12 +197,17 @@
         "lint": "eslint . --ext .ts,.tsx",
         "watch": "tsc -watch -p ./"
     },
-    "devDependencies": {
-        "@types/node": "^12.12.0",
-        "@types/vscode": "^1.32.0",
-        "@typescript-eslint/eslint-plugin": "^4.16.0",
-        "@typescript-eslint/parser": "^4.16.0",
-        "eslint": "^7.21.0",
-        "typescript": "^4.2.2"
-    }
+	"devDependencies": {
+		"@types/vscode": "^1.62.0",
+		"@types/glob": "^7.1.4",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "14.x",
+		"@typescript-eslint/eslint-plugin": "^5.1.0",
+		"@typescript-eslint/parser": "^5.1.0",
+		"eslint": "^8.1.0",
+		"glob": "^7.1.7",
+		"mocha": "^9.1.3",
+		"typescript": "^4.4.4",
+		"@vscode/test-electron": "^1.6.2"
+	}
 }
