@@ -7,6 +7,7 @@ The Extension has the following function.
 ## New Features
 * Select inside of quotes.
 * Parameterize the clipboard contents
+* Reselect with delimiter
 
 ## Edit
 * Add text to selections.
@@ -32,6 +33,7 @@ The Extension has the following function.
 ## 新機能
 * 引用符の中身を選択
 * クリップボード内容をパラメータ化
+* 区切り文字で再選択
 
 ## 編集
 * 選択範囲にテキストを追加

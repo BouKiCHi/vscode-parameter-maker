@@ -5,26 +5,68 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 
 import * as pm from '../../extension';
+import * as textutil from '../../textutil';
 
 suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+    vscode.window.showInformationMessage('Start all tests.');
 
-	test('pm test', async () => {
-		const content =  "ABC\nDEF\nGHI";
-		let doc= await vscode.workspace.openTextDocument({content: content});
-		var editor = await vscode.window.showTextDocument(doc);
+    async function getTestEditor(text:string) : Promise<vscode.TextEditor> {
+        let doc= await vscode.workspace.openTextDocument({content: text});
+        var editor = await vscode.window.showTextDocument(doc);
+        return editor;
+    }
 
-		let start = doc.positionAt(0);
-		let end = doc.positionAt(content.length);
-		editor.selection = new vscode.Selection(start, end);
-		// assert.notStrictEqual(content);
+    // テキストを正規表現パターンでの分割再選択をテスト
+    test('ReselectTextWithPattern test', async () => {
+        const content =  "A,B,C\nD,EF";
+        const exp =  ["A","B","C","D","EF"];
 
-		pm.QuoteSelectBody(editor);
-	});
+        let editor = await getTestEditor(content);
+        let doc = editor.document; 
+        editor.selection = textutil.GetDocumentSelect(doc);
+
+        textutil.ReselectTextWithPattern(editor, ",");
+        let selections = editor.selections;
+
+        assert.strictEqual(selections.length, 5);
+        for(let i = 0; i < exp.length; i++) {
+            let text = doc.getText(selections[i]);
+            assert.strictEqual(text, exp[i]);
+        }
+        editor.hide();
+    });
 
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+    test('SelectBracket test', async () => {
+        const content =  "AB{}C\nD{}EF\nGHI";
+        let editor = await getTestEditor(content);
+        let doc = editor.document; 
+        editor.selection = textutil.GetDocumentSelect(doc);
+
+        textutil.SelectBracket(editor);
+        let selections = editor.selections;
+
+        assert.strictEqual(selections.length, 2);
+        assert.strictEqual(selections[0].start.character, 2);
+        assert.strictEqual(selections[1].start.character, 1);
+        assert.strictEqual(doc.getText(selections[0]), "{}");
+        assert.strictEqual(doc.getText(selections[1]), "{}");
+
+        editor.hide();
+    });
+
+
+    test('pm test', async () => {
+        const content =  "ABC\nDEF\nGHI";
+        let editor = await getTestEditor(content);
+        let doc = editor.document;
+
+        let startPos = doc.positionAt(0);
+        let endPos = doc.positionAt(content.length);
+        editor.selection = new vscode.Selection(startPos, endPos);
+
+        editor.hide();
+        // assert.notStrictEqual(content);
+    });
+
 });

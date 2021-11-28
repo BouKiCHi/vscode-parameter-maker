@@ -13,6 +13,7 @@
     "parameter-maker.CopySelectedText.title": "Copy selected text as many lines as there are lines in the clipboard.",
     "parameter-maker.QuoteSelect.title": "Select inside of quotes.",
     "parameter-maker.ParameterizeClipboard.title": "Parameterize the clipboard contents",
+    "parameter-maker.ReselectWithDelimiter.title": "Reselect with delimiter",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "Quote characters when creating parameters",
     "parameter-maker.OpeningEnclosureCharacter" : "Opening enclosure character",

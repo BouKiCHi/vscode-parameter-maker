@@ -66,187 +66,101 @@ async function CopySelectedTextNTimesBody(editor: vscode.TextEditor, count: numb
         }
     });
 
-    // 再選択する
-    selections = editor.selections;
-
-    await editor.edit(builder => {
-        let newsel: vscode.Selection[] = [];
-        // 各選択ごとにN回コピーする
-        for (const selection of selections) {
-            let startLine = selection.start.line;
-            let endLine = selection.end.line;
-
-            for (let lno = startLine; lno <= endLine; lno++) {
-                // 行を得る
-                let line = editor.document.lineAt(lno);
-
-                // 開始と終了
-                let startPos = (startLine == lno) ? selection.start : line.range.start;
-                let endPos = (endLine == lno) ? selection.end : line.range.end;
-                var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
-
-                var anchorLine = startPos.line;
-                var activeLine = endPos.line;
-
-                // {}の範囲を取得
-                var cord = textutil.MakeBracketRangeList(lineText);
-                for (var ci = 0; ci < cord.length; ci++) {
-                    var co = cord[ci];
-                    var col = startPos.character;
-                    let sel = new vscode.Selection(anchorLine, col + co[0], activeLine, col + co[1]);
-                    newsel.push(sel);
-                }
-            }
-        }
-        if (newsel.length > 0) {
-            editor.selections = newsel;
-        }
-    });
+    // {}を再選択する
+    await textutil.SelectBracket(editor);
 }
 
-
-/** テキストをセパレータを使用して再選択する */
-function ReselectTextWithSeparator(editor: vscode.TextEditor, separator: string) {
-    const selections: vscode.Selection[] = editor.selections;
-    let newSelections: vscode.Selection[] = [];
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let startLine = selection.start.line;
-            let endLine = selection.end.line;
-
-            for (let lno = startLine; lno <= endLine; lno++) {
-                // 行を得る
-                let line = editor.document.lineAt(lno);
-
-                // 開始と終了
-                let startPos = (startLine == lno) ? selection.start : line.range.start;
-                let endPos = (endLine == lno) ? selection.end : line.range.end;
-                var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
-
-                var anchorLine = startPos.line;
-                var activeLine = endPos.line;
-
-                // 範囲の取得
-                var cord = textutil.GetRangeFromSeperator(lineText, separator);
-                for (var ci = 0; ci < cord.length; ci++) {
-                    var co = cord[ci];
-                    var col = startPos.character;
-                    let sel = new vscode.Selection(anchorLine, col + co[0], activeLine, col + co[1]);
-                    newSelections.push(sel);
-                }
-            }
-        }
-    });
-    if (newSelections.length > 0) editor.selections = newSelections;
-}
 
 /** テキストを入力テキストによって再選択する */
 function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string) {
-    const selections: vscode.Selection[] = editor.selections;
+    let LineList = textutil.GetSelectedTextLines(editor);
     let newSelections: vscode.Selection[] = [];
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let startLine = selection.start.line;
-            let endLine = selection.end.line;
-
-            for (let lno = startLine; lno <= endLine; lno++) {
-                // 行を得る
-                let line = editor.document.lineAt(lno);
-
-                // 開始と終了
-                let startPos = (startLine == lno) ? selection.start : line.range.start;
-                let endPos = (endLine == lno) ? selection.end : line.range.end;
-                var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
-
-                var anchorLine = startPos.line;
-                var activeLine = endPos.line;
-
-                // 範囲の取得
-                var cord = textutil.GetRangeFromIntext(lineText, intext);
-                for (var ci = 0; ci < cord.length; ci++) {
-                    var co = cord[ci];
-                    var col = startPos.character;
-                    let sel = new vscode.Selection(anchorLine, col + co[0], activeLine, col + co[1]);
-                    newSelections.push(sel);
-                }
-            }
+    for(const l of LineList) {
+        // 範囲の取得
+        var cord = textutil.GetRangeFromIntext(l.text, intext);
+        for (var ci = 0; ci < cord.length; ci++) {
+            var co = cord[ci];
+            let startPos = l.positionAt(co[0]);
+            let endPos = l.positionAt(co[1]);
+            let sel = new vscode.Selection(startPos, endPos);
+            newSelections.push(sel);
         }
-    });
+    }
+
     if (newSelections.length > 0) editor.selections = newSelections;
+
 }
 
 /** テキストを1行ごとに選択する */
 function MakeLineSelections(editor: vscode.TextEditor) {
-    const selections: vscode.Selection[] = editor.selections;
     let newSelections: vscode.Selection[] = [];
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let startLine = selection.start.line;
-            let endLine = selection.end.line;
 
-            for (let lno = startLine; lno <= endLine; lno++) {
-                let line = editor.document.lineAt(lno);
-                let sel = new vscode.Selection(line.range.start, line.range.end);
-                newSelections.push(sel);
-            }
-        }
-    });
+    let LineList = textutil.GetSelectedTextLines(editor);
+    for (const l of LineList) {
+        let sel = new vscode.Selection(l.getStartPosition(), l.getEndPosition());
+        newSelections.push(sel);
+    }
+
     if (newSelections.length > 0) editor.selections = newSelections;
+}
+
+class CharactorPosition {
+    text: string;
+    pos: vscode.Position;
+
+    constructor(text:string, pos: vscode.Position) {
+        this.text = text;
+        this.pos = pos;
+    }
+}
+
+/** 
+ * 引用符を選択リストにする
+*/
+function MakeQuoteSelections(quoteList:CharactorPosition[]) : vscode.Selection[] {
+    let newSelections: vscode.Selection[] = [];
+
+    var qi = 0;
+    var startQuote = null;
+    var startPos : vscode.Position = null;
+
+    while(qi < quoteList.length) {
+        var qp = quoteList[qi];
+        var ch = qp.text;
+        var currentPos = qp.pos;
+        if (startQuote == null) {
+            startPos = currentPos;
+            startQuote = ch;
+            qi++;
+            continue;
+        }
+        if (startQuote == ch) {
+            var spos = new vscode.Position(startPos.line, startPos.character+1);
+            var sel = new vscode.Selection(spos, currentPos);
+            startQuote = null;
+            newSelections.push(sel);
+        }
+        qi++;
+    }
+    return newSelections;
 }
 
 /** 引用符の中身を選択する */
 function QuoteSelectBody(editor: vscode.TextEditor) {
-    const selections: vscode.Selection[] = editor.selections;
-    let newSelections: vscode.Selection[] = [];
-    editor.edit(builder => {
+    let quoteList : CharactorPosition[] = [];
 
-        for (const selection of selections) {
-            let quoteList = [];
-
-            let startLineNo = selection.start.line;
-            let endLineNo = selection.end.line;
-
-            for (let lno = startLineNo; lno <= endLineNo; lno++) {
-                // 行を得る
-                let line = editor.document.lineAt(lno);
-                let startPos = lno == startLineNo ? selection.start : line.range.start;
-                let endPos = lno == endLineNo ? selection.end : line.range.end;
-
-                var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
-
-                // 位置の取得
-                var poslist = textutil.GetIndex(lineText, "['\"]");
-                for (var pi = 0; pi < poslist.length; pi++) {
-                    var index = poslist[pi];
-                    var col = index + startPos.character;
-                    var pair = [lineText[index], new vscode.Position(lno, col)];
-                    quoteList.push(pair);
-                }
-            }
-
-            var qi = 0;
-            var startQuote = null;
-            var startPos : vscode.Position = null;
-            while(qi < quoteList.length) {
-                var qp = quoteList[qi];
-                var ch = qp[0];
-                var currentPos = qp[1];
-                if (startQuote == null) {
-                    startPos = currentPos;
-                    startQuote = ch;
-                    qi++;
-                    continue;
-                }
-                if (startQuote == ch) {
-                    var spos = new vscode.Position(startPos.line, startPos.character+1);
-                    var sel = new vscode.Selection(spos, currentPos);
-                    startQuote = null;
-                    newSelections.push(sel);
-                }
-                qi++;
-            }
+    let LineList = textutil.GetSelectedTextLines(editor);
+    for (const l of LineList) {
+        var poslist = textutil.GetIndexList(l.text, "['\"]");
+        for (var pi = 0; pi < poslist.length; pi++) {
+            var index = poslist[pi];
+            var pos = l.positionAt(index);
+            var pair = new CharactorPosition(l.charactorAt(index), pos);
+            quoteList.push(pair);
         }
-    });
+    }
+
+    let newSelections = MakeQuoteSelections(quoteList);
     if (newSelections.length > 0) editor.selections = newSelections;
 }
 
@@ -265,18 +179,18 @@ function FilterSelections(editor: vscode.TextEditor, indexText: string) {
     let newSelections: vscode.Selection[] = [];
     let tempSelections: vscode.Selection[] = [];
     let lastStartLine = -1;
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let startLine = selection.start.line;
-            if (startLine != lastStartLine) {
-                Filtering(newSelections, tempSelections, indexText);
-                lastStartLine = startLine;
-                tempSelections = [];
-            }
-            tempSelections.push(selection);
+
+    for (const selection of selections) {
+        let startLine = selection.start.line;
+        if (startLine != lastStartLine) {
+            Filtering(newSelections, tempSelections, indexText);
+            lastStartLine = startLine;
+            tempSelections = [];
         }
-        Filtering(newSelections, tempSelections, indexText);
-    });
+        tempSelections.push(selection);
+    }
+    Filtering(newSelections, tempSelections, indexText);
+
     if (newSelections.length > 0) editor.selections = newSelections;
 }
 
@@ -323,15 +237,25 @@ function QuoteSelect() {
 function ReselectLineFromText() {
     MakeLineSelections(vscode.window.activeTextEditor);
 }
+
 // 単語を分割して再選択する
 function ReselectWordsFromText() {
-    ReselectTextWithSeparator(vscode.window.activeTextEditor, "\\s+");
+    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, "\\s+");
 }
+
+// 区切り文字で再選択
+function ReselectWithDelimiter() {
+    let config = vscode.workspace.getConfiguration('parameter-maker');
+    let delimiter = config.get<string>('Delimiter') || null;
+    if (!delimiter) return;
+    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
+}
+
 // 正規表現による区切りで範囲選択を行う
 function PerformRangeSelectionsWithRegExp() {
     vscode.window.showInputBox({ prompt: 'Text to separate(RegExp)' }).then((intext) => {
         if (intext === undefined || intext.length == 0) return;
-        ReselectTextWithSeparator(vscode.window.activeTextEditor, intext);
+        textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, intext);
     });
 }
 // 複数行を結合する
@@ -450,6 +374,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['ParameterizeSelection', ParameterizeSelection],
         ['ReselectTextWithRegExp', ReselectTextWithRegExp],
         ['ParameterizeClipboard', ParameterizeClipboard],
+        ['ReselectWithDelimiter', ReselectWithDelimiter],
     ];
 
     for(var i = 0; i < CommandList.length; i++) {

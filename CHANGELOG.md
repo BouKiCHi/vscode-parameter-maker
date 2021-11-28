@@ -1,6 +1,9 @@
 # Change Log
 
-### 0.3
+### 0.3.1
+- Added the function "Reselect with delimiter"
+
+### 0.3.0
 - Added the function "Select inside of quotes." 
 - Added the function "Parameterize the clipboard contents." 
 - Added an items to the context menu.

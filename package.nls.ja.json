@@ -13,6 +13,7 @@
     "parameter-maker.CopySelectedText.title": "選択をクリップボードの行数分コピー",
     "parameter-maker.QuoteSelect.title": "引用符の中身を選択",
     "parameter-maker.ParameterizeClipboard.title": "クリップボード内容をパラメータ化",
+    "parameter-maker.ReselectWithDelimiter.title": "区切り文字で再選択",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "パラメータ作成時の引用符",
     "parameter-maker.OpeningEnclosureCharacter" : "開始囲み文字",

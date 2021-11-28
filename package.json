@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "publisher": "boukichi",
     "license": "MIT",
     "categories": [
@@ -26,7 +26,8 @@
         "onCommand:parameter-maker.ReselectTextWithRegExp",
         "onCommand:parameter-maker.CopySelectedText",
         "onCommand:parameter-maker.QuoteSelect",
-        "onCommand:parameter-maker.ParameterizeClipboard"
+        "onCommand:parameter-maker.ParameterizeClipboard",
+        "onCommand:parameter-maker.ReselectWithDelimiter"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -127,6 +128,11 @@
                 "command": "parameter-maker.ParameterizeClipboard",
                 "title": "%parameter-maker.ParameterizeClipboard.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ReselectWithDelimiter",
+                "title": "%parameter-maker.ReselectWithDelimiter.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -144,6 +150,11 @@
                 },
                 {
                     "command": "parameter-maker.ReselectWordsFromText",
+                    "when": "editorHasSelection",
+                    "group": "1_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectWithDelimiter",
                     "when": "editorHasSelection",
                     "group": "1_reselect"
                 },
