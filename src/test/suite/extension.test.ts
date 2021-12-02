@@ -4,7 +4,6 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 
-import * as pm from '../../extension';
 import * as textutil from '../../textutil';
 
 suite('Extension Test Suite', () => {
@@ -15,6 +14,13 @@ suite('Extension Test Suite', () => {
         var editor = await vscode.window.showTextDocument(doc);
         return editor;
     }
+
+    // テキスト分離
+    test('SplitText', async () => {
+        let va = textutil.SplitText("aaa\nbbb\n");
+        assert.strictEqual(va.length, 2);
+    });
+
 
     // テキストを正規表現パターンでの分割再選択をテスト
     test('ReselectTextWithPattern test', async () => {
@@ -36,7 +42,7 @@ suite('Extension Test Suite', () => {
         editor.hide();
     });
 
-
+    // {}を再選択する
     test('SelectBracket test', async () => {
         const content =  "AB{}C\nD{}EF\nGHI";
         let editor = await getTestEditor(content);
@@ -55,7 +61,7 @@ suite('Extension Test Suite', () => {
         editor.hide();
     });
 
-
+    // 
     test('pm test', async () => {
         const content =  "ABC\nDEF\nGHI";
         let editor = await getTestEditor(content);

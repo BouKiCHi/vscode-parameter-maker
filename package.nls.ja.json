@@ -3,7 +3,6 @@
     "parameter-maker.EncloseAllSectionsWithInputChars.title": "すべての選択を入力文字で囲む",
     "parameter-maker.ReselectLineFromText.title": "１行を分割して再選択",
     "parameter-maker.ReselectWordsFromText.title": "単語を分割して再選択",
-    "parameter-maker.PerformRangeSelectionsWithRegExp.title": "正規表現による区切りで範囲選択",
     "parameter-maker.MergeNLines.title": "N行を結合",
     "parameter-maker.CopySelectedTextNTimes.title": "N回コピー",
     "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタ",
@@ -14,6 +13,9 @@
     "parameter-maker.QuoteSelect.title": "引用符の中身を選択",
     "parameter-maker.ParameterizeClipboard.title": "クリップボード内容をパラメータ化",
     "parameter-maker.ReselectWithDelimiter.title": "区切り文字で再選択",
+    "parameter-maker.CombineClipboard.title": "クリップボードを結合して挿入",
+    "parameter-maker.ReselectWithInputDelimiter.title": "入力区切り文字で再選択",
+    "parameter-maker.SplitParameterize.title": "単語を分割してパラメータ化する",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "パラメータ作成時の引用符",
     "parameter-maker.OpeningEnclosureCharacter" : "開始囲み文字",

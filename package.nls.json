@@ -3,7 +3,6 @@
     "parameter-maker.EncloseAllSectionsWithInputChars.title": "Enclose all selections with input characters",
     "parameter-maker.ReselectLineFromText.title": "Split a line of selected text and Reselect it",
     "parameter-maker.ReselectWordsFromText.title": "Split and Reselect words in the selected text",
-    "parameter-maker.PerformRangeSelectionsWithRegExp.title": "Perform range selection with regular expression delimitation",
     "parameter-maker.MergeNLines.title": "Merge N lines of selected text into one line",
     "parameter-maker.CopySelectedTextNTimes.title": "Copy the selected text N times",
     "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line",
@@ -14,6 +13,9 @@
     "parameter-maker.QuoteSelect.title": "Select inside of quotes.",
     "parameter-maker.ParameterizeClipboard.title": "Parameterize the clipboard contents",
     "parameter-maker.ReselectWithDelimiter.title": "Reselect with delimiter",
+    "parameter-maker.CombineClipboard.title": "Combine and insert clipboard contents",
+    "parameter-maker.ReselectWithInputDelimiter.title": "Reselect with input delimiter",
+    "parameter-maker.SplitParameterize.title": "Split words and Parameterize",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "Quote characters when creating parameters",
     "parameter-maker.OpeningEnclosureCharacter" : "Opening enclosure character",

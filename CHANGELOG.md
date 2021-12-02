@@ -1,5 +1,14 @@
-# Change Log
+# CHANGELOG
 
+### 0.3.3
+- Rename the function "Perform range selection with regular expression delimitation" to "Reselect with input delimiter"
+- Added the function "Combine and insert clipboard contents"
+- Added the function "Reselect with input delimiter"
+- Added the function "Split words and Parameterize"
+- Improved the last value of "Parameterize the clipboard contents".
+
+### 0.3.2
+- Added the icon.
 ### 0.3.1
 - Added the function "Reselect with delimiter"
 

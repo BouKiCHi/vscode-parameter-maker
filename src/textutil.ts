@@ -52,6 +52,25 @@ class TextLine {
 
 }
 
+export class CharactorPosition {
+    text: string;
+    pos: vscode.Position;
+
+    constructor(text:string, pos: vscode.Position) {
+        this.text = text;
+        this.pos = pos;
+    }
+}
+
+
+// クリップボードの行数を取得
+export async function CountTextLines() {
+    let value = await vscode.env.clipboard.readText();
+    let value2 = value.replace(/[\r\n]+/g, "\n");
+    let data = value2.split("\n");
+    return data.length;
+}
+
 // 選択したテキスト行
 export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
     let selections = editor.selections;
@@ -109,6 +128,7 @@ export function GetIndexList(text: string, pattern: string) : number[] {
 
 /** 正規表現のパターンと一致したリストを得る */
 export function SplitText(text: string) {
+    text = text.trimEnd();
     text = text.replace(/[\r\n]+/g, "\n");
     text = text.replace(/\t+/g, "\n");
     return text.split("\n");
