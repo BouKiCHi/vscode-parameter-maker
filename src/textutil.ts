@@ -126,7 +126,7 @@ export function GetIndexList(text: string, pattern: string) : number[] {
     return positions;
 }
 
-/** 正規表現のパターンと一致したリストを得る */
+/** テキストを改行やタブで分離する */
 export function SplitText(text: string) {
     text = text.trimEnd();
     text = text.replace(/[\r\n]+/g, "\n");

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.3.4
+- Added the function "Reselect {} bracket"
+- Added the function "Insert clipboard contents with pattern"
+
 ### 0.3.3
 - Rename the function "Perform range selection with regular expression delimitation" to "Reselect with input delimiter"
 - Added the function "Combine and insert clipboard contents"

@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -30,7 +30,9 @@
         "onCommand:parameter-maker.ReselectWithDelimiter",
         "onCommand:parameter-maker.CombineClipboard",
         "onCommand:parameter-maker.ReselectWithInputDelimiter",
-        "onCommand:parameter-maker.SplitParameterize"
+        "onCommand:parameter-maker.SplitParameterize",
+        "onCommand:parameter-maker.ReselectBracket",
+        "onCommand:parameter-maker.InsertPatternClipboard"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -146,6 +148,16 @@
                 "command": "parameter-maker.SplitParameterize",
                 "title": "%parameter-maker.SplitParameterize.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ReselectBracket",
+                "title": "%parameter-maker.ReselectBracket.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.InsertPatternClipboard",
+                "title": "%parameter-maker.InsertPatternClipboard.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -177,6 +189,16 @@
                     "group": "1_reselect"
                 },
                 {
+                    "command": "parameter-maker.ReselectBracket",
+                    "when": "editorHasSelection",
+                    "group": "1_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectTextWithRegExp",
+                    "when": "editorHasSelection",
+                    "group": "1_reselect"
+                },
+                {
                     "command": "parameter-maker.CopySelectedText",
                     "when": "editorHasSelection",
                     "group": "2_copy"
@@ -201,6 +223,10 @@
                 },
                 {
                     "command": "parameter-maker.SplitParameterize",
+                    "group": "4_parameter"
+                },
+                {
+                    "command": "parameter-maker.InsertPatternClipboard",
                     "group": "4_parameter"
                 }
             ],

@@ -241,6 +241,10 @@ async function ReselectWithInputDelimiter() {
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
 }
 
+// {}を再選択
+function ReselectBracket() {
+    textutil.SelectBracket(vscode.window.activeTextEditor);
+}
 
 
 // 複数行を結合する
@@ -347,6 +351,8 @@ async function ParameterizeClipboard() {
 async function CombineClipboard() { 
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' });
+    if (Delimiter === undefined) { return; }
+
     Delimiter = Delimiter || config.get<string>('Delimiter') || null;
 
     let editor = vscode.window.activeTextEditor;
@@ -362,6 +368,33 @@ async function CombineClipboard() {
             let t = '';
             t += v;
             if (Delimiter) t += Delimiter;
+            if (len + t.length >= 60) {
+                builder.insert(position, "\n");
+                len = 0;
+            }
+            builder.insert(position, t);
+            len += t.length;
+        }
+    });
+}
+
+// クリップボード内容をパターンで挿入
+async function InsertPatternClipboard() { 
+    let pattern = await vscode.window.showInputBox({ prompt: 'Pattern(ex. "{}",' });
+    if (pattern === undefined) { return; }
+
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let values = textutil.SplitText(text);
+
+    const position = editor.selection.active;
+
+    let len = 0;
+
+    editor.edit(builder => {
+        for (const v of values) {
+            let t = '';
+            t += pattern.replace('{}',v);
             if (len + t.length >= 60) {
                 builder.insert(position, "\n");
                 len = 0;
@@ -402,6 +435,8 @@ export function activate(context: vscode.ExtensionContext) {
         ['ParameterizeClipboard', ParameterizeClipboard],
         ['ReselectWithDelimiter', ReselectWithDelimiter],
         ['ReselectWithInputDelimiter', ReselectWithInputDelimiter],
+        ['ReselectBracket', ReselectBracket],
+        ['InsertPatternClipboard', InsertPatternClipboard],
 
         ['CombineClipboard', CombineClipboard],
         ['SplitParameterize', SplitParameterize],
