@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -228,6 +228,14 @@
                 {
                     "command": "parameter-maker.InsertPatternClipboard",
                     "group": "4_parameter"
+                },
+                {
+                    "command": "parameter-maker.MergeNLines",
+                    "group": "5_n"
+                },
+                {
+                    "command": "parameter-maker.CopySelectedTextNTimes",
+                    "group": "5_n"
                 }
             ],
             "commandPalette": [

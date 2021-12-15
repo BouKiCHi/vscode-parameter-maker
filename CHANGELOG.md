@@ -1,4 +1,6 @@
 # CHANGELOG
+### 0.3.5
+- Added some context menus.
 
 ### 0.3.4
 - Added the function "Reselect {} bracket"
