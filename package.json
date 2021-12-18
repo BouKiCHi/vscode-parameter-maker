@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -32,7 +32,8 @@
         "onCommand:parameter-maker.ReselectWithInputDelimiter",
         "onCommand:parameter-maker.SplitParameterize",
         "onCommand:parameter-maker.ReselectBracket",
-        "onCommand:parameter-maker.InsertPatternClipboard"
+        "onCommand:parameter-maker.InsertPatternClipboard",
+        "onCommand:parameter-maker.QuoteOuterSelect"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -125,6 +126,11 @@
                 "category": "Parameter"
             },
             {
+                "command": "parameter-maker.QuoteOuterSelect",
+                "title": "%parameter-maker.QuoteOuterSelect.title%",
+                "category": "Parameter"
+            },
+            {
                 "command": "parameter-maker.ParameterizeClipboard",
                 "title": "%parameter-maker.ParameterizeClipboard.title%",
                 "category": "Parameter"
@@ -209,6 +215,11 @@
                     "group": "3_quote"
                 },
                 {
+                    "command": "parameter-maker.QuoteOuterSelect",
+                    "when": "editorHasSelection",
+                    "group": "3_quote"
+                },
+                {
                     "command": "parameter-maker.ParameterizeSelection",
                     "when": "editorHasSelection",
                     "group": "4_parameter"
@@ -240,8 +251,7 @@
             ],
             "commandPalette": [
                 {
-                    "command": "parameter-maker.CopySelectedTextNTimes",
-                    "when": "editorHasSelection"
+                    "command": "parameter-maker.CopySelectedTextNTimes"
                 },
                 {
                     "command": "parameter-maker.CopySelectedText",

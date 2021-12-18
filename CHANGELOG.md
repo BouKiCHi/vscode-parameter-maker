@@ -1,4 +1,8 @@
 # CHANGELOG
+
+### 0.3.6
+- Added the function "Reselect outer of quotes"
+- Improved behavior when cursor of "Merge N lines into one line" and "Copy the selected text N times"
 ### 0.3.5
 - Added some context menus.
 

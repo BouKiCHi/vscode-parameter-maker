@@ -266,3 +266,15 @@ export function GetDocumentSelect(doc:vscode.TextDocument) : vscode.Selection  {
     let range = GetDocumentRange(doc);
     return new vscode.Selection(range.start, range.end);
 }
+
+// 改行テキストを取得
+export function getTextList(text: string) {
+    var regex = /[\r\n]+/;
+    return text.split(regex);
+}
+
+// カーソルか？
+export function IsCursor(selection: vscode.Selection) : boolean {
+    return selection.start.isEqual(selection.end);
+}
+

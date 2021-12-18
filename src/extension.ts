@@ -25,14 +25,20 @@ function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
     const selections: vscode.Selection[] = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {
+            // カーソル
+            if (textutil.IsCursor(selection) && joinNum > 0) {
+                let line = editor.document.lineAt(selection.start.line);
+                let endLine = editor.document.lineAt(selection.start.line + joinNum - 1);
+                let range = new vscode.Range(line.range.start, endLine.range.end);
+                let text = editor.document.getText(range);
+                text = text.replace(/[\r\n]+/g,'');
+                builder.replace(range, text);
+                continue;
+            }
             let text = editor.document.getText(selection);
             let count = 0;
 
-            var regex = /[\r\n]+/;
-            var match = regex.exec(text);
-            var nextLine = (!match) ? match[0] : "\n";
-
-            let textList = text.split(nextLine);
+            let textList = textutil.getTextList(text);
             let result = "";
             let len = textList.length;
             // 行末が改行コードの場合、最後を処理しない
@@ -45,7 +51,7 @@ function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
                 count++;
                 if (count == joinNum) {
                     count = 0;
-                    result += nextLine;
+                    result += "\n";
                 }
             }
             builder.replace(selection, result);
@@ -59,10 +65,20 @@ async function CopySelectedTextNTimesBody(editor: vscode.TextEditor, count: numb
     await editor.edit(builder => {
         // 各選択ごとにN回コピーする
         for (const selection of selections) {
-            let text = editor.document.getText(selection);
+            // カーソルの場合は１行とする
+            let isCursor = textutil.IsCursor(selection);
+            let text = "";
+            let range : vscode.Range = selection;
+            if (isCursor) {
+                let line = editor.document.lineAt(selection.start.line);
+                range = line.range;
+                text = editor.document.getText(range) + "\n";
+            } else {
+                text = editor.document.getText(selection);
+            }
             let result = "";
             for (let i = 0; i < count; i++) { result += text; }
-            builder.replace(selection, result);
+            builder.replace(range, result);
         }
     });
 
@@ -108,7 +124,7 @@ function MakeLineSelections(editor: vscode.TextEditor) {
 /** 
  * 引用符を選択リストにする
 */
-function MakeQuoteSelections(quoteList:textutil.CharactorPosition[]) : vscode.Selection[] {
+function MakeQuoteSelections(quoteList:textutil.CharactorPosition[], outer:boolean) : vscode.Selection[] {
     let newSelections: vscode.Selection[] = [];
 
     var qi = 0;
@@ -126,8 +142,10 @@ function MakeQuoteSelections(quoteList:textutil.CharactorPosition[]) : vscode.Se
             continue;
         }
         if (startQuote == ch) {
-            var spos = new vscode.Position(startPos.line, startPos.character+1);
-            var sel = new vscode.Selection(spos, currentPos);
+            var startCharacter = outer ? startPos.character : startPos.character+1;
+            var epos = outer ? new vscode.Position(currentPos.line, currentPos.character+1) : currentPos;
+            var spos = new vscode.Position(startPos.line, startCharacter);
+            var sel = new vscode.Selection(spos, epos);
             startQuote = null;
             newSelections.push(sel);
         }
@@ -137,7 +155,7 @@ function MakeQuoteSelections(quoteList:textutil.CharactorPosition[]) : vscode.Se
 }
 
 /** 引用符の中身を選択する */
-function QuoteSelectBody(editor: vscode.TextEditor) {
+function QuoteSelectBody(editor: vscode.TextEditor, outer: boolean) {
     let quoteList : textutil.CharactorPosition[] = [];
 
     let LineList = textutil.GetSelectedTextLines(editor);
@@ -151,7 +169,7 @@ function QuoteSelectBody(editor: vscode.TextEditor) {
         }
     }
 
-    let newSelections = MakeQuoteSelections(quoteList);
+    let newSelections = MakeQuoteSelections(quoteList, outer);
     if (newSelections.length > 0) editor.selections = newSelections;
 }
 
@@ -213,7 +231,12 @@ function AddTextToSelections() {
 
 // クオートの中身を選択
 function QuoteSelect() {
-    QuoteSelectBody(vscode.window.activeTextEditor);
+    QuoteSelectBody(vscode.window.activeTextEditor, false);
+}
+
+// クオートの外側を選択
+function QuoteOuterSelect() {
+    QuoteSelectBody(vscode.window.activeTextEditor, true);
 }
 
 // 1行ごとに選択する
@@ -440,6 +463,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         ['CombineClipboard', CombineClipboard],
         ['SplitParameterize', SplitParameterize],
+        ['QuoteOuterSelect', QuoteOuterSelect],
     ];
 
     for(var i = 0; i < CommandList.length; i++) {

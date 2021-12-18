@@ -11,6 +11,7 @@
     "parameter-maker.ParameterizeSelectionWithInput.title": "選択範囲を入力文字列でパラメータ化",
     "parameter-maker.CopySelectedText.title": "選択をクリップボード内容の行数分コピー",
     "parameter-maker.QuoteSelect.title": "引用符の中身を再選択",
+    "parameter-maker.QuoteOuterSelect.title": "引用符の外側を再選択",
     "parameter-maker.ParameterizeClipboard.title": "クリップボード内容をパラメータ化",
     "parameter-maker.ReselectWithDelimiter.title": "区切り文字で再選択",
     "parameter-maker.CombineClipboard.title": "クリップボード内容を結合して挿入",
