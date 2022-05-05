@@ -69,15 +69,17 @@ async function CopySelectedTextNTimesBody(editor: vscode.TextEditor, count: numb
             let isCursor = textutil.IsCursor(selection);
             let text = "";
             let range : vscode.Range = selection;
+
+            let result : string;
             if (isCursor) {
                 let line = editor.document.lineAt(selection.start.line);
                 range = line.range;
                 text = editor.document.getText(range) + "\n";
+                result = textutil.repeatString(count, text, true);
             } else {
                 text = editor.document.getText(selection);
+                result = textutil.repeatString(count, text, false);
             }
-            let result = "";
-            for (let i = 0; i < count; i++) { result += text; }
             builder.replace(range, result);
         }
     });

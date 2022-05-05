@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.3.7
+- Adjustment of menu item position.
+
 ### 0.3.6
 - Added the function "Reselect outer of quotes"
 - Improved behavior when cursor of "Merge N lines into one line" and "Copy the selected text N times"

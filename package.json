@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -175,84 +175,81 @@
             ],
             "parameter-maker.ContextMenu" :[
                 {
-                    "command": "parameter-maker.ReselectLineFromText",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.ReselectWordsFromText",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.ReselectWithDelimiter",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.ReselectWithInputDelimiter",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.ReselectBracket",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.ReselectTextWithRegExp",
-                    "when": "editorHasSelection",
-                    "group": "1_reselect"
-                },
-                {
-                    "command": "parameter-maker.CopySelectedText",
-                    "when": "editorHasSelection",
-                    "group": "2_copy"
-                },
-                {
-                    "command": "parameter-maker.QuoteSelect",
-                    "when": "editorHasSelection",
-                    "group": "3_quote"
-                },
-                {
-                    "command": "parameter-maker.QuoteOuterSelect",
-                    "when": "editorHasSelection",
-                    "group": "3_quote"
+                    "command": "parameter-maker.SplitParameterize",
+                    "group": "1_parameter@1"
                 },
                 {
                     "command": "parameter-maker.ParameterizeSelection",
                     "when": "editorHasSelection",
-                    "group": "4_parameter"
+                    "group": "1_parameter@2"
                 },
                 {
                     "command": "parameter-maker.ParameterizeClipboard",
-                    "group": "4_parameter"
+                    "group": "1_parameter@3"
+                },
+                {
+                    "command": "parameter-maker.ReselectLineFromText",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectWordsFromText",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectWithDelimiter",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectWithInputDelimiter",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectBracket",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.ReselectTextWithRegExp",
+                    "when": "editorHasSelection",
+                    "group": "2_reselect"
+                },
+                {
+                    "command": "parameter-maker.CopySelectedText",
+                    "when": "editorHasSelection",
+                    "group": "3_copy"
+                },
+                {
+                    "command": "parameter-maker.QuoteSelect",
+                    "when": "editorHasSelection",
+                    "group": "4_quote"
+                },
+                {
+                    "command": "parameter-maker.QuoteOuterSelect",
+                    "when": "editorHasSelection",
+                    "group": "4_quote"
                 },
                 {
                     "command": "parameter-maker.CombineClipboard",
-                    "group": "4_parameter"
-                },
-                {
-                    "command": "parameter-maker.SplitParameterize",
-                    "group": "4_parameter"
+                    "group": "5_insert"
                 },
                 {
                     "command": "parameter-maker.InsertPatternClipboard",
-                    "group": "4_parameter"
+                    "group": "5_insert"
                 },
                 {
                     "command": "parameter-maker.MergeNLines",
-                    "group": "5_n"
+                    "group": "6_n"
                 },
                 {
                     "command": "parameter-maker.CopySelectedTextNTimes",
-                    "group": "5_n"
+                    "group": "6_n"
                 }
             ],
             "commandPalette": [
-                {
-                    "command": "parameter-maker.CopySelectedTextNTimes"
-                },
                 {
                     "command": "parameter-maker.CopySelectedText",
                     "when": "editorHasSelection"

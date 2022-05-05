@@ -278,3 +278,10 @@ export function IsCursor(selection: vscode.Selection) : boolean {
     return selection.start.isEqual(selection.end);
 }
 
+/** リピートする文字列の作成 */
+export function repeatString(count: number, text: string, trim: boolean) : string {
+    let result = "";
+    for (let i = 0; i < count; i++) { result += text; }
+    if (trim) result = result.trimEnd();
+    return result;
+}
