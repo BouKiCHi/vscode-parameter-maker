@@ -20,7 +20,7 @@
 
     "parameter-maker.ParameterizeClipboard.title": "クリップボード内容をパラメータ化",
     "parameter-maker.SplitParameterize.title": "単語を分割してパラメータ化",
-
+    "parameter-maker.ReselectEveryNMultipleSelections.title": "複数選択をN個ごとに再選択",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "パラメータ作成時の引用符",
     "parameter-maker.OpeningEnclosureCharacter" : "開始囲み文字",

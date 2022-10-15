@@ -19,6 +19,7 @@
     "parameter-maker.SplitParameterize.title": "Split words and Parameterize",
     "parameter-maker.ReselectBracket.title": "Reselect {} bracket",
     "parameter-maker.InsertPatternClipboard.title": "Insert clipboard contents with pattern",
+    "parameter-maker.ReselectEveryNMultipleSelections.title": "Reselect every N multiple selections",
 
     "parameter-maker.QuoteCharactersWhenCreatingParameters" : "Quote characters when creating parameters",
     "parameter-maker.OpeningEnclosureCharacter" : "Opening enclosure character",

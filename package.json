@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.7",
+    "version": "0.3.8",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -33,7 +33,8 @@
         "onCommand:parameter-maker.SplitParameterize",
         "onCommand:parameter-maker.ReselectBracket",
         "onCommand:parameter-maker.InsertPatternClipboard",
-        "onCommand:parameter-maker.QuoteOuterSelect"
+        "onCommand:parameter-maker.QuoteOuterSelect",
+        "onCommand:parameter-maker.ReselectEveryNMultipleSelections"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -164,6 +165,11 @@
                 "command": "parameter-maker.InsertPatternClipboard",
                 "title": "%parameter-maker.InsertPatternClipboard.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ReselectEveryNMultipleSelections",
+                "title": "%parameter-maker.ReselectEveryNMultipleSelections.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -246,6 +252,10 @@
                 },
                 {
                     "command": "parameter-maker.CopySelectedTextNTimes",
+                    "group": "6_n"
+                },
+                {
+                    "command": "parameter-maker.ReselectEveryNMultipleSelections",
                     "group": "6_n"
                 }
             ],

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.3.8
+ - Fixed a bug that empty lines are selected
+ - Added the function "Reselect every N multiple selections"
+
 ### 0.3.7
 - Adjustment of menu item position.
 

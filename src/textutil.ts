@@ -83,6 +83,8 @@ export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
             let line = editor.document.lineAt(lno);
             let startPos = lno == startLineNo ? selection.start : line.range.start;
             let endPos = lno == endLineNo ? selection.end : line.range.end;
+
+            if (startPos.isEqual(endPos)) continue;
     
             var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
             var col = startPos.character;
@@ -249,6 +251,25 @@ export async function SelectBracket(editor: vscode.TextEditor) {
         }
     }
 
+    if (newsel.length > 0) {
+        editor.selections = newsel;
+    }
+}
+
+// N個を再選択
+export async function ReselectN(editor: vscode.TextEditor, num: number) {
+    let newsel: vscode.Selection[] = [];
+    let selections = editor.selections;
+
+    let c = num;
+    for(let i = 0; i < selections.length; i++) {
+        let s = selections[i];
+        c++;
+        if (c < num) continue;
+        c = 0;
+        newsel.push(s); 
+    }
+    
     if (newsel.length > 0) {
         editor.selections = newsel;
     }

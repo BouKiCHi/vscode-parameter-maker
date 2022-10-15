@@ -114,8 +114,11 @@ function MakeLineSelections(editor: vscode.TextEditor) {
     let newSelections: vscode.Selection[] = [];
 
     let LineList = textutil.GetSelectedTextLines(editor);
+    
     for (const l of LineList) {
-        let sel = new vscode.Selection(l.getStartPosition(), l.getEndPosition());
+        let start = l.getStartPosition();
+        let end = l.getEndPosition();
+        let sel = new vscode.Selection(start, end);
         newSelections.push(sel);
     }
 
@@ -123,9 +126,7 @@ function MakeLineSelections(editor: vscode.TextEditor) {
 }
 
 
-/** 
- * 引用符を選択リストにする
-*/
+/** 引用符を選択リストにする */
 function MakeQuoteSelections(quoteList:textutil.CharactorPosition[], outer:boolean) : vscode.Selection[] {
     let newSelections: vscode.Selection[] = [];
 
@@ -241,7 +242,7 @@ function QuoteOuterSelect() {
     QuoteSelectBody(vscode.window.activeTextEditor, true);
 }
 
-// 1行ごとに選択する
+// １行を分割して再選択
 function ReselectLineFromText() {
     MakeLineSelections(vscode.window.activeTextEditor);
 }
@@ -271,6 +272,14 @@ function ReselectBracket() {
     textutil.SelectBracket(vscode.window.activeTextEditor);
 }
 
+// 複数選択をN個飛ばしで再選択
+async function ReselectN() {
+    let n = await vscode.window.showInputBox({ prompt: 'number of N' });
+    if (n === undefined || n.length == 0) return;
+    var num = parseInt(n);
+    textutil.ReselectN(vscode.window.activeTextEditor, num);
+}
+
 
 // 複数行を結合する
 async function MergeNLines() {
@@ -280,6 +289,8 @@ async function MergeNLines() {
     var num = parseInt(n);
     JoinNLines(vscode.window.activeTextEditor, num);
 }
+
+
 // 選択テキストを複数回コピーする
 function CopySelectedTextNTimes() {
     vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then(async (n) => {
@@ -466,6 +477,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['CombineClipboard', CombineClipboard],
         ['SplitParameterize', SplitParameterize],
         ['QuoteOuterSelect', QuoteOuterSelect],
+        ['ReselectEveryNMultipleSelections', ReselectN],
     ];
 
     for(var i = 0; i < CommandList.length; i++) {
