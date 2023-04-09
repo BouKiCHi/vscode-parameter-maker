@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.4.0
+ - Added "Embed clipboard contents into a template"
+ - Added "Reselect with clipboard contents"
+ - Added a workaround to fix a temporary issue with the selection feature.
+
 ### 0.3.8
  - Fixed a bug that empty lines are selected
  - Added the function "Reselect every N multiple selections"

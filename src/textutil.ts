@@ -1,55 +1,21 @@
 'use strict';
 import * as vscode from 'vscode';
+import { TextLine } from './TextLine';
+import { SetEditorSelection } from './SetEditorSelection';
 
-class Cordinate {
+export class Cordinate {
+    index: number;
     start: number;
     end: number;
-    constructor(start:number, end:number) {
+
+    constructor(start:number, end:number);
+    constructor(start:number, end:number, index:number);
+
+    constructor(start:number, end:number, index?:number) {
         this.start = start;
         this.end = end;
+        this.index = index ?? -1;
     }
-}
-
-class TextLine {
-
-    lineNo: number; 
-    col: number;
-    text: string;
-    editor: vscode.TextEditor;
-    startPos: vscode.Position;
-
-    constructor(editor: vscode.TextEditor, lineNo: number, col: number, text: string) {
-        this.editor = editor;
-        this.lineNo = lineNo;
-        this.col = col;
-        this.text = text;
-        this.startPos = new vscode.Position(lineNo, col);
-    }
-
-    getEndPosition(): vscode.Position {
-        return new vscode.Position(this.lineNo, this.col + this.text.length);
-    }
-
-    getStartPosition(): vscode.Position {
-        return new vscode.Position(this.lineNo, this.col);
-    }
-
-    positionAt(index: number) {
-        let offset = this.editor.document.offsetAt(this.startPos);
-        return this.editor.document.positionAt(offset + index);
-    }
-
-    charactorAt(index: number): string {
-        return this.text[index];
-    }
-
-
-    getRange(co: Cordinate) : vscode.Range {
-        let startPos = this.positionAt(co.start);
-        let endPos = this.positionAt(co.end);
-        return new vscode.Range(startPos, endPos);
-    }
-
 }
 
 export class CharactorPosition {
@@ -62,7 +28,6 @@ export class CharactorPosition {
     }
 }
 
-
 // クリップボードの行数を取得
 export async function CountTextLines() {
     let value = await vscode.env.clipboard.readText();
@@ -71,7 +36,7 @@ export async function CountTextLines() {
     return data.length;
 }
 
-// 選択したテキスト行
+// 選択したテキスト行を取得する
 export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
     let selections = editor.selections;
     let lines : TextLine[] = [];
@@ -110,10 +75,10 @@ export function ReselectTextWithPattern(editor: vscode.TextEditor, pattern: stri
         }
     }
 
-    if (newSelections.length > 0) editor.selections = newSelections;
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 }
-
-
 
 /** 正規表現のパターンと一致したインデックスのリストを得る */
 export function GetIndexList(text: string, pattern: string) : number[] {
@@ -136,8 +101,15 @@ export function SplitText(text: string) {
     return text.split("\n");
 }
 
+/** テキストを行ごとにタブで分離する */
+export function SplitTabRow(text: string) {
+    text = text.trimEnd();
+    text = text.replace(/[\r\n]+/g, "\n");
+    return text.split("\n").map(x => x.split("\t"));
+}
+
 /** {}の範囲リストを作成 */
-export function MakeBracketRangeList(text: string) : Cordinate[] {
+export function MakeBraceRangeList(text: string) : Cordinate[] {
     var re = new RegExp('\{\}', "g");
     var coordinates : Cordinate[] = [];
 
@@ -151,6 +123,15 @@ export function MakeBracketRangeList(text: string) : Cordinate[] {
     }
 
     return coordinates;
+}
+
+/** {n}を置換する */
+export function ReplaceBraceIndex(text: string, values: string[]) : string {
+    return text.replace(/\{(\d+)\}/g, function(sub,p1) {
+        let index = +p1;
+        if (index < 0 || values.length <= index) return '';
+        return values[index];
+    });
 }
 
 
@@ -201,6 +182,29 @@ export function GetRangeFromIntext(text: string, seperator: string) {
     return coordinates;
 }
 
+/** keyで指定した文字列の範囲を得る */
+export function GetRangeAll(text: string, key: string) {
+    // 正規表現エスケープ
+    let KeyEscaped = EscapeRegExp(key);
+    var re = new RegExp(KeyEscaped, "g");
+    var coordinates = [];
+
+    if (text.length == 0) return coordinates;
+    while (true) {
+        var m = re.exec(text);
+        if (m == null || m[0].length == 0) break;
+        var start = m.index;
+        var length = m[0].length;
+        coordinates.push([start, start + length]);
+    }
+    return coordinates;
+}
+
+/** 正規表現のエスケープ */
+function EscapeRegExp(text: string) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
+}
+
 /** インデックスリストをテキストより作成 */
 export function IndexFromText(text: string, headNumber: number, tailNumber: number) {
     var indexData = text.split(",");
@@ -236,13 +240,13 @@ export function IndexFromText(text: string, headNumber: number, tailNumber: numb
 
 
 // {}を再選択する
-export async function SelectBracket(editor: vscode.TextEditor) {
+export async function SelectBrace(editor: vscode.TextEditor) {
     let newsel: vscode.Selection[] = [];
     let LineList = GetSelectedTextLines(editor);
 
     for (const l of LineList) {
         // {}の範囲を取得
-        var cord = MakeBracketRangeList(l.text);
+        var cord = MakeBraceRangeList(l.text);
         for (var ci = 0; ci < cord.length; ci++) {
             var co = cord[ci];
             let range = l.getRange(co);
@@ -252,7 +256,7 @@ export async function SelectBracket(editor: vscode.TextEditor) {
     }
 
     if (newsel.length > 0) {
-        editor.selections = newsel;
+        SetEditorSelection(editor, newsel);
     }
 }
 
@@ -271,30 +275,30 @@ export async function ReselectN(editor: vscode.TextEditor, num: number) {
     }
     
     if (newsel.length > 0) {
-        editor.selections = newsel;
+        SetEditorSelection(editor, newsel);
     }
 }
 
-// 全体の範囲を取得する
+/** 全体の範囲を取得する */
 export function GetDocumentRange(doc:vscode.TextDocument) : vscode.Range  {
     let start = doc.lineAt(0);
     let end = doc.lineAt(doc.lineCount-1);
     return new vscode.Range(start.range.start, end.range.end);
 }
 
-// 全体の範囲を取得する
+/** 全体の範囲を取得する */
 export function GetDocumentSelect(doc:vscode.TextDocument) : vscode.Selection  {
     let range = GetDocumentRange(doc);
     return new vscode.Selection(range.start, range.end);
 }
 
-// 改行テキストを取得
+/** 改行テキストを取得 */
 export function getTextList(text: string) {
     var regex = /[\r\n]+/;
     return text.split(regex);
 }
 
-// カーソルか？
+/** カーソルか？ */
 export function IsCursor(selection: vscode.Selection) : boolean {
     return selection.start.isEqual(selection.end);
 }

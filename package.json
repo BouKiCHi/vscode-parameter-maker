@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.3.8",
+    "version": "0.4.0",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -13,29 +13,7 @@
         "type": "git",
         "url": "https://github.com/BouKiCHi/vscode-parameter-maker.git"
     },
-    "activationEvents": [
-        "onCommand:parameter-maker.AddTextToSelections",
-        "onCommand:parameter-maker.EncloseAllSectionsWithInputChars",
-        "onCommand:parameter-maker.ReselectLineFromText",
-        "onCommand:parameter-maker.ReselectWordsFromText",
-        "onCommand:parameter-maker.MergeNLines",
-        "onCommand:parameter-maker.CopySelectedTextNTimes",
-        "onCommand:parameter-maker.FilterSelectionByIndexInLine",
-        "onCommand:parameter-maker.ParameterizeSelection",
-        "onCommand:parameter-maker.ParameterizeSelectionWithInput",
-        "onCommand:parameter-maker.ReselectTextWithRegExp",
-        "onCommand:parameter-maker.CopySelectedText",
-        "onCommand:parameter-maker.QuoteSelect",
-        "onCommand:parameter-maker.ParameterizeClipboard",
-        "onCommand:parameter-maker.ReselectWithDelimiter",
-        "onCommand:parameter-maker.CombineClipboard",
-        "onCommand:parameter-maker.ReselectWithInputDelimiter",
-        "onCommand:parameter-maker.SplitParameterize",
-        "onCommand:parameter-maker.ReselectBracket",
-        "onCommand:parameter-maker.InsertPatternClipboard",
-        "onCommand:parameter-maker.QuoteOuterSelect",
-        "onCommand:parameter-maker.ReselectEveryNMultipleSelections"
-    ],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "configuration": [
@@ -157,8 +135,8 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.ReselectBracket",
-                "title": "%parameter-maker.ReselectBracket.title%",
+                "command": "parameter-maker.ReselectBrace",
+                "title": "%parameter-maker.ReselectBrace.title%",
                 "category": "Parameter"
             },
             {
@@ -169,6 +147,16 @@
             {
                 "command": "parameter-maker.ReselectEveryNMultipleSelections",
                 "title": "%parameter-maker.ReselectEveryNMultipleSelections.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ClipboardToTemplate",
+                "title": "%parameter-maker.ClipboardToTemplate.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ReselectClipboardContents",
+                "title": "%parameter-maker.ReselectClipboardContents.title%",
                 "category": "Parameter"
             }
         ],
@@ -214,7 +202,7 @@
                     "group": "2_reselect"
                 },
                 {
-                    "command": "parameter-maker.ReselectBracket",
+                    "command": "parameter-maker.ReselectBrace",
                     "when": "editorHasSelection",
                     "group": "2_reselect"
                 },
@@ -277,7 +265,7 @@
         "vscode-nls": "^5.0.0"
     },
     "engines": {
-		"vscode": "^1.62.0"
+        "vscode": "^1.62.0"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -285,17 +273,17 @@
         "lint": "eslint . --ext .ts,.tsx",
         "watch": "tsc -watch -p ./"
     },
-	"devDependencies": {
-		"@types/vscode": "^1.62.0",
-		"@types/glob": "^7.1.4",
-		"@types/mocha": "^9.0.0",
-		"@types/node": "14.x",
-		"@typescript-eslint/eslint-plugin": "^5.1.0",
-		"@typescript-eslint/parser": "^5.1.0",
-		"eslint": "^8.1.0",
-		"glob": "^7.1.7",
-		"mocha": "^9.1.3",
-		"typescript": "^4.4.4",
-		"@vscode/test-electron": "^1.6.2"
-	}
+    "devDependencies": {
+        "@types/vscode": "^1.62.0",
+        "@types/glob": "^7.1.4",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "14.x",
+        "@typescript-eslint/eslint-plugin": "^5.1.0",
+        "@typescript-eslint/parser": "^5.1.0",
+        "eslint": "^8.1.0",
+        "glob": "^7.1.7",
+        "mocha": "^9.1.3",
+        "typescript": "^4.4.4",
+        "@vscode/test-electron": "^1.6.2"
+    }
 }

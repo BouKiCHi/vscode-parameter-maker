@@ -3,12 +3,14 @@
 import * as vscode from 'vscode';
 import * as nls from 'vscode-nls';
 import * as textutil from './textutil';
+import { TextLine } from './TextLine';
+import { SetEditorSelection } from './SetEditorSelection';
 
 let localize = nls.loadMessageBundle();
 
 /** 選択部分を編集する */
 function EditSelections(editor: vscode.TextEditor, openEnclose: string, closeEnclose: string, delimiter: string) {
-    const selections: vscode.Selection[] = editor.selections;
+    let selections = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {
             let text = editor.document.getText(selection);
@@ -22,7 +24,7 @@ function EditSelections(editor: vscode.TextEditor, openEnclose: string, closeEnc
 
 /** N行を一行に結合する */
 function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
-    const selections: vscode.Selection[] = editor.selections;
+    let selections = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {
             // カーソル
@@ -85,7 +87,7 @@ async function CopySelectedTextNTimesBody(editor: vscode.TextEditor, count: numb
     });
 
     // {}を再選択する
-    await textutil.SelectBracket(editor);
+    await textutil.SelectBrace(editor);
 }
 
 
@@ -96,17 +98,24 @@ function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string) {
     for(const l of LineList) {
         // 範囲の取得
         var cord = textutil.GetRangeFromIntext(l.text, intext);
-        for (var ci = 0; ci < cord.length; ci++) {
-            var co = cord[ci];
-            let startPos = l.positionAt(co[0]);
-            let endPos = l.positionAt(co[1]);
-            let sel = new vscode.Selection(startPos, endPos);
-            newSelections.push(sel);
-        }
+        AddSelection(newSelections, l, cord);
     }
 
-    if (newSelections.length > 0) editor.selections = newSelections;
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 
+}
+
+/** 選択をリストに追加 */
+function AddSelection(list: vscode.Selection[], currentLine: TextLine, cord: any[]) {
+    for (var ci = 0; ci < cord.length; ci++) {
+        var co = cord[ci];
+        let startPos = currentLine.positionAt(co[0]);
+        let endPos = currentLine.positionAt(co[1]);
+        let sel = new vscode.Selection(startPos, endPos);
+        list.push(sel);
+    }
 }
 
 /** テキストを1行ごとに選択する */
@@ -122,7 +131,9 @@ function MakeLineSelections(editor: vscode.TextEditor) {
         newSelections.push(sel);
     }
 
-    if (newSelections.length > 0) editor.selections = newSelections;
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 }
 
 
@@ -173,9 +184,10 @@ function QuoteSelectBody(editor: vscode.TextEditor, outer: boolean) {
     }
 
     let newSelections = MakeQuoteSelections(quoteList, outer);
-    if (newSelections.length > 0) editor.selections = newSelections;
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 }
-
 
 function Filtering(output: vscode.Selection[], source: vscode.Selection[], text: string) {
     var indexMap = textutil.IndexFromText(text, 1, source.length);
@@ -187,7 +199,7 @@ function Filtering(output: vscode.Selection[], source: vscode.Selection[], text:
 
 /** フィルタをインデックスで選択する */
 function FilterSelections(editor: vscode.TextEditor, indexText: string) {
-    const selections: vscode.Selection[] = editor.selections;
+    let selections = editor.selections;
     let newSelections: vscode.Selection[] = [];
     let tempSelections: vscode.Selection[] = [];
     let lastStartLine = -1;
@@ -203,9 +215,10 @@ function FilterSelections(editor: vscode.TextEditor, indexText: string) {
     }
     Filtering(newSelections, tempSelections, indexText);
 
-    if (newSelections.length > 0) editor.selections = newSelections;
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 }
-
 
 
 // テキストフィルタ
@@ -268,8 +281,57 @@ async function ReselectWithInputDelimiter() {
 }
 
 // {}を再選択
-function ReselectBracket() {
-    textutil.SelectBracket(vscode.window.activeTextEditor);
+function ReselectBrace() {
+    textutil.SelectBrace(vscode.window.activeTextEditor);
+}
+
+// クリップボード内容をテンプレート埋め込み 
+async function ClipboardToTemplate() {
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let rows = textutil.SplitTabRow(text);
+
+    let selections = editor.selections;
+
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            // 選択全体を取得
+            let text = editor.document.getText(selection);
+            let newText = '';
+            for(const row of rows) {
+                // ブレイスの位置を取得
+                newText += textutil.ReplaceBraceIndex(text, row);    
+            }
+            builder.replace(selection, newText);
+        }
+    });
+
+}
+
+// クリップボード内容を再選択
+async function ReselectClipboardContents() {
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let keywords = textutil.SplitText(text);
+    MakeSelectionsFromKeywords(editor, keywords);
+}
+
+/** テキストを入力テキストによって再選択する */
+function MakeSelectionsFromKeywords(editor: vscode.TextEditor, keywords: string[]) {
+    let lineList = textutil.GetSelectedTextLines(editor);
+    let newSelections: vscode.Selection[] = [];
+    for(const l of lineList) {
+        // 範囲の取得
+        for(let ki in keywords) {
+            let key = keywords[ki];
+            let cord = textutil.GetRangeAll(l.text, key);
+            AddSelection(newSelections, l, cord);
+        }
+    }
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
 }
 
 // 複数選択をN個飛ばしで再選択
@@ -471,13 +533,15 @@ export function activate(context: vscode.ExtensionContext) {
         ['ParameterizeClipboard', ParameterizeClipboard],
         ['ReselectWithDelimiter', ReselectWithDelimiter],
         ['ReselectWithInputDelimiter', ReselectWithInputDelimiter],
-        ['ReselectBracket', ReselectBracket],
+        ['ReselectBrace', ReselectBrace],
         ['InsertPatternClipboard', InsertPatternClipboard],
 
         ['CombineClipboard', CombineClipboard],
         ['SplitParameterize', SplitParameterize],
         ['QuoteOuterSelect', QuoteOuterSelect],
         ['ReselectEveryNMultipleSelections', ReselectN],
+        ['ReselectClipboardContents', ReselectClipboardContents],
+        ['ClipboardToTemplate', ClipboardToTemplate],
     ];
 
     for(var i = 0; i < CommandList.length; i++) {
@@ -493,3 +557,5 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 export { QuoteSelectBody }
+
+
