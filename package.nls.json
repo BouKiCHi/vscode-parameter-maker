@@ -9,7 +9,7 @@
   "parameter-maker.CopySelectedText.title": "Copy selected text as many lines as there are lines in the clipboard",
   "parameter-maker.CombineClipboard.title": "Combine and insert clipboard contents",
   "parameter-maker.InsertPatternClipboard.title": "Insert clipboard contents with pattern",
-  "parameter-maker.ParameterizeClipboard.title": "Parameterize the clipboard contents",
+  "parameter-maker.ParameterizeClipboard.title": "Paste as parameter",
   "parameter-maker.SplitParameterize.title": "Split words and Parameterize",
   "parameter-maker.FilterSelectionByIndexInLine.title": "Filter Selection by Index In Line",
   "parameter-maker.ReselectTextWithRegExp.title": "Reselect selected text with regular expression",
@@ -29,5 +29,6 @@
   "parameter-maker.ParameterInsert": "Parameter Insert",
   "parameter-maker.ParameterReselect": "Parameter Reselect",
   "parameter-maker.ClipboardToTemplate.title": "Embed clipboard contents into a template",
-  "parameter-maker.ReselectClipboardContents.title": "Reselect with clipboard contents"
+  "parameter-maker.ReselectClipboardContents.title": "Reselect with clipboard contents",
+  "parameter-maker.DoubleQuoteToSingleQuote.title": "Replace double quote to single quote"
 }

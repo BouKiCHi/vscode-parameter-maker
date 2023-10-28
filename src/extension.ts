@@ -9,7 +9,7 @@ import { SetEditorSelection } from './SetEditorSelection';
 let localize = nls.loadMessageBundle();
 
 /** 選択部分を編集する */
-function EditSelections(editor: vscode.TextEditor, openEnclose: string, closeEnclose: string, delimiter: string) {
+function EditSelections(editor: vscode.TextEditor, openEnclose: string | null, closeEnclose: string | null, delimiter: string | null) {
     let selections = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {
@@ -123,7 +123,7 @@ function MakeLineSelections(editor: vscode.TextEditor) {
     let newSelections: vscode.Selection[] = [];
 
     let LineList = textutil.GetSelectedTextLines(editor);
-    
+
     for (const l of LineList) {
         let start = l.getStartPosition();
         let end = l.getEndPosition();
@@ -143,7 +143,7 @@ function MakeQuoteSelections(quoteList:textutil.CharactorPosition[], outer:boole
 
     var qi = 0;
     var startQuote = null;
-    var startPos : vscode.Position = null;
+    var startPos : vscode.Position = new vscode.Position(0,0);
 
     while(qi < quoteList.length) {
         var qp = quoteList[qi];
@@ -223,8 +223,8 @@ function FilterSelections(editor: vscode.TextEditor, indexText: string) {
 
 // テキストフィルタ
 function FilterSelectionByIndexInLine() {
-    vscode.window.showInputBox({ prompt: 'Index Text(ex: "1-2,4,7"' }).then((intext) => {
-        if (intext === undefined || intext.length == 0) return;
+    vscode.window.showInputBox({ prompt: 'Index Text(ex: "1-2,4,7")' }).then((intext) => {
+        if (intext === undefined || intext.length == 0 || !vscode.window.activeTextEditor) return;
         FilterSelections(vscode.window.activeTextEditor, intext);
     });
 }
@@ -232,7 +232,7 @@ function FilterSelectionByIndexInLine() {
 // 選択を囲む
 function EncloseAllSectionsWithInputChars() {
     vscode.window.showInputBox({ prompt: 'Text to surround' }).then((intext) => {
-        if (intext === undefined || intext.length == 0) return;
+        if (intext === undefined || intext.length == 0 || !vscode.window.activeTextEditor) return;
         EditSelections(vscode.window.activeTextEditor, intext, intext, null);
     });
 }
@@ -240,28 +240,32 @@ function EncloseAllSectionsWithInputChars() {
 // 選択の最後に追加する
 function AddTextToSelections() {
     vscode.window.showInputBox({ prompt: 'Text to append' }).then((intext) => {
-        if (intext === undefined || intext.length == 0) return;
+        if (intext === undefined || intext.length == 0 || !vscode.window.activeTextEditor) return;
         EditSelections(vscode.window.activeTextEditor, null, null, intext);
     });
 }
 
 // クオートの中身を選択
 function QuoteSelect() {
+    if (!vscode.window.activeTextEditor) return;
     QuoteSelectBody(vscode.window.activeTextEditor, false);
 }
 
 // クオートの外側を選択
 function QuoteOuterSelect() {
+    if (!vscode.window.activeTextEditor) return;
     QuoteSelectBody(vscode.window.activeTextEditor, true);
 }
 
 // １行を分割して再選択
 function ReselectLineFromText() {
+    if (!vscode.window.activeTextEditor) return;
     MakeLineSelections(vscode.window.activeTextEditor);
 }
 
 // 単語を分割して再選択する
 function ReselectWordsFromText() {
+    if (!vscode.window.activeTextEditor) return;
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, "\\s+");
 }
 
@@ -270,6 +274,7 @@ function ReselectWithDelimiter() {
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let delimiter = config.get<string>('Delimiter') || null;
     if (!delimiter) return;
+    if (!vscode.window.activeTextEditor) return;
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
 }
 
@@ -277,16 +282,19 @@ function ReselectWithDelimiter() {
 async function ReselectWithInputDelimiter() {
     let delimiter = await vscode.window.showInputBox({ prompt: 'delimiter' });
     if (!delimiter) return;
+    if (!vscode.window.activeTextEditor) return;
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
 }
 
 // {}を再選択
 function ReselectBrace() {
+    if (!vscode.window.activeTextEditor) return;
     textutil.SelectBrace(vscode.window.activeTextEditor);
 }
 
-// クリップボード内容をテンプレート埋め込み 
+// クリップボード内容をテンプレート埋め込み
 async function ClipboardToTemplate() {
+    if (!vscode.window.activeTextEditor) return;
     let editor = vscode.window.activeTextEditor;
     let text = await vscode.env.clipboard.readText();
     let rows = textutil.SplitTabRow(text);
@@ -301,16 +309,31 @@ async function ClipboardToTemplate() {
             let newText = '';
             for(const row of rows) {
                 // ブレイスの位置を取得
-                newText += textutil.ReplaceBraceIndex(text, row);    
+                newText += textutil.ReplaceBraceIndex(text, row);
             }
             builder.replace(selection, newText);
         }
     });
+}
 
+// ダブルクオートをシングルクォートに変換
+function DoubleQuoteToSingleQuote() {
+    if (!vscode.window.activeTextEditor) return;
+    let editor = vscode.window.activeTextEditor;
+    let selections = editor.selections;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            let text = editor.document.getText(selection);
+            const newText = text.replace(/"/g, "'");
+            builder.replace(selection, newText);
+        }
+    });
 }
 
 // クリップボード内容を再選択
 async function ReselectClipboardContents() {
+    if (!vscode.window.activeTextEditor) return;
     let editor = vscode.window.activeTextEditor;
     let text = await vscode.env.clipboard.readText();
     let keywords = textutil.SplitText(text);
@@ -336,6 +359,7 @@ function MakeSelectionsFromKeywords(editor: vscode.TextEditor, keywords: string[
 
 // 複数選択をN個飛ばしで再選択
 async function ReselectN() {
+    if (!vscode.window.activeTextEditor) return;
     let n = await vscode.window.showInputBox({ prompt: 'number of N' });
     if (n === undefined || n.length == 0) return;
     var num = parseInt(n);
@@ -345,8 +369,9 @@ async function ReselectN() {
 
 // 複数行を結合する
 async function MergeNLines() {
+    if (!vscode.window.activeTextEditor) return;
     let n = await vscode.window.showInputBox({ prompt: 'N lines' });
-    
+
     if (n === undefined || n.length == 0) return;
     var num = parseInt(n);
     JoinNLines(vscode.window.activeTextEditor, num);
@@ -357,6 +382,7 @@ async function MergeNLines() {
 function CopySelectedTextNTimes() {
     vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then(async (n) => {
         if (n === undefined) { return; }
+        if (!vscode.window.activeTextEditor) return;
 
         let num = n.length == 0 ? 0 : parseInt(n);
         if (num == 0) num = await textutil.CountTextLines();
@@ -370,19 +396,21 @@ function CopySelectedTextNTimes() {
 // 選択したテキストをクリップボードの行数分コピーする
 async function CopySelectedText() {
     let num = await textutil.CountTextLines();
+    if (!vscode.window.activeTextEditor) return;
     CopySelectedTextNTimesBody(vscode.window.activeTextEditor, num);
 }
 
 // 選択範囲を入力文字列でパラメータ化する
 async function ParameterizeSelectionWithInput() {
+    if (!vscode.window.activeTextEditor) return;
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let openEncloseConfig = config.get<string>('OpeningEnclosureCharacter') || null;
     let closeEncloseConfig = config.get<string>('ClosingEnclosureCharacter') || null;
     let DelimiterConfig = config.get<string>('Delimiter') || null;
 
-    let openEnclose = await vscode.window.showInputBox({ prompt: 'Opening Enclosure(Empty: Follow the setting)' });
-    let closeEnclose = await vscode.window.showInputBox({ prompt: 'Closing Enclosure(Empty: Follow the setting)' });
-    let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' });
+    let openEnclose = await vscode.window.showInputBox({ prompt: 'Opening Enclosure(Empty: Follow the setting)' }) || null;
+    let closeEnclose = await vscode.window.showInputBox({ prompt: 'Closing Enclosure(Empty: Follow the setting)' }) || null;
+    let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' }) || null;
 
     openEnclose = openEnclose || openEncloseConfig;
     closeEnclose = closeEnclose || closeEncloseConfig;
@@ -392,7 +420,8 @@ async function ParameterizeSelectionWithInput() {
 }
 
 // 選択範囲を設定でパラメータ化する
-function ParameterizeSelection() { 
+function ParameterizeSelection() {
+    if (!vscode.window.activeTextEditor) return;
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let openEnclose = config.get<string>('Quote') || null;
     let closeEnclose = openEnclose;
@@ -402,7 +431,8 @@ function ParameterizeSelection() {
 }
 
 // 単語を分割してパラメータ化する
-function SplitParameterize() { 
+function SplitParameterize() {
+    if (!vscode.window.activeTextEditor) return;
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, "\\s+");
 
     let config = vscode.workspace.getConfiguration('parameter-maker');
@@ -414,7 +444,9 @@ function SplitParameterize() {
 }
 
 // クリップボード内容をパラメータ化する
-async function ParameterizeClipboard() { 
+async function ParameterizeClipboard() {
+    if (!vscode.window.activeTextEditor) return;
+
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let openEnclose = config.get<string>('Quote') || null;
     let closeEnclose = openEnclose;
@@ -446,14 +478,15 @@ async function ParameterizeClipboard() {
 }
 
 // クリップボードを結合して挿入
-async function CombineClipboard() { 
+async function CombineClipboard() {
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' });
     if (Delimiter === undefined) { return; }
 
-    Delimiter = Delimiter || config.get<string>('Delimiter') || null;
+    Delimiter = Delimiter || config.get<string>('Delimiter') || undefined;
 
-    let editor = vscode.window.activeTextEditor;
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
     let text = await vscode.env.clipboard.readText();
     let values = textutil.SplitText(text);
 
@@ -477,11 +510,13 @@ async function CombineClipboard() {
 }
 
 // クリップボード内容をパターンで挿入
-async function InsertPatternClipboard() { 
-    let pattern = await vscode.window.showInputBox({ prompt: 'Pattern(ex. "{}",' });
-    if (pattern === undefined) { return; }
+async function InsertPatternClipboard() {
+    const pattern = await vscode.window.showInputBox({ prompt: 'Pattern(ex. "{}"),' });
+
+    if (!pattern) { return; }
 
     let editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
     let text = await vscode.env.clipboard.readText();
     let values = textutil.SplitText(text);
 
@@ -508,14 +543,12 @@ async function InsertPatternClipboard() {
 // 正規表現で再選択する
 function ReselectTextWithRegExp() {
     vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
-        if (intext === undefined || intext.length == 0) return Promise.reject();
+        if (intext === undefined || intext.length == 0 || !vscode.window.activeTextEditor) return Promise.reject();
         MakeSelectionsFromText(vscode.window.activeTextEditor, intext);
     });
 }
 
 export function activate(context: vscode.ExtensionContext) {
-
-    let disposable: vscode.Disposable = null;
 
     let CommandList : [string, (...args: any[]) => any][] = [
         ['FilterSelectionByIndexInLine', FilterSelectionByIndexInLine],
@@ -542,14 +575,17 @@ export function activate(context: vscode.ExtensionContext) {
         ['ReselectEveryNMultipleSelections', ReselectN],
         ['ReselectClipboardContents', ReselectClipboardContents],
         ['ClipboardToTemplate', ClipboardToTemplate],
+
+        ['DoubleQuoteToSingleQuote', DoubleQuoteToSingleQuote],
+
     ];
 
-    for(var i = 0; i < CommandList.length; i++) {
-        var Command = CommandList[i];
-        var Name = Command[0];
-        var Func = Command[1];
+    for(let i = 0; i < CommandList.length; i++) {
+        const Command = CommandList[i];
+        const Name = Command[0];
+        const Func = Command[1];
 
-        disposable = vscode.commands.registerCommand('parameter-maker.' + Name, Func);
+        const disposable = vscode.commands.registerCommand('parameter-maker.' + Name, Func);
         context.subscriptions.push(disposable);
     }
 }

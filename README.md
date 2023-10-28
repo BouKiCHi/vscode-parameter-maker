@@ -15,12 +15,7 @@ The Extension has the following function.
 
 ### New Features
 
-* Embed clipboard contents into a template 
-[detail](FUNCTION.md#embed-clipboard-contents-into-a-template)
-* Reselect with clipboard contents
-[detail](FUNCTION.md#reselect-with-clipboard-contents)
-
-
+* Replace double quote to single quote
 
 ### Edit
 * Add text to selections
@@ -31,7 +26,10 @@ The Extension has the following function.
 
 * Parameterize the selection
 * Parameterize the selection with the input string
-* Parameterize the clipboard contents
+* Paste as parameter (ex. Parameterize the clipboard contents)
+
+* Embed clipboard contents into a template 
+[detail](FUNCTION.md#embed-clipboard-contents-into-a-template)
 
 ### Select
 * Reselect selected text with regular expression
@@ -43,5 +41,6 @@ The Extension has the following function.
 * Split and Reselect words in the selected text
 * Reselect with delimiter
 
-
+* Reselect with clipboard contents
+[detail](FUNCTION.md#reselect-with-clipboard-contents)
 

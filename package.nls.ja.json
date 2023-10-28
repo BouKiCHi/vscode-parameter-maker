@@ -9,7 +9,7 @@
   "parameter-maker.CopySelectedText.title": "選択をクリップボード内容の行数分コピー",
   "parameter-maker.CombineClipboard.title": "クリップボード内容を結合して挿入",
   "parameter-maker.InsertPatternClipboard.title": "クリップボード内容をパターン挿入",
-  "parameter-maker.ParameterizeClipboard.title": "クリップボード内容をパラメータ化",
+  "parameter-maker.ParameterizeClipboard.title": "パラメータとしてペースト",
   "parameter-maker.SplitParameterize.title": "単語を分割してパラメータ化",
   "parameter-maker.FilterSelectionByIndexInLine.title": "行内の選択をインデックスでフィルタ",
   "parameter-maker.ReselectTextWithRegExp.title": "正規表現で再選択",
@@ -29,5 +29,6 @@
   "parameter-maker.ParameterInsert": "パラメータ挿入",
   "parameter-maker.ParameterReselect": "パラメータ再選択",
   "parameter-maker.ClipboardToTemplate.title": "クリップボード内容をテンプレート埋め込み",
-  "parameter-maker.ReselectClipboardContents.title": "クリップボード内容で再選択"
+  "parameter-maker.ReselectClipboardContents.title": "クリップボード内容で再選択",
+  "parameter-maker.DoubleQuoteToSingleQuote.title": "ダブルクオートからシングルクォートに置換する"
 }

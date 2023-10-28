@@ -83,7 +83,7 @@ export function ReselectTextWithPattern(editor: vscode.TextEditor, pattern: stri
 /** 正規表現のパターンと一致したインデックスのリストを得る */
 export function GetIndexList(text: string, pattern: string) : number[] {
     var re = new RegExp(pattern, "g");
-    var positions = [];
+    var positions : number[] = [];
     if (text.length == 0) return positions;
     while (true) {
         var match = re.exec(text);
@@ -148,7 +148,7 @@ export function GetRangeFromPattern(text: string, pattern: string) : Cordinate[]
     var re = new RegExp(pattern, "g");
     var start = 0;
     var end = 0;
-    var coordinates = [];
+    var coordinates : Cordinate[] = [];
 
     if (text.length == 0) return coordinates;
     while (true) {
@@ -168,7 +168,7 @@ export function GetRangeFromPattern(text: string, pattern: string) : Cordinate[]
 /** 入力文字の範囲を得る */
 export function GetRangeFromIntext(text: string, seperator: string) {
     var re = new RegExp(seperator, "g");
-    var coordinates = [];
+    var coordinates : any[] = [];
 
     if (text.length == 0) return coordinates;
     while (true) {
@@ -187,7 +187,7 @@ export function GetRangeAll(text: string, key: string) {
     // 正規表現エスケープ
     let KeyEscaped = EscapeRegExp(key);
     var re = new RegExp(KeyEscaped, "g");
-    var coordinates = [];
+    var coordinates : any[] = [];
 
     if (text.length == 0) return coordinates;
     while (true) {
@@ -208,7 +208,7 @@ function EscapeRegExp(text: string) {
 /** インデックスリストをテキストより作成 */
 export function IndexFromText(text: string, headNumber: number, tailNumber: number) {
     var indexData = text.split(",");
-    var map = {};
+    var map : any = {};
     headNumber = headNumber || 0;
 
     for (var i = 0; i < indexData.length; i++) {

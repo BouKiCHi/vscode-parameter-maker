@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -158,6 +158,11 @@
                 "command": "parameter-maker.ReselectClipboardContents",
                 "title": "%parameter-maker.ReselectClipboardContents.title%",
                 "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.DoubleQuoteToSingleQuote",
+                "title": "%parameter-maker.DoubleQuoteToSingleQuote.title%",
+                "category": "Parameter"
             }
         ],
         "menus": {
@@ -262,7 +267,7 @@
         ]
     },
     "dependencies": {
-        "vscode-nls": "^5.0.0"
+        "vscode-nls": "^5.2.0"
     },
     "engines": {
         "vscode": "^1.62.0"
@@ -274,16 +279,16 @@
         "watch": "tsc -watch -p ./"
     },
     "devDependencies": {
-        "@types/vscode": "^1.62.0",
-        "@types/glob": "^7.1.4",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "14.x",
-        "@typescript-eslint/eslint-plugin": "^5.1.0",
-        "@typescript-eslint/parser": "^5.1.0",
-        "eslint": "^8.1.0",
-        "glob": "^7.1.7",
-        "mocha": "^9.1.3",
-        "typescript": "^4.4.4",
-        "@vscode/test-electron": "^1.6.2"
+        "@types/vscode": "^1.83.1",
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.3",
+        "@types/node": "20.x",
+        "@typescript-eslint/eslint-plugin": "^6.9.0",
+        "@typescript-eslint/parser": "^6.9.0",
+        "eslint": "^8.52.0",
+        "glob": "^10.3.10",
+        "mocha": "^10.2.0",
+        "typescript": "^5.2.2",
+        "@vscode/test-electron": "^2.3.6"
     }
 }
