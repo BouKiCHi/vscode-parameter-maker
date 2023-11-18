@@ -1,5 +1,20 @@
 # CHANGELOG
 
+### 0.4.2
+ - Changed some features title like 'Paste as parameter' to 'Paste as quoted parameter'
+ - Added 'Paste as parameter' for comma separation.
+
+ - Added "Reselect the space(s)"
+ - Added "Reselect the number(s)"
+ - Added "Replace single quote to double quote"
+ - Added "Convert comma-separated values to tab-separated values"
+ - Added "to double quote(from single quote)"
+ - Added "Show the number of selected lines."
+ - Changed the order of menu items and groups.
+
+### 0.4.1
+ - Added "Replace double quote to single quote"
+
 ### 0.4.0
  - Added "Embed clipboard contents into a template"
  - Added "Reselect with clipboard contents"

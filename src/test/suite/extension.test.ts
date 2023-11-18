@@ -49,7 +49,7 @@ suite('Extension Test Suite', () => {
         let doc = editor.document; 
         editor.selection = textutil.GetDocumentSelect(doc);
 
-        textutil.SelectBrace(editor);
+        textutil.ReselectBrace(editor);
         let selections = editor.selections;
 
         assert.strictEqual(selections.length, 2);

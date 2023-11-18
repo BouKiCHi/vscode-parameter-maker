@@ -29,7 +29,7 @@ export class CharactorPosition {
 }
 
 // クリップボードの行数を取得
-export async function CountTextLines() {
+export async function CountClipboardTextLines() {
     let value = await vscode.env.clipboard.readText();
     let value2 = value.replace(/[\r\n]+/g, "\n");
     let data = value2.split("\n");
@@ -108,9 +108,8 @@ export function SplitTabRow(text: string) {
     return text.split("\n").map(x => x.split("\t"));
 }
 
-/** {}の範囲リストを作成 */
-export function MakeBraceRangeList(text: string) : Cordinate[] {
-    var re = new RegExp('\{\}', "g");
+/** 正規表現に一致した部分の範囲リストを作成 */
+function MakeRangeList(re: RegExp, text: string) : Cordinate[] {
     var coordinates : Cordinate[] = [];
 
     if (text.length == 0) return coordinates;
@@ -238,15 +237,32 @@ export function IndexFromText(text: string, headNumber: number, tailNumber: numb
     return keys;
 }
 
+// スペース(空白)を再選択する
+export async function ReselectSpace(editor: vscode.TextEditor) {
+    const re = new RegExp(/\s+/, 'g');
+    ReselectWithRegExp(editor, re);
+}
+
+// 数字を再選択する
+export async function ReselectNumber(editor: vscode.TextEditor) {
+    const re = new RegExp(/\d+/, 'g');
+    ReselectWithRegExp(editor, re);
+}
 
 // {}を再選択する
-export async function SelectBrace(editor: vscode.TextEditor) {
+export async function ReselectBrace(editor: vscode.TextEditor) {
+    const re = new RegExp(/\{\}/, 'g');
+    ReselectWithRegExp(editor, re);
+}
+
+// 正規表現で再選択する
+function ReselectWithRegExp(editor: vscode.TextEditor, re: RegExp) {
     let newsel: vscode.Selection[] = [];
     let LineList = GetSelectedTextLines(editor);
 
     for (const l of LineList) {
-        // {}の範囲を取得
-        var cord = MakeBraceRangeList(l.text);
+        // 正規表現で選択
+        var cord = MakeRangeList(re, l.text);
         for (var ci = 0; ci < cord.length; ci++) {
             var co = cord[ci];
             let range = l.getRange(co);
