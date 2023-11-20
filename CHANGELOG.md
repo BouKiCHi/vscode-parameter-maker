@@ -1,12 +1,17 @@
 # CHANGELOG
 
+### 0.4.3
+ - Added "Reselect the comma"
+ - Added "Copy as tab-delimited (from comma-delimited)"
+ - Improved "Reselect the number(s)" feature to allow underscores and dots to be reselected. 
+ - Improved "Reselect multiple choices N times."
+
 ### 0.4.2
- - Changed some features title like 'Paste as parameter' to 'Paste as quoted parameter'
- - Added 'Paste as parameter' for comma separation.
+ - Changed some features title like "Paste as parameter" to "Paste as quoted parameter"
+ - Added "Paste as parameter" for comma separation.
 
  - Added "Reselect the space(s)"
  - Added "Reselect the number(s)"
- - Added "Replace single quote to double quote"
  - Added "Convert comma-separated values to tab-separated values"
  - Added "to double quote(from single quote)"
  - Added "Show the number of selected lines."

@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -160,6 +160,11 @@
                 "category": "Parameter"
             },
             {
+                "command": "parameter-maker.ReselectComma",
+                "title": "%parameter-maker.ReselectComma.title%",
+                "category": "Parameter"
+            },
+            {
                 "command": "parameter-maker.InsertPatternClipboard",
                 "title": "%parameter-maker.InsertPatternClipboard.title%",
                 "category": "Parameter"
@@ -197,6 +202,11 @@
             {
                 "command": "parameter-maker.ShowNumberOfLines",
                 "title": "%parameter-maker.ShowNumberOfLines.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.CopyAsTabValues",
+                "title": "%parameter-maker.CopyAsTabValues.title%",
                 "category": "Parameter"
             }
         ],
@@ -241,19 +251,24 @@
             ],
             "parameter-maker.ContextMenuSelection" :[
                 {
+                    "command": "parameter-maker.CopyAsTabValues",
+                    "when": "editorHasSelection",
+                    "group": "1_parameter@1"
+                },
+                {
                     "command": "parameter-maker.SplitSelectionIntoParameters",
                     "when": "editorHasSelection",
-                    "group": "1_parameter@3"
+                    "group": "2_parameter@3"
                 },
                 {
                     "command": "parameter-maker.SplitSelectionIntoQuotedParams",
                     "when": "editorHasSelection",
-                    "group": "1_parameter@4"
+                    "group": "2_parameter@4"
                 },
                 {
                     "command": "parameter-maker.ParameterizeSelection",
                     "when": "editorHasSelection",
-                    "group": "1_parameter@5"
+                    "group": "2_parameter@5"
                 },
                 {
                     "command": "parameter-maker.CopySelectedText",

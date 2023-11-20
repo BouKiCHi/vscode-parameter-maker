@@ -304,6 +304,12 @@ function ReselectNumber() {
     textutil.ReselectNumber(vscode.window.activeTextEditor);
 }
 
+// 数字を再選択
+function ReselectComma() {
+    if (!vscode.window.activeTextEditor) return;
+    textutil.ReselectComma(vscode.window.activeTextEditor);
+}
+
 // クリップボード内容をテンプレート埋め込み
 async function ClipboardToTemplate() {
     if (!vscode.window.activeTextEditor) return;
@@ -371,6 +377,22 @@ function CommaValuesToTabValues() {
             builder.replace(selection, newText);
         }
     });
+}
+
+// カンマ区切りをタブ区切りに変換
+function CopyAsTabValues() {
+    if (!vscode.window.activeTextEditor) return;
+    let editor = vscode.window.activeTextEditor;
+    let selections = editor.selections;
+
+    let output = "";
+    for (const selection of selections) {
+        let text = editor.document.getText(selection);
+        const newText = text.replace(/,/g, '\t');
+        output += newText;
+    }
+
+    vscode.env.clipboard.writeText(output);
 }
 
 // 行数の表示
@@ -658,7 +680,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['ReselectBrace', ReselectBrace],
         ['ReselectSpace', ReselectSpace],
         ['ReselectNumber', ReselectNumber],
-
+        ['ReselectComma', ReselectComma],
 
         ['SplitSelectionIntoParameters', SplitSelectionIntoParameters],
         ['SplitSelectionIntoQuotedParams', SplitSelectionIntoQuotedParams],
@@ -674,6 +696,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['CommaValuesToTabValues', CommaValuesToTabValues],
 
         ['ShowNumberOfLines', ShowNumberOfLines],
+        ['CopyAsTabValues', CopyAsTabValues],
 
     ];
 

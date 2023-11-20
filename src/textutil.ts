@@ -245,7 +245,13 @@ export async function ReselectSpace(editor: vscode.TextEditor) {
 
 // 数字を再選択する
 export async function ReselectNumber(editor: vscode.TextEditor) {
-    const re = new RegExp(/\d+/, 'g');
+    const re = new RegExp(/[\d.][\d_.]+/, 'g');
+    ReselectWithRegExp(editor, re);
+}
+
+// カンマを再選択する
+export async function ReselectComma(editor: vscode.TextEditor) {
+    const re = new RegExp(/,/, 'g');
     ReselectWithRegExp(editor, re);
 }
 
@@ -276,12 +282,12 @@ function ReselectWithRegExp(editor: vscode.TextEditor, re: RegExp) {
     }
 }
 
-// N個を再選択
+// 複数選択をN個ごとに再選択
 export async function ReselectN(editor: vscode.TextEditor, num: number) {
     let newsel: vscode.Selection[] = [];
     let selections = editor.selections;
 
-    let c = num;
+    let c = 0;
     for(let i = 0; i < selections.length; i++) {
         let s = selections[i];
         c++;

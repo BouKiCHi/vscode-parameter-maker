@@ -22,7 +22,7 @@
   "parameter-maker.ReselectWithDelimiter.title": "区切り文字で再選択",
   "parameter-maker.ReselectWithInputDelimiter.title": "入力区切り文字で再選択",
   "parameter-maker.ReselectBrace.title": "{}を再選択",
-  "parameter-maker.ReselectEveryNMultipleSelections.title": "複数選択をN個飛ばしで再選択",
+  "parameter-maker.ReselectEveryNMultipleSelections.title": "複数選択をN個ごとに再選択",
   "parameter-maker.QuoteCharactersWhenCreatingParameters": "パラメータ作成時の引用符",
   "parameter-maker.OpeningEnclosureCharacter": "開始囲み文字",
   "parameter-maker.ClosingEnclosureCharacter": "終了囲み文字",
@@ -37,6 +37,8 @@
   "parameter-maker.CommaValuesToTabValues.title": "カンマ区切りをタブ区切りに変換する",
   "parameter-maker.ReselectSpace.title": "スペース(空白)を再選択する",
   "parameter-maker.ReselectNumber.title": "数字を再選択する",
+  "parameter-maker.ReselectComma.title": "カンマを再選択する",
+  "parameter-maker.CopyAsTabValues.title": "タブ区切りとしてコピー(カンマ区切りから)",
   "parameter-maker.ShowNumberOfLines.title": "選択行数を表示する",
   "parameter-maker.ParameterSelection": "パラメータ選択",
   "parameter-maker.ParameterReselection": "パラメータ再選択"

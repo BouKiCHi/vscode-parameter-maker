@@ -15,9 +15,19 @@ The Extension has the following function.
 
 ### New Features
 
-* Replace double quote to single quote
+ * "Reselect the comma"
+ * "Copy as tab-delimited (from comma-delimited)"
+ * "Paste as parameter" for comma separation.
+ * "Reselect the space(s)"
+ * "Reselect the number(s)"
+ * "Convert comma-separated values to tab-separated values"
+ * "to double quote(from single quote)"
+ * "Show the number of selected lines."
 
 ### Edit
+
+* Replace double quote to single quote
+
 * Add text to selections
 * Enclose all selections with input characters
 * Merge N lines of selected text into one line
