@@ -245,7 +245,7 @@ export async function ReselectSpace(editor: vscode.TextEditor) {
 
 // 数字を再選択する
 export async function ReselectNumber(editor: vscode.TextEditor) {
-    const re = new RegExp(/[\d.][\d_.]+/, 'g');
+    const re = new RegExp(/[\d.][\d_.]*/, 'g');
     ReselectWithRegExp(editor, re);
 }
 

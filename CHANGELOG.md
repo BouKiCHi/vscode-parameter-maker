@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.4.4
+ - Fixed "Reselect the number(s)" to allow users to reselect numbers from a single character.
+
 ### 0.4.3
  - Added "Reselect the comma"
  - Added "Copy as tab-delimited (from comma-delimited)"
