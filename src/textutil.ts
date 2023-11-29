@@ -36,7 +36,8 @@ export async function CountClipboardTextLines() {
     return data.length;
 }
 
-// 選択したテキスト行を取得する
+
+/** 選択したテキスト行を取得する */
 export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
     let selections = editor.selections;
     let lines : TextLine[] = [];

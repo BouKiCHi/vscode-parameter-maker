@@ -41,5 +41,6 @@
   "parameter-maker.CopyAsTabValues.title": "タブ区切りとしてコピー(カンマ区切りから)",
   "parameter-maker.ShowNumberOfLines.title": "選択行数を表示する",
   "parameter-maker.ParameterSelection": "パラメータ選択",
-  "parameter-maker.ParameterReselection": "パラメータ再選択"
+  "parameter-maker.ParameterReselection": "パラメータ再選択",
+  "parameter-maker.ReselectLineByReg.title": "正規表現で一行を再選択する"
 }

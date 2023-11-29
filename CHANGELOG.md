@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.4.5
+ - Added "Reselect lines by RegExp"
+
 ### 0.4.4
  - Fixed "Reselect the number(s)" to allow users to reselect numbers from a single character.
 

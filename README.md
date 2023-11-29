@@ -15,6 +15,8 @@ The Extension has the following function.
 
 ### New Features
 
+ * Reselect lines by RegExp
+
  * "Reselect the comma"
  * "Copy as tab-delimited (from comma-delimited)"
  * "Paste as parameter" for comma separation.

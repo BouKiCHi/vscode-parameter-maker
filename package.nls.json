@@ -41,5 +41,6 @@
   "parameter-maker.CopyAsTabValues.title": "Copy as tab-delimited (from comma-delimited)",
   "parameter-maker.ShowNumberOfLines.title": "Show the number of selected lines.",
   "parameter-maker.ParameterSelection": "Parameter Selection",
-  "parameter-maker.ParameterReselection": "Parameter Reselection"
+  "parameter-maker.ParameterReselection": "Parameter Reselection",
+  "parameter-maker.ReselectLineByReg.title": "Reselect lines by RegExp"
 }

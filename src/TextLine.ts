@@ -27,7 +27,7 @@ export class TextLine {
         return new vscode.Position(this.lineNo, this.col);
     }
 
-    positionAt(index: number) {
+    positionAt(index: number) : vscode.Position {
         let offset = this.editor.document.offsetAt(this.startPos);
         return this.editor.document.positionAt(offset + index);
     }

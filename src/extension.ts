@@ -127,6 +127,30 @@ function MakeLineSelections(editor: vscode.TextEditor) {
     for (const l of LineList) {
         let start = l.getStartPosition();
         let end = l.getEndPosition();
+
+        let sel = new vscode.Selection(start, end);
+        newSelections.push(sel);
+    }
+
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
+}
+
+/** 入力テキストで一致する行を選択する */
+function SelectLineByRegExpString(editor: vscode.TextEditor, intext:string) {
+    var re = new RegExp(intext, "g");
+
+    const newSelections: vscode.Selection[] = [];
+
+    const LineList = textutil.GetSelectedTextLines(editor);
+
+    for (const l of LineList) {
+        var match = re.exec(l.text);
+        if (match == null || match[0].length == 0) continue;
+
+        let start = l.getStartPosition();
+        let end = l.getEndPosition();
         let sel = new vscode.Selection(start, end);
         newSelections.push(sel);
     }
@@ -520,7 +544,7 @@ function SplitSelectionIntoParameters() {
 // 選択を分割してクオートしたパラメータにする
 function SplitSelectionIntoQuotedParams() {
     if (!vscode.window.activeTextEditor) return;
-    
+
     // 正規表現分割
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, "\\s+");
 
@@ -653,9 +677,17 @@ function ReselectTextWithRegExp() {
     });
 }
 
+// 正規表現で一行を再選択する
+function ReselectLineByReg() {
+    vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
+        if (intext === undefined || intext.length == 0 || !vscode.window.activeTextEditor) return Promise.reject();
+        SelectLineByRegExpString(vscode.window.activeTextEditor, intext);
+    });
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
-    let CommandList : [string, (...args: any[]) => any][] = [
+    const CommandList : [string, (...args: any[]) => any][] = [
         ['PasteAsParameter', PasteAsParameter],
         ['PasteAsParameterWithQuote', PasteAsParameterWithQuote],
 
@@ -698,6 +730,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['ShowNumberOfLines', ShowNumberOfLines],
         ['CopyAsTabValues', CopyAsTabValues],
 
+        ['ReselectLineByReg', ReselectLineByReg],
     ];
 
     for(let i = 0; i < CommandList.length; i++) {
@@ -711,7 +744,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
-
-export { QuoteSelectBody }
 
 
