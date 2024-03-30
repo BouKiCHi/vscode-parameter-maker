@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.4.6
+- Added "Paste with Commas Separating Each Line"
+- Added "Convert space-separated to tab-separated values
+- Improved some menu text.
+
+
 ### 0.4.5
  - Added "Reselect lines by RegExp"
 

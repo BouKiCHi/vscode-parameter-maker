@@ -291,10 +291,11 @@ export async function ReselectN(editor: vscode.TextEditor, num: number) {
     let c = 0;
     for(let i = 0; i < selections.length; i++) {
         let s = selections[i];
-        c++;
-        if (c < num) continue;
-        c = 0;
-        newsel.push(s); 
+        if (c == 0) {
+            newsel.push(s); 
+            c = num;
+        }
+        c--;
     }
     
     if (newsel.length > 0) {

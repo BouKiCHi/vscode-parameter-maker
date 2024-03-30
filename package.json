@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "img/icon.png",
@@ -170,8 +170,8 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.ReselectEveryNMultipleSelections",
-                "title": "%parameter-maker.ReselectEveryNMultipleSelections.title%",
+                "command": "parameter-maker.ReselectNthSkip",
+                "title": "%parameter-maker.ReselectNthSkip.title%",
                 "category": "Parameter"
             },
             {
@@ -185,13 +185,13 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.DoubleQuoteToSingleQuote",
-                "title": "%parameter-maker.DoubleQuoteToSingleQuote.title%",
+                "command": "parameter-maker.ToSingleQuote",
+                "title": "%parameter-maker.ToSingleQuote.title%",
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.SingleQuoteToDoubleQuote",
-                "title": "%parameter-maker.SingleQuoteToDoubleQuote.title%",
+                "command": "parameter-maker.ToDoubleQuote",
+                "title": "%parameter-maker.ToDoubleQuote.title%",
                 "category": "Parameter"
             },
             {
@@ -212,6 +212,16 @@
             {
                 "command": "parameter-maker.ReselectLineByReg",
                 "title": "%parameter-maker.ReselectLineByReg.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.PasteWithCommasSeparatingEachLine",
+                "title": "%parameter-maker.PasteWithCommasSeparatingEachLine.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.SpaceSeparatedToTabSeparated",
+                "title": "%parameter-maker.SpaceSeparatedToTabSeparated.title%",
                 "category": "Parameter"
             }
         ],
@@ -338,7 +348,7 @@
                     "group": "4_reselect"
                 },
                 {
-                    "command": "parameter-maker.ReselectEveryNMultipleSelections",
+                    "command": "parameter-maker.ReselectNthSkip",
                     "group": "6_reselect@1"
                 },
                 {

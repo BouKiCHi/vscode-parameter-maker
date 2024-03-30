@@ -359,30 +359,26 @@ async function ClipboardToTemplate() {
 }
 
 // ダブルクオートをシングルクオートに変換
-function DoubleQuoteToSingleQuote() {
-    if (!vscode.window.activeTextEditor) return;
-    let editor = vscode.window.activeTextEditor;
-    let selections = editor.selections;
-
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let text = editor.document.getText(selection);
-            const newText = text.replace(/"/g, "'");
-            builder.replace(selection, newText);
-        }
-    });
+function ToSingleQuote() {
+    replaceText(/"/g, "'");
 }
 
 // シングルクオートをダブルクオートに変換
-function SingleQuoteToDoubleQuote() {
+function ToDoubleQuote() {
+    replaceText(/'/g, '"');
+}
+
+// 置換する
+function replaceText(from: RegExp, to: string) {
     if (!vscode.window.activeTextEditor) return;
     let editor = vscode.window.activeTextEditor;
+
     let selections = editor.selections;
 
     editor.edit(builder => {
         for (const selection of selections) {
             let text = editor.document.getText(selection);
-            const newText = text.replace(/'/g, '"');
+            const newText = text.replace(from, to);
             builder.replace(selection, newText);
         }
     });
@@ -390,20 +386,15 @@ function SingleQuoteToDoubleQuote() {
 
 // カンマ区切りをタブ区切りに変換
 function CommaValuesToTabValues() {
-    if (!vscode.window.activeTextEditor) return;
-    let editor = vscode.window.activeTextEditor;
-    let selections = editor.selections;
-
-    editor.edit(builder => {
-        for (const selection of selections) {
-            let text = editor.document.getText(selection);
-            const newText = text.replace(/,/g, '\t');
-            builder.replace(selection, newText);
-        }
-    });
+    replaceText(/,/g, '\t');
 }
 
-// カンマ区切りをタブ区切りに変換
+// スペース区切りをタブ区切りに変換する
+function SpaceSeparatedToTabSeparated() {
+    replaceText(/[^\S\r\n]+/g, '\t');
+}
+
+// タブ区切りとしてクリップボードにコピー(カンマ区切りから)
 function CopyAsTabValues() {
     if (!vscode.window.activeTextEditor) return;
     let editor = vscode.window.activeTextEditor;
@@ -584,6 +575,44 @@ async function PasteAsParameter() {
     insertParameter(editor, values, null, null, ',');
 }
 
+// 行ごとにカンマ区切りでペースト
+async function PasteWithCommasSeparatingEachLine() {
+    if (!vscode.window.activeTextEditor) return;
+
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let values = textutil.SplitTabRow(text);
+
+    insertCommaLines(editor, values, null, null, ',');
+}
+
+// 行ごとのパラメータ出力
+function insertCommaLines(editor: vscode.TextEditor, values: string[][], openEnclose: string | null, closeEnclose: string | null, delimiter: string | null) {
+    const position = editor.selection.active;
+
+    let firstLine = true;
+
+    editor.edit(builder => {
+        for (const row of values) {
+            if (firstLine) {
+                firstLine = false;
+            } else {
+                builder.insert(position, "\n");
+            }
+
+            for (const v of row) {
+                let t = '';
+                if (openEnclose) t += openEnclose;
+                t += v;
+                if (closeEnclose) t += closeEnclose;
+                if (delimiter) t += delimiter;
+                builder.insert(position, t);
+            }
+        }
+    });
+}
+
+// パラメータとして挿入する
 function insertParameter(editor: vscode.TextEditor, values: string[], openEnclose: string | null, closeEnclose: string | null, delimiter: string | null) {
     const position = editor.selection.active;
 
@@ -719,18 +748,21 @@ export function activate(context: vscode.ExtensionContext) {
 
         ['CombineClipboard', CombineClipboard],
         ['QuoteOuterSelect', QuoteOuterSelect],
-        ['ReselectEveryNMultipleSelections', ReselectN],
+        ['ReselectNthSkip', ReselectN],
         ['ReselectClipboardContents', ReselectClipboardContents],
         ['ClipboardToTemplate', ClipboardToTemplate],
 
-        ['DoubleQuoteToSingleQuote', DoubleQuoteToSingleQuote],
-        ['SingleQuoteToDoubleQuote', SingleQuoteToDoubleQuote],
+        ['ToSingleQuote', ToSingleQuote],
+        ['ToDoubleQuote', ToDoubleQuote],
         ['CommaValuesToTabValues', CommaValuesToTabValues],
 
         ['ShowNumberOfLines', ShowNumberOfLines],
         ['CopyAsTabValues', CopyAsTabValues],
 
         ['ReselectLineByReg', ReselectLineByReg],
+
+        ['SpaceSeparatedToTabSeparated', SpaceSeparatedToTabSeparated],
+        ['PasteWithCommasSeparatingEachLine', PasteWithCommasSeparatingEachLine],
     ];
 
     for(let i = 0; i < CommandList.length; i++) {
