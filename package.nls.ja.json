@@ -14,6 +14,7 @@
   "parameter-maker.SplitSelectionIntoParameters.title": "選択を分割してパラメータにする",
   "parameter-maker.SplitSelectionIntoQuotedParams.title": "選択を分割してクオートしたパラメータにする",
   "parameter-maker.ClipboardToTemplate.title": "クリップボード内容をテンプレート埋め込み",
+  "parameter-maker.ClipboardToTemplateCommaSepareted.title": "テンプレート埋め込み(カンマ区切り)",
   "parameter-maker.CopyAsTabValues.title": "タブ区切りとしてクリップボードにコピー(カンマ区切りから)",
   "parameter-maker.CountNumberOfLines.title": "選択行数をカウントする",
   "parameter-maker.PasteWithCommasSeparatingEachLine.title": "行ごとにカンマ区切りでペースト",

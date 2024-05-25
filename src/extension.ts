@@ -358,6 +358,29 @@ async function ClipboardToTemplate() {
     });
 }
 
+// テンプレート埋め込み(カンマ区切り)
+async function ClipboardToTemplateCommaSepareted() {
+    if (!vscode.window.activeTextEditor) return;
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let rows = textutil.GetRowsFromCommaSeparatedLines(text);
+
+    let selections = editor.selections;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            // 選択全体を取得
+            let text = editor.document.getText(selection);
+            let newText = '';
+            for(const row of rows) {
+                // ブレイスの位置を取得
+                newText += textutil.ReplaceBraceIndex(text, row);
+            }
+            builder.replace(selection, newText);
+        }
+    });
+}
+
 // ダブルクオートをシングルクオートに変換
 function ToSingleQuote() {
     replaceText(/"/g, "'");
@@ -756,6 +779,7 @@ export function activate(context: vscode.ExtensionContext) {
         ['ReselectNthSkip', ReselectN],
         ['ReselectClipboardContents', ReselectClipboardContents],
         ['ClipboardToTemplate', ClipboardToTemplate],
+        ['ClipboardToTemplateCommaSepareted', ClipboardToTemplateCommaSepareted],
 
         ['ToSingleQuote', ToSingleQuote],
         ['ToDoubleQuote', ToDoubleQuote],

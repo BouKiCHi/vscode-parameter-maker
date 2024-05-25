@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.4.8
+- Added menu "Template embedding (comma-separated)"
+
 ### 0.4.7
 - Changed place of documtents.
 - Added menu "Show Help"

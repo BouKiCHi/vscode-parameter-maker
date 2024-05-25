@@ -14,6 +14,7 @@
   "parameter-maker.SplitSelectionIntoParameters.title": "Split selection into parameters",
   "parameter-maker.SplitSelectionIntoQuotedParams.title": "Split selection into quoted params",
   "parameter-maker.ClipboardToTemplate.title": "Embed clipboard contents into a template",
+  "parameter-maker.ClipboardToTemplateCommaSepareted.title": "Template embedding (comma-separated)",
   "parameter-maker.CopyAsTabValues.title": "Copy to clipboard as tab-delimited (from comma-separated)",
   "parameter-maker.CountNumberOfLines.title": "Count the number of selected lines.",
   "parameter-maker.PasteWithCommasSeparatingEachLine.title": "Paste with Commas Separating Each Line",

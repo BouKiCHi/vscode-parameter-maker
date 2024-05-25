@@ -109,6 +109,13 @@ export function SplitTabRow(text: string) {
     return text.split("\n").map(x => x.split("\t"));
 }
 
+/** カンマ区切りから各要素の配列を取得する */
+export function GetRowsFromCommaSeparatedLines(text: string) {
+    text = text.trimEnd();
+    text = text.replace(/[\r\n]+/g, "\n");
+    return text.split("\n").map(x => x.split(","));
+}
+
 /** 正規表現に一致した部分の範囲リストを作成 */
 function MakeRangeList(re: RegExp, text: string) : Cordinate[] {
     var coordinates : Cordinate[] = [];

@@ -2,7 +2,7 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.4.7",
+    "version": "0.4.8",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
     "icon": "res/icon.png",
@@ -177,6 +177,11 @@
             {
                 "command": "parameter-maker.ClipboardToTemplate",
                 "title": "%parameter-maker.ClipboardToTemplate.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ClipboardToTemplateCommaSepareted",
+                "title": "%parameter-maker.ClipboardToTemplateCommaSepareted.title%",
                 "category": "Parameter"
             },
             {
