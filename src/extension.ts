@@ -427,7 +427,7 @@ async function CountNumberOfLines() {
 
 // ヘルプの表示
 async function ShowHelp() {
-    vscode.env.openExternal(vscode.Uri.parse('https://github.com/BouKiCHi/vscode-parameter-maker/docs/FUNCTION.md'));
+    vscode.env.openExternal(vscode.Uri.parse('https://boukichi.github.io/vscode-parameter-maker/'));
 }
 
 // クリップボード内容を再選択
