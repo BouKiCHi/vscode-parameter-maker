@@ -6,8 +6,8 @@
 * [CHANGELOG.md](CHANGELOG.md)
 
 
-* [FUNCTION.md](FUNCTION.md)
-* [FUNCTION.ja.md](FUNCTION.ja.md)
+* [FUNCTION.md](docs/FUNCTION.md)
+* [FUNCTION.ja.md](docs/FUNCTION.ja.md)
 
 ## Features
 

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.4.7
+- Changed place of documtents.
+- Added menu "Show Help"
+- Improved some menu text.
+
 ### 0.4.6
 - Added "Paste with Commas Separating Each Line"
 - Added "Convert space-separated to tab-separated values

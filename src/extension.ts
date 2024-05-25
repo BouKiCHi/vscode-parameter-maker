@@ -411,7 +411,7 @@ function CopyAsTabValues() {
 }
 
 // 行数の表示
-async function ShowNumberOfLines() {
+async function CountNumberOfLines() {
     if (!vscode.window.activeTextEditor) return;
     const editor = vscode.window.activeTextEditor;
     const selections = editor.selections;
@@ -423,6 +423,11 @@ async function ShowNumberOfLines() {
     const clipboardLines = await textutil.CountClipboardTextLines();
 
     await vscode.window.showInformationMessage(`${lines} line(s) selected. (${clipboardLines} clipboard lines)`);
+}
+
+// ヘルプの表示
+async function ShowHelp() {
+    vscode.env.openExternal(vscode.Uri.parse('https://github.com/BouKiCHi/vscode-parameter-maker/docs/FUNCTION.md'));
 }
 
 // クリップボード内容を再選択
@@ -756,13 +761,15 @@ export function activate(context: vscode.ExtensionContext) {
         ['ToDoubleQuote', ToDoubleQuote],
         ['CommaValuesToTabValues', CommaValuesToTabValues],
 
-        ['ShowNumberOfLines', ShowNumberOfLines],
+        ['CountNumberOfLines', CountNumberOfLines],
         ['CopyAsTabValues', CopyAsTabValues],
 
         ['ReselectLineByReg', ReselectLineByReg],
 
         ['SpaceSeparatedToTabSeparated', SpaceSeparatedToTabSeparated],
         ['PasteWithCommasSeparatingEachLine', PasteWithCommasSeparatingEachLine],
+
+        ['ShowHelp', ShowHelp],
     ];
 
     for(let i = 0; i < CommandList.length; i++) {

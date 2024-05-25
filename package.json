@@ -2,10 +2,10 @@
     "name": "parameter-maker",
     "displayName": "Parameter Maker",
     "description": "Assists in creating text parameters.",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "publisher": "boukichi",
     "license": "BSD-3-Clause",
-    "icon": "img/icon.png",
+    "icon": "res/icon.png",
     "categories": [
         "Formatters"
     ],
@@ -200,8 +200,8 @@
                 "category": "Parameter"
             },
             {
-                "command": "parameter-maker.ShowNumberOfLines",
-                "title": "%parameter-maker.ShowNumberOfLines.title%",
+                "command": "parameter-maker.CountNumberOfLines",
+                "title": "%parameter-maker.CountNumberOfLines.title%",
                 "category": "Parameter"
             },
             {
@@ -222,6 +222,11 @@
             {
                 "command": "parameter-maker.SpaceSeparatedToTabSeparated",
                 "title": "%parameter-maker.SpaceSeparatedToTabSeparated.title%",
+                "category": "Parameter"
+            },
+            {
+                "command": "parameter-maker.ShowHelp",
+                "title": "%parameter-maker.ShowHelp.title%",
                 "category": "Parameter"
             }
         ],
