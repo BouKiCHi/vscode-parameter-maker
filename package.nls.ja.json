@@ -18,6 +18,7 @@
   "parameter-maker.CopyAsTabValues.title": "タブ区切りとしてクリップボードにコピー(カンマ区切りから)",
   "parameter-maker.CountNumberOfLines.title": "選択行数をカウントする",
   "parameter-maker.PasteWithCommasSeparatingEachLine.title": "行ごとにカンマ区切りでペースト",
+  "parameter-maker.ReplaceSelectedTextWithAPattern.title": "選択テキストをパターンで置換する",
   "parameter-maker.ToSingleQuote.title": "シングルクオートに置換する(他のクオートから)",
   "parameter-maker.ToDoubleQuote.title": "ダブルクオートに置換する(他のクオートから)",
   "parameter-maker.CommaValuesToTabValues.title": "カンマ区切りをタブ区切りに変換",

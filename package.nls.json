@@ -18,6 +18,7 @@
   "parameter-maker.CopyAsTabValues.title": "Copy to clipboard as tab-delimited (from comma-separated)",
   "parameter-maker.CountNumberOfLines.title": "Count the number of selected lines.",
   "parameter-maker.PasteWithCommasSeparatingEachLine.title": "Paste with Commas Separating Each Line",
+  "parameter-maker.ReplaceSelectedTextWithAPattern.title": "Replace selected text with a pattern",
   "parameter-maker.ToSingleQuote.title": "To single quote(from other quote)",
   "parameter-maker.ToDoubleQuote.title": "To double quote(from other quote)",
   "parameter-maker.CommaValuesToTabValues.title": "Convert comma-separated values to tab-separated values",

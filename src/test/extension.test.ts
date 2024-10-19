@@ -4,7 +4,7 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 
-import * as textutil from '../../textutil';
+import * as textutil from '../textutil';
 
 suite('Extension Test Suite', () => {
     vscode.window.showInformationMessage('Start all tests.');
@@ -57,7 +57,6 @@ suite('Extension Test Suite', () => {
         assert.strictEqual(selections[1].start.character, 1);
         assert.strictEqual(doc.getText(selections[0]), "{}");
         assert.strictEqual(doc.getText(selections[1]), "{}");
-
         editor.hide();
     });
 

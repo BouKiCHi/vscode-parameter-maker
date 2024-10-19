@@ -1,4 +1,4 @@
-'use strict';
+
 import * as vscode from 'vscode';
 import { TextLine } from './TextLine';
 import { SetEditorSelection } from './SetEditorSelection';
@@ -50,7 +50,7 @@ export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
             let startPos = lno == startLineNo ? selection.start : line.range.start;
             let endPos = lno == endLineNo ? selection.end : line.range.end;
 
-            if (startPos.isEqual(endPos)) continue;
+            if (startPos.isEqual(endPos)) {continue;}
     
             var lineText = editor.document.getText(new vscode.Range(startPos, endPos));
             var col = startPos.character;
@@ -85,10 +85,10 @@ export function ReselectTextWithPattern(editor: vscode.TextEditor, pattern: stri
 export function GetIndexList(text: string, pattern: string) : number[] {
     var re = new RegExp(pattern, "g");
     var positions : number[] = [];
-    if (text.length == 0) return positions;
+    if (text.length == 0) {return positions;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) break;
+        if (match == null || match[0].length == 0) {break;}
         positions.push(match.index);
     }
     return positions;
@@ -120,10 +120,10 @@ export function GetRowsFromCommaSeparatedLines(text: string) {
 function MakeRangeList(re: RegExp, text: string) : Cordinate[] {
     var coordinates : Cordinate[] = [];
 
-    if (text.length == 0) return coordinates;
+    if (text.length == 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) break;
+        if (match == null || match[0].length == 0) {break;}
         let start = match.index;
         let end = start + match[0].length;
         coordinates.push(new Cordinate(start, end));
@@ -136,7 +136,7 @@ function MakeRangeList(re: RegExp, text: string) : Cordinate[] {
 export function ReplaceBraceIndex(text: string, values: string[]) : string {
     return text.replace(/\{(\d+)\}/g, function(sub,p1) {
         let index = +p1;
-        if (index < 0 || values.length <= index) return '';
+        if (index < 0 || values.length <= index) {return '';}
         return values[index];
     });
 }
@@ -145,7 +145,7 @@ export function ReplaceBraceIndex(text: string, values: string[]) : string {
 /** 選択位置の追加 */
 function PushCoordinate(coordinates: Cordinate[], start: number, end: number) {
     // 開始と終了が同じ場合は選択しない
-    if (start == end) return;
+    if (start == end) {return;}
     coordinates.push(new Cordinate(start, end));
 }
 
@@ -157,10 +157,10 @@ export function GetRangeFromPattern(text: string, pattern: string) : Cordinate[]
     var end = 0;
     var coordinates : Cordinate[] = [];
 
-    if (text.length == 0) return coordinates;
+    if (text.length == 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) break;
+        if (match == null || match[0].length == 0) {break;}
         end = match.index;
         PushCoordinate(coordinates, start, end);
         start = re.lastIndex;
@@ -177,10 +177,10 @@ export function GetRangeFromIntext(text: string, seperator: string) {
     var re = new RegExp(seperator, "g");
     var coordinates : any[] = [];
 
-    if (text.length == 0) return coordinates;
+    if (text.length == 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) break;
+        if (match == null || match[0].length == 0) {break;}
         var start = match.index;
         var length = match[0].length;
         coordinates.push([start, start + length]);
@@ -196,10 +196,10 @@ export function GetRangeAll(text: string, key: string) {
     var re = new RegExp(KeyEscaped, "g");
     var coordinates : any[] = [];
 
-    if (text.length == 0) return coordinates;
+    if (text.length == 0) {return coordinates;}
     while (true) {
         var m = re.exec(text);
-        if (m == null || m[0].length == 0) break;
+        if (m == null || m[0].length == 0) {break;}
         var start = m.index;
         var length = m[0].length;
         coordinates.push([start, start + length]);
@@ -223,24 +223,24 @@ export function IndexFromText(text: string, headNumber: number, tailNumber: numb
         if (v.indexOf("-") >= 0) {
             var values = v.split("-");
             var start = parseInt(values[0]);
-            if (isNaN(start)) start = headNumber;
+            if (isNaN(start)) {start = headNumber;}
             var end = values.length > 0 ? parseInt(values[1]) : -1;
-            if (isNaN(end) || end < start || end > tailNumber) end = tailNumber;
+            if (isNaN(end) || end < start || end > tailNumber) {end = tailNumber;}
             for (var j = start; j <= end; j++) {
-                if (j < headNumber || j > tailNumber) continue;
-                if (j in map) continue;
+                if (j < headNumber || j > tailNumber) {continue;}
+                if (j in map) {continue;}
                 map[j] = true;
             }
         } else {
             var j = parseInt(v);
-            if (j < headNumber || j > tailNumber) continue;
-            if (j in map) continue;
+            if (j < headNumber || j > tailNumber) {continue;}
+            if (j in map) {continue;}
             map[j] = true;
         }
     }
 
     var keys = [];
-    for (var k in map) keys.push(parseInt(k));
+    for (var k in map) {keys.push(parseInt(k));}
     keys.sort((a, b) => { return a - b; });
     return keys;
 }
@@ -338,6 +338,6 @@ export function IsCursor(selection: vscode.Selection) : boolean {
 export function repeatString(count: number, text: string, trim: boolean) : string {
     let result = "";
     for (let i = 0; i < count; i++) { result += text; }
-    if (trim) result = result.trimEnd();
+    if (trim) {result = result.trimEnd();}
     return result;
 }

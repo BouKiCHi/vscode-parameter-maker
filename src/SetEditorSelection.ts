@@ -1,4 +1,4 @@
-'use strict';
+
 import * as vscode from 'vscode';
 
 export function SetEditorSelection(editor: vscode.TextEditor, newSelections: vscode.Selection[]) {

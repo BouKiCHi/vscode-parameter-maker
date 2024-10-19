@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.4.9
+- Added "Replace selected text with a pattern"
+
 ### 0.4.8
 - Added menu "Template embedding (comma-separated)"
 
