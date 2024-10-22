@@ -5,6 +5,8 @@ import * as textutil from './textutil';
 import { TextLine } from './TextLine';
 import { SetEditorSelection } from './SetEditorSelection';
 
+let stateStore : vscode.Memento;
+
 let localize = nls.loadMessageBundle();
 
 /** 選択部分を編集する */
@@ -616,12 +618,17 @@ export async function ReplaceSelectedTextWithAPattern() {
 
     const editor = vscode.window.activeTextEditor;
 
+    const key = 'replacePattern'; 
+    const value = stateStore.get<string>(key) ?? '"{0}"';
+
     const pattern = await vscode.window.showInputBox({ 
         prompt: 'Please enter a pattern. The {0} part in the pattern will reflect the original selected content.',
-        value: '"{0}"' 
+        value: value
     });
 
     if (!pattern) {return;}
+
+    await stateStore.update(key, pattern);
 
     editor.edit(builder => {
         const selections = editor.selections;
@@ -764,6 +771,8 @@ export function ReselectLineByReg() {
 
 // コマンド登録
 export function registerCommands(context: vscode.ExtensionContext) {
+    stateStore = context.workspaceState;
+
     const CommandList: [string, (...args: any[]) => any][] = [
         ['PasteAsParameter', PasteAsParameter],
         ['PasteAsParameterWithQuote', PasteAsParameterWithQuote],

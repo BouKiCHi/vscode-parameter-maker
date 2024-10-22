@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.4.10
+- Added input value restoration for "Replace selected text with a pattern"
+
 ### 0.4.9
 - Added "Replace selected text with a pattern"
 
