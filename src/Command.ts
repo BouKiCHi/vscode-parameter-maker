@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode';
 import * as nls from 'vscode-nls';
 import * as textutil from './textutil';
@@ -24,7 +23,7 @@ function EditSelections(editor: vscode.TextEditor, openEnclose: string | null, c
 }
 
 /** N行を一行に結合する */
-function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
+function JoinNLines(editor: vscode.TextEditor, joinNum: number, delim: string | null = null) { // デフォルトをnullに変更
     let selections = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {
@@ -55,6 +54,11 @@ function JoinNLines(editor: vscode.TextEditor, joinNum: number) {
                 if (count === joinNum) {
                     count = 0;
                     result += "\n";
+                } else {
+                    if(delim) {
+                        // delimがnullだった場合追加しない
+                        result += delim;
+                    }
                 }
             }
             builder.replace(selection, result);
@@ -499,6 +503,32 @@ export async function MergeNLines() {
     JoinNLines(vscode.window.activeTextEditor, num);
 }
 
+// 複数行を結合する
+export async function MergeNLinesWithDelimiter() {
+    if (!vscode.window.activeTextEditor) {return;}
+    let n = await vscode.window.showInputBox({ prompt: 'N lines(default. 2)' });
+    const num = n ? parseInt(n) : 2;
+    
+    let delim = await vscode.window.showInputBox({ prompt: 'Delimiter(default. tab)' });
+    delim = delim || '\t';
+    const unescapedDelim = UnescapeText(delim);
+
+    JoinNLines(vscode.window.activeTextEditor, num, unescapedDelim);
+}
+
+// エスケープされた文字を変換
+function UnescapeText(text: string): string {
+    if (text.length === 0) {return "";}
+    return text
+        .replace(/\\\\/g, '\\')  // \\ -> \
+        .replace(/\\t/g, '\t')    // \t -> タブ
+        .replace(/\\n/g, '\n')    // \n -> 改行
+        .replace(/\\r/g, '\r')    // \r -> 復帰
+        .replace(/\\"/g, '"')     // \" -> "
+        .replace(/\\'/g, "'")     // \' -> '
+        .replace(/\\0/g, '\0');   // \0 -> NULL
+}
+
 
 // 選択テキストを複数回コピーする
 export function CopySelectedTextNTimes() {
@@ -784,6 +814,7 @@ export function registerCommands(context: vscode.ExtensionContext) {
         ['ReselectLineFromText', ReselectLineFromText],
         ['ReselectWordsFromText', ReselectWordsFromText],
         ['MergeNLines', MergeNLines],
+        ['MergeNLinesWithDelimiter', MergeNLinesWithDelimiter],
         ['CopySelectedTextNTimes', CopySelectedTextNTimes],
         ['CopySelectedText', CopySelectedText],
 

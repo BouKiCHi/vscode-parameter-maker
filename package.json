@@ -77,6 +77,11 @@
             "category": "Parameter"
         },
         {
+            "command": "parameter-maker.MergeNLinesWithDelimiter",
+            "title": "%parameter-maker.MergeNLinesWithDelimiter.title%",
+            "category": "Parameter"
+        },
+        {
             "command": "parameter-maker.CopySelectedTextNTimes",
             "title": "%parameter-maker.CopySelectedTextNTimes.title%",
             "category": "Parameter"

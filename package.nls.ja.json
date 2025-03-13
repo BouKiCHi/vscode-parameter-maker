@@ -2,7 +2,7 @@
   "parameter-maker.AddTextToSelections.title": "選択範囲にテキストを追加",
   "parameter-maker.EncloseAllSectionsWithInputChars.title": "すべての選択を入力文字で囲む",
   "parameter-maker.MergeNLines.title": "N行を結合",
-  "parameter-maker.MergeNLinesWithInput.title": "N行を入力文字列で結合",
+  "parameter-maker.MergeNLinesWithDelimiter.title": "N行を入力した区切り文字で結合",
   "parameter-maker.CopySelectedTextNTimes.title": "N回コピー",
   "parameter-maker.ParameterizeSelection.title": "選択範囲を設定でパラメータ化する",
   "parameter-maker.ParameterizeSelectionWithInput.title": "選択範囲を入力文字列でパラメータ化する",

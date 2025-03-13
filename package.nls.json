@@ -2,7 +2,7 @@
   "parameter-maker.AddTextToSelections.title": "Add text to selections",
   "parameter-maker.EncloseAllSectionsWithInputChars.title": "Enclose all selections with input characters",
   "parameter-maker.MergeNLines.title": "Join(Merge) N lines into one line",
-  "parameter-maker.MergeNLinesWithInput.title": "Join(Merge) N lines into one line with the input string",
+  "parameter-maker.MergeNLinesWithDelimiter.title": "Join(Merge) N lines with input delimiter",
   "parameter-maker.CopySelectedTextNTimes.title": "Copy the selected text N times",
   "parameter-maker.ParameterizeSelection.title": "Parameterize the selection with settings",
   "parameter-maker.ParameterizeSelectionWithInput.title": "Parameterize the selection with an input string",
