@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.5.0
+- Improved: Enhanced MergeNLinesWithDelimiter command to handle escape sequences and null delimiter.
+  - Added the ability to use escape sequences (e.g., \t, \n, \r) when specifying the delimiter.
+  - MergeNLines can join lines without delimiter by using null
+  - Added UnescapeText function to textutil.ts to handle escape sequence conversion.
+
 ### 0.4.10
 - Added input value restoration for "Replace selected text with a pattern"
 

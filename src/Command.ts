@@ -23,7 +23,7 @@ function EditSelections(editor: vscode.TextEditor, openEnclose: string | null, c
 }
 
 /** N行を一行に結合する */
-function JoinNLines(editor: vscode.TextEditor, joinNum: number, delim: string | null = null) { // デフォルトをnullに変更
+function JoinNLines(editor: vscode.TextEditor, joinNum: number, delim: string | null = null) { 
     let selections = editor.selections;
     editor.edit(builder => {
         for (const selection of selections) {

@@ -11,7 +11,7 @@
 | 選択範囲にテキストを追加                  | Add text to selections                                               |
 | すべての選択を入力文字で囲む                | Enclose all selections with input characters                         |
 | N行を結合                         | Join(Merge) N lines into one line                                    |
-| N行を入力文字列で結合                   | Join(Merge) N lines into one line with the input string              |
+| N行を入力した区切り文字で結合             | Join(Merge) N lines with input delimiter                |
 | N回コピー                         | Copy the selected text N times                                       |
 | 選択範囲を設定でパラメータ化する              | Parameterize the selection with settings                             |
 | 選択範囲を入力文字列でパラメータ化する           | Parameterize the selection with an input string                      |
