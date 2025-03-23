@@ -329,7 +329,7 @@ export function getTextList(text: string) {
     return text.split(regex);
 }
 
-/** カーソルか？ */
+/** 選択内容はカーソルか？(範囲の長さがないもの) */
 export function IsCursor(selection: vscode.Selection) : boolean {
     return selection.start.isEqual(selection.end);
 }

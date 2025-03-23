@@ -15,6 +15,10 @@ The Extension has the following function.
 
 ### New Features
 
+ * Paste as quoted parameter(Line Breaks Per N)
+ * Paste with delimiter and count
+ * Reselect with Comma Delimiter
+
  * Reselect lines by RegExp
 
  * "Reselect the comma"

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.5.1
+- Added: "Paste as quoted parameter(Line Breaks Per N)"
+- Added: "Paste with delimiter and count"
+  - Added the ability to paste clipboard contents by combining them with a specified delimiter and a specified number of items.
+- Added: "Reselect with Comma Delimiter"
+
 ### 0.5.0
 - Improved: Enhanced MergeNLinesWithDelimiter command to handle escape sequences and null delimiter.
   - Added the ability to use escape sequences (e.g., \t, \n, \r) when specifying the delimiter.

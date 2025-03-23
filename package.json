@@ -2,7 +2,7 @@
   "name": "parameter-maker",
   "displayName": "Parameter Maker",
   "description": "Assists in creating text parameters.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "icon": "res/icon.png",
   "categories": [
     "Formatters"
@@ -132,18 +132,33 @@
             "category": "Parameter"
         },
         {
+            "command": "parameter-maker.PasteAsParameterWithLineBreakByCount",
+            "title": "%parameter-maker.PasteAsParameterWithLineBreakByCount.title%",
+            "category": "Parameter"
+        },
+        {
+            "command": "parameter-maker.PasteWithDelimiterAndCount",
+            "title": "%parameter-maker.PasteWithDelimiterAndCount.title%",
+            "category": "Parameter"
+        },
+        {
+            "command": "parameter-maker.ReselectWithCommaDelimiter",
+            "title": "%parameter-maker.ReselectWithCommaDelimiter.title%",
+            "category": "Parameter"
+        },
+        {
             "command": "parameter-maker.ReselectWithDelimiter",
             "title": "%parameter-maker.ReselectWithDelimiter.title%",
             "category": "Parameter"
         },
         {
-            "command": "parameter-maker.CombineClipboard",
-            "title": "%parameter-maker.CombineClipboard.title%",
+            "command": "parameter-maker.ReselectWithInputDelimiter",
+            "title": "%parameter-maker.ReselectWithInputDelimiter.title%",
             "category": "Parameter"
         },
         {
-            "command": "parameter-maker.ReselectWithInputDelimiter",
-            "title": "%parameter-maker.ReselectWithInputDelimiter.title%",
+            "command": "parameter-maker.CombineClipboard",
+            "title": "%parameter-maker.CombineClipboard.title%",
             "category": "Parameter"
         },
         {

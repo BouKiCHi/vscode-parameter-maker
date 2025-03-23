@@ -1,8 +1,13 @@
 import * as vscode from 'vscode';
 import * as nls from 'vscode-nls';
 import * as textutil from './textutil';
-import { TextLine } from './TextLine';
 import { SetEditorSelection } from './SetEditorSelection';
+import { ReselectBrace, ReselectClipboardContents, 
+    ReselectComma, ReselectLineByReg, ReselectLineFromText, 
+    ReselectN, ReselectNumber, ReselectSpace, ReselectTextWithRegExp, 
+    ReselectWithCommaDelimiter, 
+    ReselectWithDelimiter, ReselectWithInputDelimiter, ReselectWordsFromText } from './Reselect';
+import { QuoteSelectBody } from './SelectUtils';
 
 let stateStore : vscode.Memento;
 
@@ -96,128 +101,6 @@ async function CopySelectedTextNTimesBody(editor: vscode.TextEditor, count: numb
 }
 
 
-/** テキストを入力テキストによって再選択する */
-function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string) {
-    let LineList = textutil.GetSelectedTextLines(editor);
-    let newSelections: vscode.Selection[] = [];
-    for(const l of LineList) {
-        // 範囲の取得
-        var cord = textutil.GetRangeFromIntext(l.text, intext);
-        AddSelection(newSelections, l, cord);
-    }
-
-    if (newSelections.length > 0) {
-        SetEditorSelection(editor, newSelections);
-    }
-
-}
-
-/** 選択をリストに追加 */
-function AddSelection(list: vscode.Selection[], currentLine: TextLine, cord: any[]) {
-    for (var ci = 0; ci < cord.length; ci++) {
-        var co = cord[ci];
-        let startPos = currentLine.positionAt(co[0]);
-        let endPos = currentLine.positionAt(co[1]);
-        let sel = new vscode.Selection(startPos, endPos);
-        list.push(sel);
-    }
-}
-
-/** テキストを1行ごとに選択する */
-function MakeLineSelections(editor: vscode.TextEditor) {
-    let newSelections: vscode.Selection[] = [];
-
-    let LineList = textutil.GetSelectedTextLines(editor);
-
-    for (const l of LineList) {
-        let start = l.getStartPosition();
-        let end = l.getEndPosition();
-
-        let sel = new vscode.Selection(start, end);
-        newSelections.push(sel);
-    }
-
-    if (newSelections.length > 0) {
-        SetEditorSelection(editor, newSelections);
-    }
-}
-
-/** 入力テキストで一致する行を選択する */
-function SelectLineByRegExpString(editor: vscode.TextEditor, intext:string) {
-    var re = new RegExp(intext, "g");
-
-    const newSelections: vscode.Selection[] = [];
-
-    const LineList = textutil.GetSelectedTextLines(editor);
-
-    for (const l of LineList) {
-        var match = re.exec(l.text);
-        if (match === null || match[0].length === 0) {continue;}
-
-        let start = l.getStartPosition();
-        let end = l.getEndPosition();
-        let sel = new vscode.Selection(start, end);
-        newSelections.push(sel);
-    }
-
-    if (newSelections.length > 0) {
-        SetEditorSelection(editor, newSelections);
-    }
-}
-
-
-/** 引用符を選択リストにする */
-function MakeQuoteSelections(quoteList:textutil.CharactorPosition[], outer:boolean) : vscode.Selection[] {
-    let newSelections: vscode.Selection[] = [];
-
-    var qi = 0;
-    var startQuote = null;
-    var startPos : vscode.Position = new vscode.Position(0,0);
-
-    while(qi < quoteList.length) {
-        var qp = quoteList[qi];
-        var ch = qp.text;
-        var currentPos = qp.pos;
-        if (startQuote === null) {
-            startPos = currentPos;
-            startQuote = ch;
-            qi++;
-            continue;
-        }
-        if (startQuote === ch) {
-            var startCharacter = outer ? startPos.character : startPos.character+1;
-            var epos = outer ? new vscode.Position(currentPos.line, currentPos.character+1) : currentPos;
-            var spos = new vscode.Position(startPos.line, startCharacter);
-            var sel = new vscode.Selection(spos, epos);
-            startQuote = null;
-            newSelections.push(sel);
-        }
-        qi++;
-    }
-    return newSelections;
-}
-
-/** 引用符の中身を選択する */
-function QuoteSelectBody(editor: vscode.TextEditor, outer: boolean) {
-    let quoteList : textutil.CharactorPosition[] = [];
-
-    let LineList = textutil.GetSelectedTextLines(editor);
-    for (const l of LineList) {
-        var poslist = textutil.GetIndexList(l.text, "['\"]");
-        for (var pi = 0; pi < poslist.length; pi++) {
-            var index = poslist[pi];
-            var pos = l.positionAt(index);
-            var pair = new textutil.CharactorPosition(l.charactorAt(index), pos);
-            quoteList.push(pair);
-        }
-    }
-
-    let newSelections = MakeQuoteSelections(quoteList, outer);
-    if (newSelections.length > 0) {
-        SetEditorSelection(editor, newSelections);
-    }
-}
-
 function Filtering(output: vscode.Selection[], source: vscode.Selection[], text: string) {
     var indexMap = textutil.IndexFromText(text, 1, source.length);
     for (var i = 0; i < indexMap.length; i++) {
@@ -248,7 +131,6 @@ function FilterSelections(editor: vscode.TextEditor, indexText: string) {
         SetEditorSelection(editor, newSelections);
     }
 }
-
 
 // テキストフィルタ
 export function FilterSelectionByIndexInLine() {
@@ -284,59 +166,6 @@ export function QuoteSelect() {
 export function QuoteOuterSelect() {
     if (!vscode.window.activeTextEditor) {return;}
     QuoteSelectBody(vscode.window.activeTextEditor, true);
-}
-
-// １行を分割して再選択
-export function ReselectLineFromText() {
-    if (!vscode.window.activeTextEditor) {return;}
-    MakeLineSelections(vscode.window.activeTextEditor);
-}
-
-// 単語を分割して再選択する
-export function ReselectWordsFromText() {
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, "\\s+");
-}
-
-// 区切り文字で再選択
-export function ReselectWithDelimiter() {
-    let config = vscode.workspace.getConfiguration('parameter-maker');
-    let delimiter = config.get<string>('Delimiter') || null;
-    if (!delimiter) {return;}
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
-}
-
-// 入力区切り文字で再選択
-export async function ReselectWithInputDelimiter() {
-    let delimiter = await vscode.window.showInputBox({ prompt: 'delimiter' });
-    if (!delimiter) {return;}
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
-}
-
-// {}を再選択
-export function ReselectBrace() {
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectBrace(vscode.window.activeTextEditor);
-}
-
-// スペース(空白)を再選択
-export function ReselectSpace() {
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectSpace(vscode.window.activeTextEditor);
-}
-
-// 数字を再選択
-export function ReselectNumber() {
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectNumber(vscode.window.activeTextEditor);
-}
-
-// 数字を再選択
-export function ReselectComma() {
-    if (!vscode.window.activeTextEditor) {return;}
-    textutil.ReselectComma(vscode.window.activeTextEditor);
 }
 
 // クリップボード内容をテンプレート埋め込み
@@ -388,16 +217,16 @@ export async function ClipboardToTemplateCommaSepareted() {
 
 // ダブルクオートをシングルクオートに変換
 export function ToSingleQuote() {
-    replaceText(/"/g, "'");
+    replaceEditorText(/"/g, "'");
 }
 
 // シングルクオートをダブルクオートに変換
 export function ToDoubleQuote() {
-    replaceText(/'/g, '"');
+    replaceEditorText(/'/g, '"');
 }
 
-// 置換する
-function replaceText(from: RegExp, to: string) {
+// 正規表現でエディタのテキストを置換する。
+function replaceEditorText(from: RegExp, to: string) {
     if (!vscode.window.activeTextEditor) {return;}
     let editor = vscode.window.activeTextEditor;
 
@@ -414,12 +243,12 @@ function replaceText(from: RegExp, to: string) {
 
 // カンマ区切りをタブ区切りに変換
 export function CommaValuesToTabValues() {
-    replaceText(/,/g, '\t');
+    replaceEditorText(/,/g, '\t');
 }
 
 // スペース区切りをタブ区切りに変換する
 export function SpaceSeparatedToTabSeparated() {
-    replaceText(/[^\S\r\n]+/g, '\t');
+    replaceEditorText(/[^\S\r\n]+/g, '\t');
 }
 
 // タブ区切りとしてクリップボードにコピー(カンマ区切りから)
@@ -456,41 +285,6 @@ export async function CountNumberOfLines() {
 // ヘルプの表示
 export async function ShowHelp() {
     vscode.env.openExternal(vscode.Uri.parse('https://boukichi.github.io/vscode-parameter-maker/'));
-}
-
-// クリップボード内容を再選択
-export async function ReselectClipboardContents() {
-    if (!vscode.window.activeTextEditor) {return;}
-    let editor = vscode.window.activeTextEditor;
-    let text = await vscode.env.clipboard.readText();
-    let keywords = textutil.SplitText(text);
-    MakeSelectionsFromKeywords(editor, keywords);
-}
-
-/** テキストを入力テキストによって再選択する */
-function MakeSelectionsFromKeywords(editor: vscode.TextEditor, keywords: string[]) {
-    const lineList = textutil.GetSelectedTextLines(editor);
-    const newSelections: vscode.Selection[] = [];
-    for(const l of lineList) {
-        // 範囲の取得
-        for(let ki in keywords) {
-            let key = keywords[ki];
-            let cord = textutil.GetRangeAll(l.text, key);
-            AddSelection(newSelections, l, cord);
-        }
-    }
-    if (newSelections.length > 0) {
-        SetEditorSelection(editor, newSelections);
-    }
-}
-
-// 複数選択をN個飛ばしで再選択
-export async function ReselectN() {
-    if (!vscode.window.activeTextEditor) {return;}
-    const n = await vscode.window.showInputBox({ prompt: 'number of N' });
-    if (n === undefined || n.length === 0) {return;}
-    const num = parseInt(n);
-    textutil.ReselectN(vscode.window.activeTextEditor, num);
 }
 
 // 複数行を結合する
@@ -620,6 +414,78 @@ export async function PasteAsParameterWithQuote() {
     insertParameter(editor, values, openEnclose, closeEnclose, delimiter);
 }
 
+// クオートしたパラメータを個数指定で改行してペーストする
+export async function PasteAsParameterWithLineBreakByCount() {
+    if (!vscode.window.activeTextEditor) {return;}
+
+    let config = vscode.workspace.getConfiguration('parameter-maker');
+    let openEnclose = config.get<string>('Quote') || null;
+    let closeEnclose = openEnclose;
+    let delimiter = config.get<string>('Delimiter') || null;
+
+    let editor = vscode.window.activeTextEditor;
+    let text = await vscode.env.clipboard.readText();
+    let values = textutil.SplitText(text);
+
+    const countText = await vscode.window.showInputBox({ 
+        prompt: 'count(default.1)'
+    });
+
+    const count = countText ? parseInt(countText) : 1;
+    
+    insertParametersWithLineBreaksByCount(editor, count, values, openEnclose, closeEnclose, delimiter);
+}
+
+// 結合文字で指定個数を結合してペースト
+export async function PasteWithDelimiterAndCount() {
+    if (!vscode.window.activeTextEditor) { return; }
+
+    const editor = vscode.window.activeTextEditor;
+    const text = await vscode.env.clipboard.readText();
+    const values = textutil.SplitText(text);
+
+    // 結合個数の入力
+    const countText = await vscode.window.showInputBox({ prompt: 'Enter the number of items to join (default. 2)' });
+    const count = countText ? parseInt(countText) : 2;
+    if (count <= 0) {
+        vscode.window.showErrorMessage('Invalid count. Please enter a positive number.');
+        return;
+    }
+
+    // 結合文字の入力
+    let delim = await vscode.window.showInputBox({ prompt: 'Delimiter(default. tab)' });
+    delim = delim || '\t';
+    const unescapedDelim = UnescapeText(delim);
+
+    // 結合処理とペースト処理
+    pasteWithDelimiterAndCount(editor, values, unescapedDelim, count);
+}
+
+// 結合処理とペースト処理の実装
+function pasteWithDelimiterAndCount(editor: vscode.TextEditor, values: string[], delimiter: string, count: number) {
+    const position = editor.selection.active;
+    let result = "";
+    let currentCount = 0;
+    editor.edit(builder => {
+        for (const v of values) {
+            result += v;
+            currentCount++;
+            if (currentCount < count) {
+                result += delimiter;
+            } else {
+                builder.insert(position, result);
+                builder.insert(position, "\n");
+                result = "";
+                currentCount = 0;
+            }
+        }
+        if (result.length > 0) {
+            builder.insert(position, result);
+        }
+    });
+}
+
+
 // パラメータとしてペースト
 export async function PasteAsParameter() {
     if (!vscode.window.activeTextEditor) {return;}
@@ -719,6 +585,30 @@ function insertParameter(editor: vscode.TextEditor, values: string[], openEnclos
     });
 }
 
+// 指定のパラメータ個数で改行する
+function insertParametersWithLineBreaksByCount(editor: vscode.TextEditor, count: number, values: string[], openEnclose: string | null, closeEnclose: string | null, delimiter: string | null) {
+    const position = editor.selection.active;
+
+    let cnt = 0;
+    editor.edit(builder => {
+        for (const v of values) {
+            let t = '';
+            if (openEnclose) {t += openEnclose;}
+            t += v;
+            if (closeEnclose) {t += closeEnclose;}
+            if (delimiter) {t += delimiter;}
+            if (count <= cnt) {
+                builder.insert(position, "\n");
+                count = 0;
+            }
+
+            builder.insert(position, t);
+            cnt++;
+        }
+    });
+}
+
+
 // クリップボードを結合して挿入
 export async function CombineClipboard() {
     let config = vscode.workspace.getConfiguration('parameter-maker');
@@ -781,24 +671,6 @@ export async function InsertPatternClipboard() {
 }
 
 
-
-// 正規表現で再選択する
-export function ReselectTextWithRegExp() {
-    vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
-        if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) {return Promise.reject();}
-        MakeSelectionsFromText(vscode.window.activeTextEditor, intext);
-    });
-}
-
-// 正規表現で一行を再選択する
-export function ReselectLineByReg() {
-    vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
-        if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) {return Promise.reject();}
-        SelectLineByRegExpString(vscode.window.activeTextEditor, intext);
-    });
-}
-
-
 // コマンド登録
 export function registerCommands(context: vscode.ExtensionContext) {
     stateStore = context.workspaceState;
@@ -806,6 +678,8 @@ export function registerCommands(context: vscode.ExtensionContext) {
     const CommandList: [string, (...args: any[]) => any][] = [
         ['PasteAsParameter', PasteAsParameter],
         ['PasteAsParameterWithQuote', PasteAsParameterWithQuote],
+        ['PasteAsParameterWithLineBreakByCount', PasteAsParameterWithLineBreakByCount],
+        ['PasteWithDelimiterAndCount', PasteWithDelimiterAndCount],
 
         ['FilterSelectionByIndexInLine', FilterSelectionByIndexInLine],
         ['EncloseAllSectionsWithInputChars', EncloseAllSectionsWithInputChars],
@@ -821,9 +695,10 @@ export function registerCommands(context: vscode.ExtensionContext) {
         ['ParameterizeSelectionWithInput', ParameterizeSelectionWithInput],
         ['ParameterizeSelection', ParameterizeSelection],
 
-        ['ReselectTextWithRegExp', ReselectTextWithRegExp],
         ['ReselectWithDelimiter', ReselectWithDelimiter],
+        ['ReselectWithCommaDelimiter', ReselectWithCommaDelimiter],
         ['ReselectWithInputDelimiter', ReselectWithInputDelimiter],
+        ['ReselectTextWithRegExp', ReselectTextWithRegExp],
         ['InsertPatternClipboard', InsertPatternClipboard],
 
         ['ReselectBrace', ReselectBrace],
