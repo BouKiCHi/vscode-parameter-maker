@@ -117,7 +117,7 @@ export function ReselectWithCommaDelimiter() {
     let config = vscode.workspace.getConfiguration('parameter-maker');
     let delimiter = ",\\s*";
     if (!delimiter) { return; }
-    textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);
+    textutil.ReselectByRegex(vscode.window.activeTextEditor, delimiter);
 }
 
 // 単語を分割して再選択する

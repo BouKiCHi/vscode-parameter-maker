@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.5.2
+ - Fixed: "Reselect with Comma Delimiter"
+
 ### 0.5.1
 - Added: "Paste as quoted parameter(Line Breaks Per N)"
 - Added: "Paste with delimiter and count"

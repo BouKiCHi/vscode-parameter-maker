@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { TextLine } from './TextLine';
 import { SetEditorSelection } from './SetEditorSelection';
 
+// 開始位置、終了位置、インデックスを格納するクラス
 export class Cordinate {
     index: number;
     start: number;
@@ -18,6 +19,7 @@ export class Cordinate {
     }
 }
 
+// 文字と位置を格納するクラス
 export class CharactorPosition {
     text: string;
     pos: vscode.Position;
@@ -61,18 +63,45 @@ export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
     return lines;
 }
 
-/** テキストを正規表現パターンで分割再選択する */
+/** テキストを行ごとに正規表現パターンで分割再選択する */
 export function ReselectTextWithPattern(editor: vscode.TextEditor, pattern: string) {
-    let LineList = GetSelectedTextLines(editor);
+
+    // 行ごとに選択する
+    let lineList = GetSelectedTextLines(editor);
     let newSelections: vscode.Selection[] = [];
-    for(const l of LineList) {
+    for(const l of lineList) {
         // 範囲の取得
         var cord = GetRangeFromPattern(l.text, pattern);
         for (var ci = 0; ci < cord.length; ci++) {
             var co = cord[ci];
-            let range = l.getRange(co);
+            const range = l.getRange(co);
             let sel = new vscode.Selection(range.start, range.end);
             newSelections.push(sel);
+        }
+    }
+
+    if (newSelections.length > 0) {
+        SetEditorSelection(editor, newSelections);
+    }
+}
+
+/** テキスト選択を正規表現パターンで分割して再選択する */
+export function ReselectByRegex(editor: vscode.TextEditor, pattern: string) {
+    let newSelections: vscode.Selection[] = [];
+
+    // ここでは選択を一つのまとまりとして使用する
+    for(const sel of editor.selections) {
+        const text = editor.document.getText(sel);
+
+        // 範囲の取得
+        var cord = GetRangeFromPattern(text, pattern);
+
+        for (var ci = 0; ci < cord.length; ci++) {
+            const co = cord[ci];
+            const start = editor.document.positionAt(editor.document.offsetAt(sel.start) + co.start);
+            const end = editor.document.positionAt(editor.document.offsetAt(sel.start) + co.end);
+            const newSel = new vscode.Selection(start, end);
+            newSelections.push(newSel);
         }
     }
 
