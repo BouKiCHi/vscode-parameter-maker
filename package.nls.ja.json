@@ -41,6 +41,8 @@
   "parameter-maker.ReselectNumber.title": "数字を再選択",
   "parameter-maker.ReselectComma.title": "カンマを再選択",
   "parameter-maker.ReselectLineByReg.title": "正規表現で1行を再選択",
+  "parameter-maker.ReplaceWithSerialNumber.title": "選択部分を連番で置換(リプレース)する",
+  "parameter-maker.ReplaceWithTemplateSerialNumber.title": "選択部分をテンプレート連番で置換(リプレース)する",
   "parameter-maker.ShowHelp.title": "ヘルプを表示する",
   "parameter-maker.QuoteCharactersWhenCreatingParameters": "パラメータ作成時の引用符",
   "parameter-maker.OpeningEnclosureCharacter": "開始囲み文字",

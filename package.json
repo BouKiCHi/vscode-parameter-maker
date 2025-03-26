@@ -2,7 +2,7 @@
   "name": "parameter-maker",
   "displayName": "Parameter Maker",
   "description": "Assists in creating text parameters.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "icon": "res/icon.png",
   "categories": [
     "Formatters"
@@ -264,6 +264,16 @@
         {
             "command": "parameter-maker.ReplaceSelectedTextWithAPattern",
             "title": "%parameter-maker.ReplaceSelectedTextWithAPattern.title%",
+            "category": "Parameter"
+        },
+        {
+            "command": "parameter-maker.ReplaceWithSerialNumber",
+            "title": "%parameter-maker.ReplaceWithSerialNumber.title%",
+            "category": "Parameter"
+        },
+        {
+            "command": "parameter-maker.ReplaceWithTemplateSerialNumber",
+            "title": "%parameter-maker.ReplaceWithTemplateSerialNumber.title%",
             "category": "Parameter"
         }
     ],

@@ -670,6 +670,55 @@ export async function InsertPatternClipboard() {
     });
 }
 
+// 連番リプレース処理
+async function ReplaceWithSerialNumberBody() {
+    if (!vscode.window.activeTextEditor) { return; }
+    const editor = vscode.window.activeTextEditor;
+    const selections = editor.selections;
+
+    // 開始番号の入力を求める
+    const startNumberText = await vscode.window.showInputBox({ prompt: 'Input start number (default: 1)' });
+
+    const startNumber = startNumberText ? parseInt(startNumberText) : 1;
+    if (isNaN(startNumber)) {
+        vscode.window.showErrorMessage('Invalid number');
+        return;
+    }
+
+    let currentNumber = startNumber;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            builder.replace(selection, currentNumber.toString());
+            currentNumber++;
+        }
+    });
+}
+
+// テンプレート連番リプレース処理
+async function ReplaceWithTemplateSerialNumberBody() {
+    if (!vscode.window.activeTextEditor) { return; }
+    const editor = vscode.window.activeTextEditor;
+    const selections = editor.selections;
+
+    // 開始番号の入力を求める
+    const startNumberText = await vscode.window.showInputBox({ prompt: 'Input start number (default: 0)' });
+
+    const startNumber = startNumberText ? parseInt(startNumberText) : 0;
+    if (isNaN(startNumber)) {
+        vscode.window.showErrorMessage('Invalid number');
+        return;
+    }
+
+    let currentNumber = startNumber;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            builder.replace(selection, '{' + currentNumber.toString() + '}');
+            currentNumber++;
+        }
+    });
+}
 
 // コマンド登録
 export function registerCommands(context: vscode.ExtensionContext) {
@@ -731,6 +780,9 @@ export function registerCommands(context: vscode.ExtensionContext) {
         ['ShowHelp', ShowHelp],
 
         ['ReplaceSelectedTextWithAPattern', ReplaceSelectedTextWithAPattern],
+
+        ['ReplaceWithSerialNumber', ReplaceWithSerialNumberBody],
+        ['ReplaceWithTemplateSerialNumber', ReplaceWithTemplateSerialNumberBody],
     ];
 
     for (let i = 0; i < CommandList.length; i++) {

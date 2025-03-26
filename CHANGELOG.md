@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.5.3
+- Added: "Replace with Serial Number"
+  - Added the ability to replace multiple selections with a serial number.
+- Added: "Replace with Template Serial Number"
+  - Added the ability to replace multiple selections with a template serial number.
+
 ### 0.5.2
  - Fixed: "Reselect with Comma Delimiter"
 
