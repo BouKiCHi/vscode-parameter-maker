@@ -41,6 +41,7 @@ export async function ReselectN() {
     const n = await vscode.window.showInputBox({ prompt: 'number of N' });
     if (n === undefined || n.length === 0) { return; }
     const num = parseInt(n);
+    if (isNaN(num) || num <= 0) { return; }
     textutil.ReselectN(vscode.window.activeTextEditor, num);
 }
 

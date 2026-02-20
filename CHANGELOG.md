@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.5.6
+- Fixed: Corrected line-break insertion logic in "Paste as quoted parameter(Line Breaks Per N)".
+- Fixed: Added input validation and line-range guards for merge/reselect commands.
+- Fixed: Filter selection now ignores out-of-range indices; line count display is corrected.
+- Tooling: Migrated ESLint config to `eslint.config.js` for ESLint v9.
+
 ### 0.5.3
 - Added: "Replace with Serial Number"
   - Added the ability to replace multiple selections with a serial number.

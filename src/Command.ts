@@ -34,8 +34,11 @@ function JoinNLines(editor: vscode.TextEditor, joinNum: number, delim: string | 
         for (const selection of selections) {
             // カーソル
             if (textutil.IsCursor(selection) && joinNum > 0) {
-                let line = editor.document.lineAt(selection.start.line);
-                let endLine = editor.document.lineAt(selection.start.line + joinNum - 1);
+                const startLineIndex = selection.start.line;
+                const lastLineIndex = editor.document.lineCount - 1;
+                const endLineIndex = Math.min(startLineIndex + joinNum - 1, lastLineIndex);
+                let line = editor.document.lineAt(startLineIndex);
+                let endLine = editor.document.lineAt(endLineIndex);
                 let range = new vscode.Range(line.range.start, endLine.range.end);
                 let text = editor.document.getText(range);
                 text = text.replace(/[\r\n]+/g,'');
@@ -105,7 +108,8 @@ function Filtering(output: vscode.Selection[], source: vscode.Selection[], text:
     var indexMap = textutil.IndexFromText(text, 1, source.length);
     for (var i = 0; i < indexMap.length; i++) {
         var k = indexMap[i] - 1;
-        output.push(source[k]);
+        const sel = source[k];
+        if (sel) {output.push(sel);}
     }
 }
 
@@ -275,7 +279,7 @@ export async function CountNumberOfLines() {
 
     const start = selections[0].start.line;
     const end = selections[0].end.line;
-    const lines = end - start;
+    const lines = Math.max(0, end - start) + 1;
 
     const clipboardLines = await textutil.CountClipboardTextLines();
 
@@ -294,6 +298,7 @@ export async function MergeNLines() {
 
     if (n === undefined || n.length === 0) {return;}
     const num = parseInt(n);
+    if (isNaN(num) || num <= 0) { return; }
     JoinNLines(vscode.window.activeTextEditor, num);
 }
 
@@ -302,6 +307,7 @@ export async function MergeNLinesWithDelimiter() {
     if (!vscode.window.activeTextEditor) {return;}
     let n = await vscode.window.showInputBox({ prompt: 'N lines(default. 2)' });
     const num = n ? parseInt(n) : 2;
+    if (isNaN(num) || num <= 0) { return; }
     
     let delim = await vscode.window.showInputBox({ prompt: 'Delimiter(default. tab)' });
     delim = delim || '\t';
@@ -432,6 +438,7 @@ export async function PasteAsParameterWithLineBreakByCount() {
     });
 
     const count = countText ? parseInt(countText) : 1;
+    if (isNaN(count) || count <= 0) { return; }
     
     insertParametersWithLineBreaksByCount(editor, count, values, openEnclose, closeEnclose, delimiter);
 }
@@ -599,7 +606,7 @@ function insertParametersWithLineBreaksByCount(editor: vscode.TextEditor, count:
             if (delimiter) {t += delimiter;}
             if (count <= cnt) {
                 builder.insert(position, "\n");
-                count = 0;
+                cnt = 0;
             }
 
             builder.insert(position, t);

@@ -49,8 +49,8 @@ export function GetSelectedTextLines(editor: vscode.TextEditor) : TextLine[] {
     
         for (let lno = startLineNo; lno <= endLineNo; lno++) {
             let line = editor.document.lineAt(lno);
-            let startPos = lno == startLineNo ? selection.start : line.range.start;
-            let endPos = lno == endLineNo ? selection.end : line.range.end;
+            let startPos = lno === startLineNo ? selection.start : line.range.start;
+            let endPos = lno === endLineNo ? selection.end : line.range.end;
 
             if (startPos.isEqual(endPos)) {continue;}
     
@@ -114,10 +114,10 @@ export function ReselectByRegex(editor: vscode.TextEditor, pattern: string) {
 export function GetIndexList(text: string, pattern: string) : number[] {
     var re = new RegExp(pattern, "g");
     var positions : number[] = [];
-    if (text.length == 0) {return positions;}
+    if (text.length === 0) {return positions;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) {break;}
+        if (match === null || match[0].length === 0) {break;}
         positions.push(match.index);
     }
     return positions;
@@ -149,10 +149,10 @@ export function GetRowsFromCommaSeparatedLines(text: string) {
 function MakeRangeList(re: RegExp, text: string) : Cordinate[] {
     var coordinates : Cordinate[] = [];
 
-    if (text.length == 0) {return coordinates;}
+    if (text.length === 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) {break;}
+        if (match === null || match[0].length === 0) {break;}
         let start = match.index;
         let end = start + match[0].length;
         coordinates.push(new Cordinate(start, end));
@@ -174,7 +174,7 @@ export function ReplaceBraceIndex(text: string, values: string[]) : string {
 /** 選択位置の追加 */
 function PushCoordinate(coordinates: Cordinate[], start: number, end: number) {
     // 開始と終了が同じ場合は選択しない
-    if (start == end) {return;}
+    if (start === end) {return;}
     coordinates.push(new Cordinate(start, end));
 }
 
@@ -186,10 +186,10 @@ export function GetRangeFromPattern(text: string, pattern: string) : Cordinate[]
     var end = 0;
     var coordinates : Cordinate[] = [];
 
-    if (text.length == 0) {return coordinates;}
+    if (text.length === 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) {break;}
+        if (match === null || match[0].length === 0) {break;}
         end = match.index;
         PushCoordinate(coordinates, start, end);
         start = re.lastIndex;
@@ -206,10 +206,10 @@ export function GetRangeFromIntext(text: string, seperator: string) {
     var re = new RegExp(seperator, "g");
     var coordinates : any[] = [];
 
-    if (text.length == 0) {return coordinates;}
+    if (text.length === 0) {return coordinates;}
     while (true) {
         var match = re.exec(text);
-        if (match == null || match[0].length == 0) {break;}
+        if (match === null || match[0].length === 0) {break;}
         var start = match.index;
         var length = match[0].length;
         coordinates.push([start, start + length]);
@@ -225,10 +225,10 @@ export function GetRangeAll(text: string, key: string) {
     var re = new RegExp(KeyEscaped, "g");
     var coordinates : any[] = [];
 
-    if (text.length == 0) {return coordinates;}
+    if (text.length === 0) {return coordinates;}
     while (true) {
         var m = re.exec(text);
-        if (m == null || m[0].length == 0) {break;}
+        if (m === null || m[0].length === 0) {break;}
         var start = m.index;
         var length = m[0].length;
         coordinates.push([start, start + length]);
@@ -262,6 +262,7 @@ export function IndexFromText(text: string, headNumber: number, tailNumber: numb
             }
         } else {
             var j = parseInt(v);
+            if (isNaN(j)) {continue;}
             if (j < headNumber || j > tailNumber) {continue;}
             if (j in map) {continue;}
             map[j] = true;
@@ -321,13 +322,14 @@ function ReselectWithRegExp(editor: vscode.TextEditor, re: RegExp) {
 
 // 複数選択をN個ごとに再選択
 export async function ReselectN(editor: vscode.TextEditor, num: number) {
+    if (num <= 0) {return;}
     let newsel: vscode.Selection[] = [];
     let selections = editor.selections;
 
     let c = 0;
     for(let i = 0; i < selections.length; i++) {
         let s = selections[i];
-        if (c == 0) {
+        if (c === 0) {
             newsel.push(s); 
             c = num;
         }
