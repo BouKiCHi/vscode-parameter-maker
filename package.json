@@ -1,8 +1,8 @@
 {
   "name": "parameter-maker",
-  "displayName": "%parameter-maker.displayName%",
-  "description": "%parameter-maker.description%",
-  "version": "0.5.7",
+  "displayName": "Parameter Maker",
+  "description": "Assists in creating text parameters.",
+  "version": "0.5.8",
   "icon": "res/icon.png",
   "categories": [
     "Formatters"
@@ -461,4 +461,3 @@
     "@vscode/test-electron": "^2.5.2"
   }
 }
-
