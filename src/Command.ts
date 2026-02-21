@@ -744,6 +744,25 @@ async function ReplaceWithTemplateSerialNumberBody() {
     });
 }
 
+// 選択範囲を 012345... で埋める
+function ReplaceSelectionWithNumberMaskBody() {
+    if (!vscode.window.activeTextEditor) { return; }
+    const editor = vscode.window.activeTextEditor;
+    const selections = editor.selections;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            if (textutil.IsCursor(selection)) { continue; }
+            const length = editor.document.getText(selection).length;
+            let masked = '';
+            for (let i = 0; i < length; i++) {
+                masked += (i % 10).toString();
+            }
+            builder.replace(selection, masked);
+        }
+    });
+}
+
 // コマンド登録
 export function registerCommands(context: vscode.ExtensionContext) {
     stateStore = context.workspaceState;
@@ -807,6 +826,7 @@ export function registerCommands(context: vscode.ExtensionContext) {
 
         ['ReplaceWithSerialNumber', ReplaceWithSerialNumberBody],
         ['ReplaceWithTemplateSerialNumber', ReplaceWithTemplateSerialNumberBody],
+        ['ReplaceSelectionWithNumberMask', ReplaceSelectionWithNumberMaskBody],
     ];
 
     for (let i = 0; i < CommandList.length; i++) {

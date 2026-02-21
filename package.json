@@ -275,6 +275,11 @@
             "command": "parameter-maker.ReplaceWithTemplateSerialNumber",
             "title": "%parameter-maker.ReplaceWithTemplateSerialNumber.title%",
             "category": "%parameter-maker.CommandCategory%"
+        },
+        {
+            "command": "parameter-maker.ReplaceSelectionWithNumberMask",
+            "title": "%parameter-maker.ReplaceSelectionWithNumberMask.title%",
+            "category": "%parameter-maker.CommandCategory%"
         }
     ],
     "menus": {
