@@ -4,6 +4,7 @@ import { AddSelection } from './SelectUtils';
 import { SelectLineByRegExpString } from './SelectUtils';
 import { SetEditorSelection } from './SetEditorSelection';
 import * as textutil from './textutil';
+import { localize } from './localize';
 
 // テキストを入力テキストによって再選択する
 export function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string) {
@@ -21,7 +22,7 @@ export function MakeSelectionsFromText(editor: vscode.TextEditor, intext: string
 }
 // 正規表現で再選択する
 export function ReselectTextWithRegExp() {
-    vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.reselectTextWithRegExp', 'Text (RegExp)') }).then((intext) => {
         if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) { return Promise.reject(); }
         MakeSelectionsFromText(vscode.window.activeTextEditor, intext);
     });
@@ -29,7 +30,7 @@ export function ReselectTextWithRegExp() {
 
 // 正規表現で一行を再選択する
 export function ReselectLineByReg() {
-    vscode.window.showInputBox({ prompt: 'Text(RegExp)' }).then((intext) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.reselectLineByReg', 'Text (RegExp)') }).then((intext) => {
         if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) { return Promise.reject(); }
         SelectLineByRegExpString(vscode.window.activeTextEditor, intext);
     });
@@ -38,7 +39,7 @@ export function ReselectLineByReg() {
 // 複数選択をN個飛ばしで再選択
 export async function ReselectN() {
     if (!vscode.window.activeTextEditor) { return; }
-    const n = await vscode.window.showInputBox({ prompt: 'number of N' });
+    const n = await vscode.window.showInputBox({ prompt: localize('prompt.reselectN', 'Number of N') });
     if (n === undefined || n.length === 0) { return; }
     const num = parseInt(n);
     if (isNaN(num) || num <= 0) { return; }
@@ -97,7 +98,7 @@ export function ReselectBrace() {
 
 // 入力区切り文字で再選択
 export async function ReselectWithInputDelimiter() {
-    let delimiter = await vscode.window.showInputBox({ prompt: 'delimiter' });
+    let delimiter = await vscode.window.showInputBox({ prompt: localize('prompt.reselectWithInputDelimiter', 'Delimiter') });
     if (!delimiter) { return; }
     if (!vscode.window.activeTextEditor) { return; }
     textutil.ReselectTextWithPattern(vscode.window.activeTextEditor, delimiter);

@@ -1,7 +1,7 @@
 {
   "name": "parameter-maker",
-  "displayName": "Parameter Maker",
-  "description": "Assists in creating text parameters.",
+  "displayName": "%parameter-maker.displayName%",
+  "description": "%parameter-maker.description%",
   "version": "0.5.6",
   "icon": "res/icon.png",
   "categories": [
@@ -25,7 +25,7 @@
   "contributes": {
     "configuration": [
         {
-            "title": "Parameter Maker",
+            "title": "%parameter-maker.ConfigurationTitle%",
             "properties": {
                 "parameter-maker.Quote": {
                     "type": "string",
@@ -54,227 +54,227 @@
         {
             "command": "parameter-maker.AddTextToSelections",
             "title": "%parameter-maker.AddTextToSelections.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.EncloseAllSectionsWithInputChars",
             "title": "%parameter-maker.EncloseAllSectionsWithInputChars.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectLineFromText",
             "title": "%parameter-maker.ReselectLineFromText.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectWordsFromText",
             "title": "%parameter-maker.ReselectWordsFromText.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.MergeNLines",
             "title": "%parameter-maker.MergeNLines.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.MergeNLinesWithDelimiter",
             "title": "%parameter-maker.MergeNLinesWithDelimiter.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CopySelectedTextNTimes",
             "title": "%parameter-maker.CopySelectedTextNTimes.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.FilterSelectionByIndexInLine",
             "title": "%parameter-maker.FilterSelectionByIndexInLine.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ParameterizeSelection",
             "title": "%parameter-maker.ParameterizeSelection.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ParameterizeSelectionWithInput",
             "title": "%parameter-maker.ParameterizeSelectionWithInput.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectTextWithRegExp",
             "title": "%parameter-maker.ReselectTextWithRegExp.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CopySelectedText",
             "title": "%parameter-maker.CopySelectedText.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.QuoteSelect",
             "title": "%parameter-maker.QuoteSelect.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.QuoteOuterSelect",
             "title": "%parameter-maker.QuoteOuterSelect.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.PasteAsParameter",
             "title": "%parameter-maker.PasteAsParameter.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.PasteAsParameterWithQuote",
             "title": "%parameter-maker.PasteAsParameterWithQuote.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.PasteAsParameterWithLineBreakByCount",
             "title": "%parameter-maker.PasteAsParameterWithLineBreakByCount.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.PasteWithDelimiterAndCount",
             "title": "%parameter-maker.PasteWithDelimiterAndCount.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectWithCommaDelimiter",
             "title": "%parameter-maker.ReselectWithCommaDelimiter.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectWithDelimiter",
             "title": "%parameter-maker.ReselectWithDelimiter.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectWithInputDelimiter",
             "title": "%parameter-maker.ReselectWithInputDelimiter.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CombineClipboard",
             "title": "%parameter-maker.CombineClipboard.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.SplitSelectionIntoParameters",
             "title": "%parameter-maker.SplitSelectionIntoParameters.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.SplitSelectionIntoQuotedParams",
             "title": "%parameter-maker.SplitSelectionIntoQuotedParams.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectBrace",
             "title": "%parameter-maker.ReselectBrace.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectSpace",
             "title": "%parameter-maker.ReselectSpace.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectNumber",
             "title": "%parameter-maker.ReselectNumber.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectComma",
             "title": "%parameter-maker.ReselectComma.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.InsertPatternClipboard",
             "title": "%parameter-maker.InsertPatternClipboard.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectNthSkip",
             "title": "%parameter-maker.ReselectNthSkip.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ClipboardToTemplate",
             "title": "%parameter-maker.ClipboardToTemplate.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ClipboardToTemplateCommaSepareted",
             "title": "%parameter-maker.ClipboardToTemplateCommaSepareted.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectClipboardContents",
             "title": "%parameter-maker.ReselectClipboardContents.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ToSingleQuote",
             "title": "%parameter-maker.ToSingleQuote.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ToDoubleQuote",
             "title": "%parameter-maker.ToDoubleQuote.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CommaValuesToTabValues",
             "title": "%parameter-maker.CommaValuesToTabValues.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CountNumberOfLines",
             "title": "%parameter-maker.CountNumberOfLines.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.CopyAsTabValues",
             "title": "%parameter-maker.CopyAsTabValues.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReselectLineByReg",
             "title": "%parameter-maker.ReselectLineByReg.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.PasteWithCommasSeparatingEachLine",
             "title": "%parameter-maker.PasteWithCommasSeparatingEachLine.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.SpaceSeparatedToTabSeparated",
             "title": "%parameter-maker.SpaceSeparatedToTabSeparated.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ShowHelp",
             "title": "%parameter-maker.ShowHelp.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReplaceSelectedTextWithAPattern",
             "title": "%parameter-maker.ReplaceSelectedTextWithAPattern.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReplaceWithSerialNumber",
             "title": "%parameter-maker.ReplaceWithSerialNumber.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         },
         {
             "command": "parameter-maker.ReplaceWithTemplateSerialNumber",
             "title": "%parameter-maker.ReplaceWithTemplateSerialNumber.title%",
-            "category": "Parameter"
+            "category": "%parameter-maker.CommandCategory%"
         }
     ],
     "menus": {
@@ -456,3 +456,4 @@
     "@vscode/test-electron": "^2.5.2"
   }
 }
+

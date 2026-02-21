@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as nls from 'vscode-nls';
 import * as textutil from './textutil';
 import { SetEditorSelection } from './SetEditorSelection';
 import { ReselectBrace, ReselectClipboardContents, 
@@ -8,10 +7,9 @@ import { ReselectBrace, ReselectClipboardContents,
     ReselectWithCommaDelimiter, 
     ReselectWithDelimiter, ReselectWithInputDelimiter, ReselectWordsFromText } from './Reselect';
 import { QuoteSelectBody } from './SelectUtils';
+import { localize } from './localize';
 
 let stateStore : vscode.Memento;
-
-let localize = nls.loadMessageBundle();
 
 /** 選択部分を編集する */
 function EditSelections(editor: vscode.TextEditor, openEnclose: string | null, closeEnclose: string | null, delimiter: string | null) {
@@ -41,7 +39,12 @@ function JoinNLines(editor: vscode.TextEditor, joinNum: number, delim: string | 
                 let endLine = editor.document.lineAt(endLineIndex);
                 let range = new vscode.Range(line.range.start, endLine.range.end);
                 let text = editor.document.getText(range);
-                text = text.replace(/[\r\n]+/g,'');
+                if (delim) {
+                    const lines = text.replace(/\r\n/g, '\n').split('\n');
+                    text = lines.join(delim);
+                } else {
+                    text = text.replace(/[\r\n]+/g, '');
+                }
                 builder.replace(range, text);
                 continue;
             }
@@ -138,7 +141,7 @@ function FilterSelections(editor: vscode.TextEditor, indexText: string) {
 
 // テキストフィルタ
 export function FilterSelectionByIndexInLine() {
-    vscode.window.showInputBox({ prompt: 'Index Text(ex: "1-2,4,7", Start:1)' }).then((intext) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.filterSelectionByIndexInLine', 'Index Text (e.g. "1-2,4,7", start: 1)') }).then((intext) => {
         if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) {return;}
         FilterSelections(vscode.window.activeTextEditor, intext);
     });
@@ -146,7 +149,7 @@ export function FilterSelectionByIndexInLine() {
 
 // 選択を囲む
 export function EncloseAllSectionsWithInputChars() {
-    vscode.window.showInputBox({ prompt: 'Text to surround' }).then((intext) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.encloseAllSectionsWithInputChars', 'Text to surround') }).then((intext) => {
         if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) {return;}
         EditSelections(vscode.window.activeTextEditor, intext, intext, null);
     });
@@ -154,7 +157,7 @@ export function EncloseAllSectionsWithInputChars() {
 
 // 選択の最後に追加する
 export function AddTextToSelections() {
-    vscode.window.showInputBox({ prompt: 'Text to append' }).then((intext) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.addTextToSelections', 'Text to append') }).then((intext) => {
         if (intext === undefined || intext.length === 0 || !vscode.window.activeTextEditor) {return;}
         EditSelections(vscode.window.activeTextEditor, null, null, intext);
     });
@@ -283,7 +286,7 @@ export async function CountNumberOfLines() {
 
     const clipboardLines = await textutil.CountClipboardTextLines();
 
-    await vscode.window.showInformationMessage(`${lines} line(s) selected. (${clipboardLines} clipboard lines)`);
+    await vscode.window.showInformationMessage(localize('message.countNumberOfLines', '{0} line(s) selected. ({1} clipboard lines)', lines, clipboardLines));
 }
 
 // ヘルプの表示
@@ -294,7 +297,8 @@ export async function ShowHelp() {
 // 複数行を結合する
 export async function MergeNLines() {
     if (!vscode.window.activeTextEditor) {return;}
-    const n = await vscode.window.showInputBox({ prompt: 'N lines' });
+    const prompt = localize('prompt.mergeNLines', 'N lines');
+    const n = await vscode.window.showInputBox({ prompt: prompt });
 
     if (n === undefined || n.length === 0) {return;}
     const num = parseInt(n);
@@ -305,13 +309,14 @@ export async function MergeNLines() {
 // 複数行を結合する
 export async function MergeNLinesWithDelimiter() {
     if (!vscode.window.activeTextEditor) {return;}
-    let n = await vscode.window.showInputBox({ prompt: 'N lines(default. 2)' });
-    const num = n ? parseInt(n) : 2;
+    const n = await vscode.window.showInputBox({ prompt: localize('prompt.mergeNLinesWithDelimiter.lines', 'N lines (default: 2)') });
+    if (n === undefined) { return; }
+    const num = n.length > 0 ? parseInt(n) : 2;
     if (isNaN(num) || num <= 0) { return; }
     
-    let delim = await vscode.window.showInputBox({ prompt: 'Delimiter(default. tab)' });
-    delim = delim || '\t';
-    const unescapedDelim = UnescapeText(delim);
+    const delim = await vscode.window.showInputBox({ prompt: localize('prompt.delimiterDefaultTab', 'Delimiter (default: tab)') });
+    if (delim === undefined) { return; }
+    const unescapedDelim = delim.length > 0 ? UnescapeText(delim) : '\t';
 
     JoinNLines(vscode.window.activeTextEditor, num, unescapedDelim);
 }
@@ -332,7 +337,7 @@ function UnescapeText(text: string): string {
 
 // 選択テキストを複数回コピーする
 export function CopySelectedTextNTimes() {
-    vscode.window.showInputBox({ prompt: 'N times(default: Number of clipboard lines' }).then(async (n) => {
+    vscode.window.showInputBox({ prompt: localize('prompt.copySelectedTextNTimes', 'N times (default: number of clipboard lines)') }).then(async (n) => {
         if (n === undefined) { return; }
         if (!vscode.window.activeTextEditor) {return;}
 
@@ -358,9 +363,16 @@ export async function ParameterizeSelectionWithInput() {
     let closeEncloseConfig = config.get<string>('ClosingEnclosureCharacter') || null;
     let DelimiterConfig = config.get<string>('Delimiter') || null;
 
-    let openEnclose = await vscode.window.showInputBox({ prompt: 'Opening Enclosure(Empty: Follow the setting)' }) || null;
-    let closeEnclose = await vscode.window.showInputBox({ prompt: 'Closing Enclosure(Empty: Follow the setting)' }) || null;
-    let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' }) || null;
+    const openEncloseInput = await vscode.window.showInputBox({ prompt: localize('prompt.openingEnclosure', 'Opening enclosure (empty: use setting)') });
+    if (openEncloseInput === undefined) { return; }
+    const closeEncloseInput = await vscode.window.showInputBox({ prompt: localize('prompt.closingEnclosure', 'Closing enclosure (empty: use setting)') });
+    if (closeEncloseInput === undefined) { return; }
+    const delimiterInput = await vscode.window.showInputBox({ prompt: localize('prompt.delimiterFromSetting', 'Delimiter (empty: use setting)') });
+    if (delimiterInput === undefined) { return; }
+
+    let openEnclose: string | null = openEncloseInput.length > 0 ? openEncloseInput : null;
+    let closeEnclose: string | null = closeEncloseInput.length > 0 ? closeEncloseInput : null;
+    let Delimiter: string | null = delimiterInput.length > 0 ? delimiterInput : null;
 
     openEnclose = openEnclose || openEncloseConfig;
     closeEnclose = closeEnclose || closeEncloseConfig;
@@ -434,10 +446,11 @@ export async function PasteAsParameterWithLineBreakByCount() {
     let values = textutil.SplitText(text);
 
     const countText = await vscode.window.showInputBox({ 
-        prompt: 'count(default.1)'
+        prompt: localize('prompt.pasteAsParameterWithLineBreakByCount.count', 'Count (default: 1)')
     });
+    if (countText === undefined) { return; }
 
-    const count = countText ? parseInt(countText) : 1;
+    const count = countText.length > 0 ? parseInt(countText) : 1;
     if (isNaN(count) || count <= 0) { return; }
     
     insertParametersWithLineBreaksByCount(editor, count, values, openEnclose, closeEnclose, delimiter);
@@ -452,17 +465,19 @@ export async function PasteWithDelimiterAndCount() {
     const values = textutil.SplitText(text);
 
     // 結合個数の入力
-    const countText = await vscode.window.showInputBox({ prompt: 'Enter the number of items to join (default. 2)' });
-    const count = countText ? parseInt(countText) : 2;
+    const countText = await vscode.window.showInputBox({ prompt: localize('prompt.pasteWithDelimiterAndCount.count', 'Enter the number of items to join (default: 2)') });
+    if (countText === undefined) { return; }
+    const count = countText.length > 0 ? parseInt(countText) : 2;
     if (count <= 0) {
-        vscode.window.showErrorMessage('Invalid count. Please enter a positive number.');
+        vscode.window.showErrorMessage(localize('error.invalidCount', 'Invalid count. Please enter a positive number.'));
         return;
     }
 
     // 結合文字の入力
-    let delim = await vscode.window.showInputBox({ prompt: 'Delimiter(default. tab)' });
-    delim = delim || '\t';
-    const unescapedDelim = UnescapeText(delim);
+    const delim = await vscode.window.showInputBox({ prompt: localize('prompt.delimiterDefaultTab', 'Delimiter (default: tab)') });
+    if (delim === undefined) { return; }
+    const delimText = delim.length > 0 ? delim : '\t';
+    const unescapedDelim = UnescapeText(delimText);
 
     // 結合処理とペースト処理
     pasteWithDelimiterAndCount(editor, values, unescapedDelim, count);
@@ -525,7 +540,7 @@ export async function ReplaceSelectedTextWithAPattern() {
     const value = stateStore.get<string>(key) ?? '"{0}"';
 
     const pattern = await vscode.window.showInputBox({ 
-        prompt: 'Please enter a pattern. The {0} part in the pattern will reflect the original selected content.',
+        prompt: localize('prompt.replaceSelectedTextWithPattern', 'Please enter a pattern. The {0} token in the pattern will be replaced with the original selected content.', '{0}'),
         value: value
     });
 
@@ -619,7 +634,7 @@ function insertParametersWithLineBreaksByCount(editor: vscode.TextEditor, count:
 // クリップボードを結合して挿入
 export async function CombineClipboard() {
     let config = vscode.workspace.getConfiguration('parameter-maker');
-    let Delimiter = await vscode.window.showInputBox({ prompt: 'Delimiter(Empty: Follow the setting)' });
+    let Delimiter = await vscode.window.showInputBox({ prompt: localize('prompt.delimiterFromSetting', 'Delimiter (empty: use setting)') });
     if (Delimiter === undefined) { return; }
 
     Delimiter = Delimiter || config.get<string>('Delimiter') || undefined;
@@ -650,7 +665,7 @@ export async function CombineClipboard() {
 
 // クリップボード内容をパターンで挿入
 export async function InsertPatternClipboard() {
-    const pattern = await vscode.window.showInputBox({ prompt: 'Pattern(ex. "{}"),' });
+    const pattern = await vscode.window.showInputBox({ prompt: localize('prompt.insertPatternClipboard', 'Pattern (e.g. "{}")') });
 
     if (!pattern) { return; }
 
@@ -684,11 +699,12 @@ async function ReplaceWithSerialNumberBody() {
     const selections = editor.selections;
 
     // 開始番号の入力を求める
-    const startNumberText = await vscode.window.showInputBox({ prompt: 'Input start number (default: 1)' });
+    const startNumberText = await vscode.window.showInputBox({ prompt: localize('prompt.replaceWithSerialNumber.start', 'Input start number (default: 1)') });
+    if (startNumberText === undefined) { return; }
 
-    const startNumber = startNumberText ? parseInt(startNumberText) : 1;
+    const startNumber = startNumberText.length > 0 ? parseInt(startNumberText) : 1;
     if (isNaN(startNumber)) {
-        vscode.window.showErrorMessage('Invalid number');
+        vscode.window.showErrorMessage(localize('error.invalidNumber', 'Invalid number'));
         return;
     }
 
@@ -709,11 +725,12 @@ async function ReplaceWithTemplateSerialNumberBody() {
     const selections = editor.selections;
 
     // 開始番号の入力を求める
-    const startNumberText = await vscode.window.showInputBox({ prompt: 'Input start number (default: 0)' });
+    const startNumberText = await vscode.window.showInputBox({ prompt: localize('prompt.replaceWithTemplateSerialNumber.start', 'Input start number (default: 0)') });
+    if (startNumberText === undefined) { return; }
 
-    const startNumber = startNumberText ? parseInt(startNumberText) : 0;
+    const startNumber = startNumberText.length > 0 ? parseInt(startNumberText) : 0;
     if (isNaN(startNumber)) {
-        vscode.window.showErrorMessage('Invalid number');
+        vscode.window.showErrorMessage(localize('error.invalidNumber', 'Invalid number'));
         return;
     }
 
