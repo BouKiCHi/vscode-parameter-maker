@@ -2,7 +2,7 @@
   "name": "parameter-maker",
   "displayName": "%parameter-maker.displayName%",
   "description": "%parameter-maker.description%",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "icon": "res/icon.png",
   "categories": [
     "Formatters"

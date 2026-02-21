@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### 0.5.7
+- Added: "Replace selection with numeric mask (0123...)"
+  - Added an anonymization command that replaces selected text with a `012345...` pattern while preserving length.
+- Improved: Localization coverage and operation consistency.
+  - Localized command prompts/messages and consolidated localization handling.
+  - Added localization keys for extension metadata/category labels.
+  - Standardized `showInputBox` cancel behavior so Escape/Cancel reliably aborts operations.
+- Fixed: "MergeNLinesWithDelimiter"
+  - Fixed delimiter handling when running from cursor mode.
+  - Fixed cancel behavior for input prompts.
+
 ### 0.5.6
 - Fixed: Corrected line-break insertion logic in "Paste as quoted parameter(Line Breaks Per N)".
 - Fixed: Added input validation and line-range guards for merge/reselect commands.
