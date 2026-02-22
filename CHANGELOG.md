@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.5.9
+- Added: "Replace selection with x mask (xxxx...)"
+  - Added an anonymization command that replaces selected text with `x` characters while preserving length.
+
 ### 0.5.7
 - Added: "Replace selection with numeric mask (0123...)"
   - Added an anonymization command that replaces selected text with a `012345...` pattern while preserving length.
