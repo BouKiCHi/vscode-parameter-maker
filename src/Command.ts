@@ -763,6 +763,22 @@ function ReplaceSelectionWithNumberMaskBody() {
     });
 }
 
+// 選択範囲を x で埋める
+function ReplaceSelectionWithXMaskBody() {
+    if (!vscode.window.activeTextEditor) { return; }
+    const editor = vscode.window.activeTextEditor;
+    const selections = editor.selections;
+
+    editor.edit(builder => {
+        for (const selection of selections) {
+            if (textutil.IsCursor(selection)) { continue; }
+            const length = editor.document.getText(selection).length;
+            const masked = 'x'.repeat(length);
+            builder.replace(selection, masked);
+        }
+    });
+}
+
 // コマンド登録
 export function registerCommands(context: vscode.ExtensionContext) {
     stateStore = context.workspaceState;
@@ -827,6 +843,7 @@ export function registerCommands(context: vscode.ExtensionContext) {
         ['ReplaceWithSerialNumber', ReplaceWithSerialNumberBody],
         ['ReplaceWithTemplateSerialNumber', ReplaceWithTemplateSerialNumberBody],
         ['ReplaceSelectionWithNumberMask', ReplaceSelectionWithNumberMaskBody],
+        ['ReplaceSelectionWithXMask', ReplaceSelectionWithXMaskBody],
     ];
 
     for (let i = 0; i < CommandList.length; i++) {

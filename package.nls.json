@@ -48,6 +48,7 @@
   "parameter-maker.ReplaceWithSerialNumber.title": "Replace with Serial Number",
   "parameter-maker.ReplaceWithTemplateSerialNumber.title": "Replace with Template Serial Number",
   "parameter-maker.ReplaceSelectionWithNumberMask.title": "Replace selection with numeric mask (0123...)",
+  "parameter-maker.ReplaceSelectionWithXMask.title": "Replace selection with x mask (xxxx...)",
   "parameter-maker.ShowHelp.title": "Show Help",
   "parameter-maker.QuoteCharactersWhenCreatingParameters": "Quote characters when creating parameters",
   "parameter-maker.OpeningEnclosureCharacter": "Opening enclosure character",
