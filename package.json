@@ -2,7 +2,7 @@
   "name": "parameter-maker",
   "displayName": "Parameter Maker",
   "description": "Assists in creating text parameters.",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "icon": "res/icon.png",
   "categories": [
     "Formatters"
@@ -446,12 +446,17 @@
     "vscode-nls": "^5.2.0"
   },
 
+  "overrides": {
+    "diff": "^8.0.4",
+    "serialize-javascript": "^7.0.6"
+  },
+
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "test": "vscode-test"
   },
   "devDependencies": {
@@ -460,9 +465,9 @@
     "@types/node": "25.x",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.1",
     "typescript": "^5.9.3",
-    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^2.5.2"
   }
 }
